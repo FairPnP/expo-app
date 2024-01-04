@@ -1,7 +1,7 @@
 // TextComponent.js
 import React from 'react';
 import {Text as ReactText, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/common';
+import {AppTheme, useTheme} from '../themes';
 
 export type TextProps = {
   children: React.ReactNode;

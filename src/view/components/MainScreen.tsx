@@ -8,13 +8,9 @@ import {
   ThemeProvider as AmplifyThemeProvider,
 } from '@aws-amplify/ui-react-native';
 import {RecoilRoot} from 'recoil';
-import {TabNavigator} from '../navigation';
+import {TabNavigator} from './navigation';
 import {useTheme} from '@/common';
-import {
-  EditParkingSpaceScreen,
-  ManageSpotScreen,
-  // ViewParkingSpaceScreen,
-} from '@/spaces';
+import { EditParkingSpaceScreen, ManageSpotScreen } from './screens';
 
 Amplify.configure({
   Auth: {

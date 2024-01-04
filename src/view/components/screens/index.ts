@@ -3,5 +3,7 @@ export * from './HomeScreen';
 export * from './ProfileScreen';
 export * from './SearchScreen';
 export * from './SplashScreen';
-export * from './MainScreen';
 export * from './HostScreen';
+export * from './ManageSpotScreen';
+export * from './EditParkingSpaceScreen';
+// export * from './ViewParkingSpaceScreen';

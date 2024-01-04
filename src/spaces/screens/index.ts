@@ -1,8 +1,4 @@
-import {Building} from '@/buildings';
-
-export * from './ManageSpotScreen';
-export * from './EditParkingSpaceScreen';
-// export * from './ViewParkingSpaceScreen';
+import type {Building} from '@/buildings';
 
 export type ParkingSpaceViewData = {
   building: Building;

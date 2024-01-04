@@ -5,10 +5,10 @@ import {
   MyFavorite,
   Space,
   useLoadSpaces,
-  ManageSpotScreenProps,
 } from '@/spaces';
 import {useTheme, AppTheme, Title, ListView} from '@/common';
 import {Building} from '@/buildings';
+import { ManageSpotScreenProps } from './ManageSpotScreen';
 // import {useRecoilState} from 'recoil';
 
 const favorites: Space[] = [];

@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {AvailabilityData} from './AvailabilityMap';
+import {AvailabilityData} from '../../common/components/AvailabilityMap';
 import {
   HorizontalGroup,
   VerticalGroup,

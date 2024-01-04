@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/common';
+import {AppTheme, useTheme} from '../themes';
 
 export type TitleProps = {
   children: React.ReactNode;

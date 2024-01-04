@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/common';
+import {AppTheme, useTheme} from '../themes';
 
 export type ButtonProps = {
   children: React.ReactNode;

@@ -8,16 +8,9 @@ import MapView, {
   Region,
 } from 'react-native-maps';
 import {useTheme, Text, AppTheme} from '@/common';
-import {
-  Availability,
-  AvailabilityAPI,
-  SpaceResult,
-  getAvailabilityCost,
-} from '..';
-import {MapMarker} from './MapMarker';
-import {MapCard} from './MapCard';
 import {ReservationAPI} from '@/reservations';
 import {Building} from '@/buildings';
+import { Availability, AvailabilityAPI, MapCard, MapMarker, SpaceResult, getAvailabilityCost } from '@/availability';
 
 export type AvailabilityData = {
   availability: Availability;

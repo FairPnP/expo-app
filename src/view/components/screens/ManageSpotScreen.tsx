@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Building} from '@/buildings';
-import {Space, SpaceCard} from '@/spaces';
+import {SpaceCard} from '../../../spaces/components';
 import {
   AppTheme,
   useTheme,
@@ -17,6 +17,7 @@ import {
   AvailabilityCalendar,
   AvailabilityTimeline,
 } from '@/availability';
+import { Space } from '../../../spaces/api';
 
 export type ManageSpotScreenProps = {
   building: Building;
