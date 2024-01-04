@@ -7,7 +7,7 @@ import MapView, {
   PROVIDER_GOOGLE,
   Region,
 } from 'react-native-maps';
-import {useTheme, Text, AppTheme} from '@/common';
+import {useTheme, AppTheme, Text} from '@/common';
 import {ReservationAPI} from '@/reservations';
 import {Building} from '@/buildings';
 import { Availability, AvailabilityAPI, MapCard, MapMarker, SpaceResult, getAvailabilityCost } from '@/availability';

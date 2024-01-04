@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {AppTheme, useTheme, Button} from '@/common';
-import {CreateBuildingRequest, LocationCard, MapsSearch} from '@/buildings';
-import {EditParkingSpaceScreenProps} from '@/spaces';
+import {CreateBuildingRequest, LocationCard} from '@/buildings';
+import { EditParkingSpaceScreenProps } from './EditParkingSpaceScreen';
+import { MapsSearch } from '@/availability';
 
 export const HostScreen = ({navigation}: any) => {
   const [loc, setSelectedLocation] = useState<any>(null);

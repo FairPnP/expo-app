@@ -8,10 +8,11 @@ import {
   Text,
   DateTimePicker,
 } from '@/common';
-import {AvailabilityMap, MapsSearch} from '@/buildings';
 import {useLocationPermission} from '@/common/hooks/useLocationPermission';
 import {LatLng} from 'react-native-maps';
 import {FormProvider, useForm} from 'react-hook-form';
+import { MapsSearch } from '@/availability';
+import { AvailabilityMap } from '../AvailabilityMap';
 
 type FormValues = {
   startDate: Date;

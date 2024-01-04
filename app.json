@@ -28,6 +28,11 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.RECORD_AUDIO"
       ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
+        }
+      },
       "package": "com.fairpnp.fairpnp"
     },
     "web": {

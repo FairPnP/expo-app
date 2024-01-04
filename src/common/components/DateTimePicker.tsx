@@ -2,8 +2,7 @@ import React, {Suspense, useState} from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import {UseControllerProps, useController} from 'react-hook-form';
 import {AppTheme, useTheme} from '../themes';
-
-const DatePicker = React.lazy(() => import('react-native-date-picker'));
+import DatePicker from 'react-native-date-picker';
 
 interface DateTimePickerProps extends UseControllerProps {
   name: string;
@@ -35,7 +34,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
           {(field.value as Date).toLocaleString()}
         </Text>
       </TouchableOpacity>
-      <Suspense fallback={<View />}>
         <DatePicker
           modal
           open={isOpen}
@@ -43,7 +41,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
           onConfirm={handleConfirm}
           onCancel={() => setIsOpen(false)}
         />
-      </Suspense>
     </View>
   );
 };

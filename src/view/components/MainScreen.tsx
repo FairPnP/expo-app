@@ -9,8 +9,10 @@ import {
 } from '@aws-amplify/ui-react-native';
 import {RecoilRoot} from 'recoil';
 import {TabNavigator} from './navigation';
-import {useTheme} from '@/common';
-import { EditParkingSpaceScreen, ManageSpotScreen } from './screens';
+import {AppTheme, useTheme} from '@/common';
+import {EditParkingSpaceScreen, ManageSpotScreen} from './screens';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet} from 'react-native';
 
 Amplify.configure({
   Auth: {
@@ -48,6 +50,7 @@ const Stack = createNativeStackNavigator();
 
 export const MainScreen = () => {
   const {theme} = useTheme();
+  const styles = getStyles(theme.appTheme);
 
   return (
     <AmplifyThemeProvider
@@ -56,6 +59,7 @@ export const MainScreen = () => {
       <Authenticator.Provider>
         <Authenticator>
           <RecoilRoot>
+            <SafeAreaView style={styles.container}>
             <NavigationContainer theme={theme.appTheme}>
               <Stack.Navigator>
                 <Stack.Screen
@@ -79,18 +83,19 @@ export const MainScreen = () => {
                     headerTitle: 'Edit Parking Space',
                   }}
                 />
-                {/* <Stack.Screen
-                  name="ViewParkingSpace"
-                  component={ViewParkingSpaceScreen}
-                  options={{
-                    headerTitle: 'View Parking Space',
-                  }}
-                /> */}
               </Stack.Navigator>
             </NavigationContainer>
+            </SafeAreaView>
           </RecoilRoot>
         </Authenticator>
       </Authenticator.Provider>
     </AmplifyThemeProvider>
   );
 };
+
+const getStyles = (theme: AppTheme) => StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+});
