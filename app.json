@@ -21,10 +21,50 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.fairpnp.fairpnp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": null,
+          "enableGooglePay": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationPermission": "Location is required to find parking spaces near you."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Parking space photos are required to create a listing."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1a42a9cc-a4cb-426b-8ad0-ad11242d9e70"
+      }
     }
   }
 }
