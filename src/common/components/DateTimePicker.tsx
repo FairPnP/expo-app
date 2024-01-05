@@ -1,46 +1,42 @@
-import React, {Suspense, useState} from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import {UseControllerProps, useController} from 'react-hook-form';
-import {AppTheme, useTheme} from '../themes';
+import {useController} from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
+import {AppTheme, useTheme} from '../themes';
 
-interface DateTimePickerProps extends UseControllerProps {
+interface DateTimePickerProps {
   name: string;
-  label?: string;
-  initialDate?: Date;
 }
 
-export const DateTimePicker = (props: DateTimePickerProps) => {
+export const DateTimePicker = ({name}: DateTimePickerProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const [isOpen, setIsOpen] = useState(false);
-  const {name, rules} = props;
 
-  const {field} = useController({
-    name,
-    rules,
-    defaultValue: props.initialDate || new Date(),
-  });
+  const {field} = useController({name});
 
   const handleConfirm = (date: Date) => {
     field.onChange(date);
     setIsOpen(false);
   };
 
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+
   return (
     <View>
       <TouchableOpacity onPress={() => setIsOpen(true)} style={styles.button}>
-        <Text style={styles.text}>
-          {(field.value as Date).toLocaleString()}
-        </Text>
+        <Text style={styles.text}>{field.value.toLocaleString()}</Text>
       </TouchableOpacity>
-        <DatePicker
-          modal
-          open={isOpen}
-          date={field.value}
-          onConfirm={handleConfirm}
-          onCancel={() => setIsOpen(false)}
-        />
+      <DatePicker
+        modal
+        open={isOpen}
+        date={field.value}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        minuteInterval={15}
+      />
     </View>
   );
 };

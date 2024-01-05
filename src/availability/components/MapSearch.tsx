@@ -74,6 +74,7 @@ const autoCompleteStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 0,
+      padding: 4,
     },
     textInputContainer: {
       backgroundColor: theme.colors.background,
@@ -92,8 +93,6 @@ const autoCompleteStyles = (theme: AppTheme) =>
     listView: {
       backgroundColor: theme.colors.card,
       borderColor: theme.colors.border,
-      position: 'absolute',
-      top: 40,
       borderLeftWidth: 1,
       borderRightWidth: 1,
       borderBottomWidth: 1,

@@ -38,8 +38,8 @@ function isBuilding(
   return (building as Building).id !== undefined;
 }
 
-export const EditParkingSpaceScreen = ({route, navigation}) => {
-  const props = route.params as EditParkingSpaceScreenProps;
+export const EditParkingSpaceScreen = ({navigation, route}) => {
+  const {building} = route.params as EditParkingSpaceScreenProps;
   const {refreshSpaces} = useLoadSpaces();
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -53,19 +53,19 @@ export const EditParkingSpaceScreen = ({route, navigation}) => {
   const formMethods = useForm();
 
   const getBuilding = useCallback(async () => {
-    if (isBuilding(props.building)) {
-      return props.building;
+    if (isBuilding(building)) {
+      return building;
     } else {
-      const res = await BuildingAPI.list({place_id: props.building.place_id});
+      const res = await BuildingAPI.list({place_id: building.place_id});
       if (res?.buildings.length > 0) {
         return res.buildings[0];
       } else {
-        return BuildingAPI.create(props.building).then(
+        return BuildingAPI.create(building).then(
           create_res => create_res.building,
         );
       }
     }
-  }, [props.building]);
+  }, [building]);
 
   const createSpace = useCallback(
     async (data: FormValues) => {
@@ -106,7 +106,7 @@ export const EditParkingSpaceScreen = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>{props.building.name}</Text>
+      <Text>{building.name}</Text>
       <View style={styles.separator} />
 
       <ImageUpload onImageSelected={onImageSelected} />
@@ -164,7 +164,7 @@ export const EditParkingSpaceScreen = ({route, navigation}) => {
         /> */}
 
         <Button onPress={formMethods.handleSubmit(onSubmit)}>
-          Add Parking Spot
+          <Text>Add Parking Spot</Text>
         </Button>
       </FormProvider>
     </ScrollView>

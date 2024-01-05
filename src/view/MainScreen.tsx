@@ -60,31 +60,31 @@ export const MainScreen = () => {
         <Authenticator>
           <RecoilRoot>
             <SafeAreaView style={styles.container}>
-            <NavigationContainer theme={theme.appTheme}>
-              <Stack.Navigator>
-                <Stack.Screen
-                  name="Navigator"
-                  component={TabNavigator}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="ManageSpot"
-                  component={ManageSpotScreen}
-                  options={{
-                    headerTitle: 'Manage Parking Spot',
-                  }}
-                />
-                <Stack.Screen
-                  name="EditParkingSpace"
-                  component={EditParkingSpaceScreen}
-                  options={{
-                    headerTitle: 'Edit Parking Space',
-                  }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
+              <NavigationContainer theme={theme.appTheme}>
+                <Stack.Navigator>
+                  <Stack.Screen
+                    name="Navigator"
+                    component={TabNavigator}
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ManageSpot"
+                    component={ManageSpotScreen}
+                    options={{
+                      headerTitle: 'Manage Parking Spot',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="EditParkingSpace"
+                    component={EditParkingSpaceScreen}
+                    options={{
+                      headerTitle: 'Edit Parking Space',
+                    }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
             </SafeAreaView>
           </RecoilRoot>
         </Authenticator>
@@ -93,9 +93,10 @@ export const MainScreen = () => {
   );
 };
 
-const getStyles = (theme: AppTheme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+  });

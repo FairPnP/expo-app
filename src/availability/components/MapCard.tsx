@@ -18,7 +18,7 @@ type Props = {
   markerData: AvailabilityData;
   startDate: Date;
   endDate: Date;
-  onHandleBooking: () => void;
+  onHandleBooking: (markerData: AvailabilityData) => void;
 };
 
 export const MapCard = ({
@@ -45,7 +45,7 @@ export const MapCard = ({
   }
 
   return (
-    <View style={styles.bottomCard}>
+    <View>
       <HorizontalGroup>
         <ImageDownload
           url={space?.picture_url}
@@ -64,8 +64,10 @@ export const MapCard = ({
             ).toFixed(2)}`}</Text>
           </VerticalGroup>
           <View style={styles.buttonContainer}>
-            <Button style={styles.button} onPress={onHandleBooking}>
-              Claim Spot
+            <Button
+              style={styles.button}
+              onPress={() => onHandleBooking(markerData)}>
+              <Text>Claim Spot</Text>
             </Button>
           </View>
         </View>
@@ -76,16 +78,6 @@ export const MapCard = ({
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    bottomCard: {
-      position: 'absolute',
-      bottom: 24,
-      left: 10,
-      right: 10,
-      backgroundColor: theme.colors.card,
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-    },
     infoContainer: {
       padding: 10,
       flexDirection: 'row',

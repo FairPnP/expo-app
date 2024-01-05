@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {AppTheme, Text, useTheme} from '@/common';
 import {Reservation} from '../api';
 import {useLoadSpaces} from '@/spaces';
-import {useLoadAvailability} from '@/availability';
 
 export type ReservationItemProps = {
   reservation: Reservation;
@@ -12,16 +11,11 @@ export type ReservationItemProps = {
 export const ReservationItem = ({reservation}: ReservationItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {buildings, spaces} = useLoadSpaces();
-  const {availabilities} = useLoadAvailability();
+  const {spaces, buildings} = useLoadSpaces();
 
-  const availability = useMemo(
-    () => availabilities.find(a => a.id === reservation.availability_id),
-    [availabilities, reservation.availability_id],
-  );
   const space = useMemo(
-    () => spaces.find(s => s.id === availability?.space_id),
-    [spaces, availability?.space_id],
+    () => spaces.find(s => s.id === reservation?.space_id),
+    [spaces, reservation?.space_id],
   );
   const building = useMemo(
     () => buildings.find(b => b.id === space?.building_id),

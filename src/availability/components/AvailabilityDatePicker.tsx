@@ -5,17 +5,12 @@ import {HoursView} from './HoursView';
 import {DaysView} from './DaysView';
 import {MonthsView} from './MonthsView';
 import {AppTheme, useTheme} from '@/common';
-import {Availability} from '../api';
 
 export type AvailabilityDatePickerProps = {
-  availabilities: Availability[];
-  initialDateRange?: [Date, Date];
   onDateRangeSelected: (startDate: Date, endDate: Date) => void;
 };
 
 export const AvailabilityDatePicker = ({
-  availabilities,
-  initialDateRange,
   onDateRangeSelected,
 }: AvailabilityDatePickerProps) => {
   const theme = useTheme().theme.appTheme;
@@ -32,12 +27,7 @@ export const AvailabilityDatePicker = ({
       case 'hours':
         return <HoursView onDateRangeSelected={onDateRangeSelected} />;
       case 'days':
-        return (
-          <DaysView
-            availabilities={availabilities}
-            onDateRangeSelected={onDateRangeSelected}
-          />
-        );
+        return <DaysView onDateRangeSelected={onDateRangeSelected} />;
       case 'months':
         return <MonthsView onDateRangeSelected={onDateRangeSelected} />;
       default:
@@ -74,7 +64,6 @@ const getStyles = (theme: AppTheme) =>
       height: 400,
     },
     tabBar: {
-      borderRadius: 8,
       backgroundColor: theme.colors.disabled,
     },
     tab: {

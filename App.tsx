@@ -4,7 +4,7 @@ import {polyfillWebCrypto} from 'expo-standard-web-crypto';
 polyfillWebCrypto();
 
 import * as React from 'react';
-import {MainScreen} from './src/view/components/MainScreen';
+import {MainScreen} from './src/view/MainScreen';
 import {ThemeProvider} from './src/common/themes';
 import {enableLatestRenderer} from 'react-native-maps';
 

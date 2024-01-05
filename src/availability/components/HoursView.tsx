@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useForm, FormProvider} from 'react-hook-form';
 import {AppTheme, DateTimePicker, NumberInput, useTheme} from '@/common';
@@ -15,25 +15,61 @@ type FormValues = {
 export const HoursView = ({onDateRangeSelected}: HoursViewProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+
+  const today = new Date();
+  today.setHours(today.getHours() + 1, 0, 0, 0);
   const formMethods = useForm<FormValues>({
     defaultValues: {
-      date: new Date(),
+      date: today,
       hours: 4,
     },
     mode: 'onChange',
   });
-  const {setValue} = formMethods;
+  const {setValue, watch} = formMethods;
+  const {date, hours} = watch();
+
+  useEffect(() => {
+    const endDate = new Date(date);
+    endDate.setHours(date.getHours() + hours);
+    onDateRangeSelected?.(date, endDate);
+  }, [date, hours]);
 
   const quickHours = [4, 8, 12, 24];
-
   const onQuickSelect = hours => {
     setValue('hours', hours);
   };
 
+  const infoMessage = useCallback(() => {
+    if (date && hours) {
+      // if date is today, just say today
+      const today = new Date();
+      const dateStr =
+        today.toDateString() === date.toDateString()
+          ? 'today'
+          : `${date.toDateString()}`;
+
+      const timeStr = date.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      });
+
+      return (
+        <Text style={styles.messageText}>
+          Starting {dateStr} at {timeStr} for {hours} hours
+        </Text>
+      );
+    }
+    return null;
+  }, [date, hours]);
+
   return (
     <FormProvider {...formMethods}>
       <View style={styles.container}>
-        <DateTimePicker name="date" label="Date" />
+        <View style={styles.dateArea}>
+          <Text>Start Date</Text>
+          <DateTimePicker name="date" />
+        </View>
         <NumberInput name="hours" label="Hours" />
 
         <View style={styles.quickSelectContainer}>
@@ -46,6 +82,7 @@ export const HoursView = ({onDateRangeSelected}: HoursViewProps) => {
             </TouchableOpacity>
           ))}
         </View>
+        <View style={styles.messageArea}>{infoMessage()}</View>
       </View>
     </FormProvider>
   );
@@ -54,22 +91,28 @@ export const HoursView = ({onDateRangeSelected}: HoursViewProps) => {
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      height: 300,
+      flex: 1,
       padding: 16,
+    },
+    dateArea: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
     quickSelectContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginVertical: 16,
+      marginVertical: 8,
     },
     quickSelectButton: {
       backgroundColor: theme.colors.primary,
       borderRadius: 4,
-      padding: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
     },
     quickSelectText: {
       color: theme.colors.text,
-      fontSize: 16,
+      fontSize: 18,
     },
     submitButton: {
       backgroundColor: theme.colors.primary,
@@ -81,5 +124,13 @@ const getStyles = (theme: AppTheme) =>
     submitButtonText: {
       color: theme.colors.text,
       fontSize: 16,
+    },
+    messageArea: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
+    messageText: {
+      textAlign: 'center',
+      fontSize: 18,
     },
   });

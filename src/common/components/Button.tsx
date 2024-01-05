@@ -13,7 +13,7 @@ export const Button = ({children, onPress, style}: ButtonProps) => {
   const styles = getStyles(theme);
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Text style={styles.text}>{children}</Text>
+      {children}
     </TouchableOpacity>
   );
 };
@@ -26,9 +26,5 @@ const getStyles = (theme: AppTheme) =>
       borderRadius: 5,
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    text: {
-      color: theme.colors.text,
-      fontSize: 16,
     },
   });

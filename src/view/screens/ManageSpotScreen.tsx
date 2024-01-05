@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import {Building} from '@/buildings';
-import {AppTheme, useTheme, Title} from '@/common';
+import {AppTheme, useTheme, Title, Text, Button} from '@/common';
 import {
+  AvailabilityAPI,
   AvailabilityDatePicker,
   AvailabilityOptions,
   AvailabilityOptionsPicker,
@@ -16,7 +17,7 @@ export type ManageSpotScreenProps = {
   space: Space;
 };
 
-export const ManageSpotScreen = ({route}) => {
+export const ManageSpotScreen = ({navigation, route}) => {
   const {building, space} = route.params as ManageSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -63,9 +64,20 @@ export const ManageSpotScreen = ({route}) => {
   // }, [getAvailabilities]);
 
   const onDateRangeSelected = (startDate, endDate) => {
-    console.log('onDateRangeSelected', startDate, endDate);
     setSelectedDateRange({startDate, endDate});
   };
+
+  const onSubmit = useCallback(async () => {
+    const res = await AvailabilityAPI.create({
+      space_id: space.id,
+      start_date: selectedDateRange.startDate.toISOString().slice(0, 19),
+      end_date: selectedDateRange.endDate.toISOString().slice(0, 19),
+      hourly_rate: +options.hourlyRate,
+      // min_hours: options.minHours,
+    });
+
+    navigation.goBack();
+  }, [space.id, selectedDateRange, options]);
 
   return (
     <View style={styles.container}>
@@ -73,6 +85,7 @@ export const ManageSpotScreen = ({route}) => {
         <SpaceCard style={styles.spaceCard} building={building} space={space} />
       </View>
       <View style={styles.separator} />
+      <Title>Add Availability</Title>
       <View style={styles.card}>
         <TouchableOpacity onPress={() => onCardPressed('when')}>
           <Title>When</Title>
@@ -82,14 +95,7 @@ export const ManageSpotScreen = ({route}) => {
           </View>
         </TouchableOpacity>
         <Collapsible collapsed={!isWhenSectionOpen}>
-          <AvailabilityDatePicker
-            availabilities={[]}
-            initialDateRange={[
-              selectedDateRange.startDate,
-              selectedDateRange.endDate,
-            ]}
-            onDateRangeSelected={onDateRangeSelected}
-          />
+          <AvailabilityDatePicker onDateRangeSelected={onDateRangeSelected} />
         </Collapsible>
       </View>
       <View style={styles.card}>
@@ -101,6 +107,12 @@ export const ManageSpotScreen = ({route}) => {
         <Collapsible collapsed={!isOptionsSectionOpen}>
           <AvailabilityOptionsPicker onOptionsChanged={setOptions} />
         </Collapsible>
+      </View>
+
+      <View style={styles.bottomArea}>
+        <Button onPress={onSubmit}>
+          <Text>Add Availability</Text>
+        </Button>
       </View>
     </View>
   );
@@ -136,5 +148,11 @@ const getStyles = (theme: AppTheme) =>
       paddingHorizontal: 4,
       flexDirection: 'row',
       justifyContent: 'space-between',
+    },
+    bottomArea: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      paddingVertical: 4,
+      paddingHorizontal: 8,
     },
   });

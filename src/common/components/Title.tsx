@@ -4,12 +4,13 @@ import {AppTheme, useTheme} from '../themes';
 
 export type TitleProps = {
   children: React.ReactNode;
+  style?: any;
 };
 
-export const Title = ({children}: TitleProps) => {
+export const Title = ({children, style}: TitleProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  return <Text style={styles.title}>{children}</Text>;
+  return <Text style={[styles.title, style]}>{children}</Text>;
 };
 
 const getStyles = (theme: AppTheme) =>
@@ -18,6 +19,5 @@ const getStyles = (theme: AppTheme) =>
       fontSize: 20,
       fontWeight: 'bold',
       color: theme.colors.text,
-      padding: 4,
     },
   });

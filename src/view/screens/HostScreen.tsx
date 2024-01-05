@@ -1,11 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {AppTheme, useTheme, Button} from '@/common';
+import {AppTheme, useTheme, Button, Text} from '@/common';
 import {CreateBuildingRequest, LocationCard} from '@/buildings';
-import { EditParkingSpaceScreenProps } from './EditParkingSpaceScreen';
-import { MapsSearch } from '@/availability';
+import {EditParkingSpaceScreenProps} from './EditParkingSpaceScreen';
+import {MapsSearch} from '@/availability';
+import {useNavigation} from '@react-navigation/native';
 
-export const HostScreen = ({navigation}: any) => {
+export const HostScreen = () => {
+  const navigation = useNavigation<any>();
   const [loc, setSelectedLocation] = useState<any>(null);
 
   const {theme} = useTheme();
@@ -44,7 +46,9 @@ export const HostScreen = ({navigation}: any) => {
             lng={loc.details.geometry.location.lng}
             zoom={17}
           />
-          <Button onPress={handleAddToMySpots}>Add to My Spots</Button>
+          <Button onPress={handleAddToMySpots}>
+            <Text>Add to My Spots</Text>
+          </Button>
         </View>
       )}
     </ScrollView>

@@ -8,17 +8,14 @@ import MapView, {
   Region,
 } from 'react-native-maps';
 import {useTheme, AppTheme, Text} from '@/common';
-import {ReservationAPI} from '@/reservations';
-import {Building} from '@/buildings';
-import { Availability, AvailabilityAPI, MapCard, MapMarker, SpaceResult, getAvailabilityCost } from '@/availability';
+import type {Building} from '@/buildings';
+import {Availability, SpaceResult} from '@/availability';
 
 export type AvailabilityData = {
   availability: Availability;
   space: SpaceResult;
   building: Building;
 };
-
-const REGION_DELTA = 0.01;
 
 const initialRegion = {
   latitude: 43.442384,
@@ -27,117 +24,55 @@ const initialRegion = {
   longitudeDelta: 0.4,
 };
 
-type Props = {
-  startDate: Date;
-  endDate: Date;
-  selectedLocation?: LatLng;
-};
-
-type SearchedState = {
-  region: Region;
-  startDate: Date;
-  endDate: Date;
+type AvailabilityMapProps = {
+  markers?: AvailabilityData[];
+  location?: Region;
+  renderMarker?: (
+    marker: AvailabilityData,
+    isSelected: boolean,
+  ) => React.ReactNode;
+  renderMarkerCard?: (marker: AvailabilityData) => React.ReactNode;
+  onSearchRegion?: (region: Region) => void;
 };
 
 export const AvailabilityMap = ({
-  startDate,
-  endDate,
-  selectedLocation,
-}: Props) => {
+  markers,
+  location,
+  renderMarker,
+  renderMarkerCard,
+  onSearchRegion,
+}: AvailabilityMapProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
   const mapRef = useRef<MapView>(null);
   const [region, setRegion] = useState<Region>(initialRegion);
   const [isLoaded, setLoaded] = useState(false);
-  const [markers, setMarkers] = useState<AvailabilityData[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
   const [showRefresh, setShowRefresh] = useState(false);
-  const [searchedState, setSearchedState] = useState<SearchedState>(null);
+  const [searchedState, setSearchedState] = useState<Region>(null);
 
   useEffect(() => {
-    if (selectedLocation) {
-      const selectedRegion = {
-        latitude: selectedLocation.latitude,
-        longitude: selectedLocation.longitude,
-        latitudeDelta: REGION_DELTA,
-        longitudeDelta: REGION_DELTA,
-      };
-      mapRef.current?.animateToRegion(selectedRegion, 2000);
-      setRegion(selectedRegion);
+    if (location) {
+      mapRef.current?.animateToRegion(location, 1000);
     }
-  }, [selectedLocation]);
-
-  const getAvailability = useCallback(async () => {
-    const list: AvailabilityData[] = [];
-    const avail = await AvailabilityAPI.search({
-      start_date: startDate.toISOString().slice(0, 19),
-      end_date: endDate.toISOString().slice(0, 19),
-      latitude: region.latitude,
-      longitude: region.longitude,
-      lat_delta: region.latitudeDelta / 2,
-      long_delta: region.longitudeDelta / 2,
-    });
-
-    for (const a of avail.availabilities) {
-      const space = avail.spaces.find(s => s.id === a.space_id);
-      const building = avail.buildings.find(b => b.id === space.building_id);
-
-      list.push({
-        availability: a,
-        space: space,
-        building: building,
-      });
-    }
-
-    // if duplicate building_ids, only keep the one with the lowest hourly rate
-    const filteredList: AvailabilityData[] = [];
-    // unique building ids
-    const buildingIds = list
-      .map(l => l.building.id)
-      .filter((v, i, a) => {
-        return a.indexOf(v) === i;
-      });
-    for (const id of buildingIds) {
-      const filtered = list.filter(l => l.building.id === id);
-      const min = Math.min(...filtered.map(l => l.availability.hourly_rate));
-      const minAvailability = filtered.find(
-        l => l.availability.hourly_rate === min,
-      );
-      filteredList.push(minAvailability);
-    }
-
-    setMarkers(filteredList);
-    setSelectedMarker(
-      list.find(m => m.availability.id === selectedMarker?.availability?.id),
-    );
-    setShowRefresh(false);
-    setSearchedState({
-      region: region,
-      startDate: startDate,
-      endDate: endDate,
-    });
-  }, [endDate, region, selectedMarker?.availability?.id, startDate]);
+  }, [location]);
 
   const handleRegionChange = useCallback(
     (r: Region) => {
       setRegion(r);
 
-      if (!searchedState) {
-        getAvailability();
-      }
-
       if (!showRefresh && searchedState) {
-        const latDiff = Math.abs(r.latitude - searchedState.region.latitude);
-        const longDiff = Math.abs(r.longitude - searchedState.region.longitude);
-        const latRange = searchedState.region.latitudeDelta / 2;
-        const longRange = searchedState.region.longitudeDelta / 2;
+        const latDiff = Math.abs(r.latitude - searchedState.latitude);
+        const longDiff = Math.abs(r.longitude - searchedState.longitude);
+        const latRange = searchedState.latitudeDelta / 2;
+        const longRange = searchedState.longitudeDelta / 2;
         if (latDiff > latRange || longDiff > longRange) {
           setShowRefresh(true);
         }
       }
     },
-    [getAvailability, searchedState, showRefresh],
+    [searchedState, showRefresh],
   );
 
   const onMarkerPress = useCallback(
@@ -150,21 +85,11 @@ export const AvailabilityMap = ({
     [markers],
   );
 
-  const handleBooking = useCallback(async () => {
-    await ReservationAPI.create({
-      availability_id: +selectedMarker.availability.id,
-      start_date: startDate.toISOString().slice(0, 19),
-      end_date: endDate.toISOString().slice(0, 19),
-    });
-
-    Alert.alert('Success', 'Your spot has been booked!');
-
-    getAvailability();
-  }, [endDate, getAvailability, selectedMarker?.availability?.id, startDate]);
-
   const handleSearchAreaPress = useCallback(() => {
-    getAvailability();
-  }, [getAvailability]);
+    setShowRefresh(false);
+    setSearchedState(region);
+    onSearchRegion?.(region);
+  }, [region]);
 
   return (
     <View style={styles.container}>
@@ -195,26 +120,17 @@ export const AvailabilityMap = ({
                 longitude: marker.building.longitude,
               }}
               identifier={marker.availability.id.toString()}>
-              <MapMarker
-                text={`$${getAvailabilityCost(
-                  marker.availability,
-                  startDate,
-                  endDate,
-                )}`}
-                isSelected={
-                  marker.availability.id === selectedMarker?.availability.id
-                }
-              />
+              {renderMarker?.(
+                marker,
+                selectedMarker?.availability?.id === marker.availability.id,
+              )}
             </Marker>
           ))}
       </MapView>
       {selectedMarker && (
-        <MapCard
-          markerData={selectedMarker}
-          startDate={startDate}
-          endDate={endDate}
-          onHandleBooking={handleBooking}
-        />
+        <View style={styles.bottomCard}>
+          {renderMarkerCard?.(selectedMarker)}
+        </View>
       )}
       {searchedState && markers.length === 0 && (
         <View style={styles.no_spots}>
@@ -257,6 +173,16 @@ const getStyles = (theme: AppTheme) =>
       padding: 6,
       backgroundColor: theme.colors.card,
       borderRadius: 16,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+    },
+    bottomCard: {
+      position: 'absolute',
+      bottom: 24,
+      left: 10,
+      right: 10,
+      backgroundColor: theme.colors.card,
+      borderRadius: 10,
       borderWidth: 1,
       borderColor: theme.colors.border,
     },

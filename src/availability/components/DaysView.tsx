@@ -2,10 +2,8 @@ import {calendarDate} from '@/utils/calendar';
 import React, {useState, useMemo, useCallback} from 'react';
 import {Dimensions} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';
-import {Availability} from '../api';
 
 export type DayViewProps = {
-  availabilities: Availability[];
   onDateRangeSelected?: (startDate: Date, endDate: Date) => void;
 };
 
@@ -14,7 +12,7 @@ type State = {
   endDate?: Date;
 };
 
-export const DaysView = (props: DayViewProps) => {
+export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
   const initialDate = useMemo(() => {
     const date = new Date();
     date.setHours(0);
@@ -35,23 +33,16 @@ export const DaysView = (props: DayViewProps) => {
     const endDate = calendarDate(state.endDate);
     const currentDate = new Date(state.startDate);
     while (currentDate.getTime() <= state.endDate.getTime()) {
-      markedDates[calendarDate(currentDate)] = {
+      const dateStr = calendarDate(currentDate);
+      markedDates[dateStr] = {
         selected: true,
         selectedColor: '#2E66E7',
         color: '#2E66E7',
+        startingDay: dateStr === startDate,
+        endingDay: dateStr === endDate,
       };
       currentDate.setTime(currentDate.getTime() + 24 * 60 * 60 * 1000);
     }
-
-    markedDates[startDate] = {
-      ...markedDates[startDate],
-      startingDay: true,
-    };
-
-    markedDates[endDate] = {
-      ...markedDates[endDate],
-      endingDay: true,
-    };
 
     return markedDates;
   }, [state.startDate, state.endDate]);
@@ -64,15 +55,13 @@ export const DaysView = (props: DayViewProps) => {
           setState({startDate: date});
         } else {
           setState({startDate: state.startDate, endDate: date});
-          if (props.onDateRangeSelected) {
-            props.onDateRangeSelected(state.startDate, date);
-          }
+          onDateRangeSelected?.(state.startDate, date);
         }
       } else {
         setState({startDate: date});
       }
     },
-    [state.startDate, state.endDate, props.onDateRangeSelected],
+    [state.startDate, state.endDate],
   );
 
   return (

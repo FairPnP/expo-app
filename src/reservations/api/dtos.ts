@@ -3,7 +3,7 @@
 
 export interface Reservation {
   id: number;
-  availability_id: number;
+  space_id: number;
   start_date: Date;
   end_date: Date;
 }
@@ -12,7 +12,7 @@ export interface Reservation {
 // Create DTOs
 
 export interface CreateReservationRequest {
-  availability_id: number;
+  space_id: number;
   start_date: string;
   end_date: string;
 }
@@ -34,7 +34,7 @@ export interface ReadReservationResponse {
 export interface ListReservationsParams {
   offset_id?: number;
   limit?: number;
-  availability_id?: number;
+  space_id?: number;
   user?: boolean;
 }
 

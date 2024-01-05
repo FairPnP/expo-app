@@ -1,19 +1,10 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {AvailabilityData} from '@/buildings';
 import {AppTheme, useTheme} from '@/common';
 
-type ClaimSpotScreenProps = {
-  route: {
-    params: {
-      data: AvailabilityData;
-    };
-  };
-  navigation: any;
-};
+type ClaimSpotScreenProps = {};
 
-export const ClaimSpotScreen = ({route, navigation}: ClaimSpotScreenProps) => {
-  const data = route.params.data;
+export const ClaimSpotScreen = ({}: ClaimSpotScreenProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
