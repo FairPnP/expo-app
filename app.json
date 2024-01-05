@@ -15,7 +15,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCLyaEZP8HDbjZcqJOz9EXeiRXMJeGVDwU"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,8 +30,7 @@
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.FOREGROUND_SERVICE"
       ],
       "config": {
         "googleMaps": {
@@ -53,16 +57,11 @@
           "color": "#ffffff"
         }
       ],
-      [
-        "expo-location",
-        {
-          "locationPermission": "Location is required to find parking spaces near you."
-        }
-      ],
+      ["expo-location"],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Parking space photos are required to create a listing."
+          "microphonePermission": false
         }
       ]
     ],

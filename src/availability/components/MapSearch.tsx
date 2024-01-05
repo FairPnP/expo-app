@@ -32,7 +32,7 @@ export const MapsSearch = ({onLocationSelected}: MapsSearchProps) => {
           placeholderTextColor: theme.colors.text,
         }}
         query={{
-          key: 'AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM',
+          key: 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8',
           language: 'en',
           components: 'country:can',
           types: 'address',

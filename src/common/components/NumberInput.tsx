@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, useEffect, useState} from 'react';
 import {View, Text, TextInput as RNTextInput, StyleSheet} from 'react-native';
 import {useController, UseControllerProps} from 'react-hook-form';
 import {AppTheme, useTheme} from '../themes';
@@ -12,16 +12,25 @@ export const NumberInput = forwardRef<RNTextInput, NumberInputProps>(
   (props, ref) => {
     const theme = useTheme().theme.appTheme;
     const styles = getStyles(theme);
-
     const {name, label, rules, ...inputProps} = props;
-
     const {field, fieldState} = useController({name, rules});
 
+    const [inputValue, setInputValue] = useState(field.value.toString());
     const hasError = fieldState.invalid;
+
+    useEffect(() => {
+      setInputValue(field.value.toString());
+    }, [field.value]);
 
     const handleInputChange = (text: string) => {
       const numericValue = text.replace(/[^0-9.]/g, '');
+      setInputValue(numericValue);
+    };
+
+    const handleBlur = () => {
+      const numericValue = inputValue === '' ? 0 : parseFloat(inputValue);
       field.onChange(numericValue);
+      field.onBlur();
     };
 
     return (
@@ -30,8 +39,8 @@ export const NumberInput = forwardRef<RNTextInput, NumberInputProps>(
         <RNTextInput
           style={[styles.input, hasError && styles.errorInput]}
           onChangeText={handleInputChange}
-          onBlur={field.onBlur}
-          value={field.value}
+          onBlur={handleBlur}
+          value={inputValue}
           keyboardType="numeric"
           ref={ref}
           {...inputProps}
@@ -47,7 +56,6 @@ export const NumberInput = forwardRef<RNTextInput, NumberInputProps>(
     );
   },
 );
-
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {

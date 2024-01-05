@@ -1,0 +1,10 @@
+{
+  "files.eol": "\n",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never"
+  },
+  "editor.formatOnSave": true, 
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "java.compile.nullAnalysis.mode": "disabled",
+  "search.useIgnoreFiles": true,
+}

@@ -13,7 +13,7 @@ export type LocationCardProps = {
 export const LocationCard = (props: LocationCardProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const googleMapsApiKey = 'AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM';
+  const googleMapsApiKey = 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8';
   const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${props.lat},${props.lng}&zoom=${props.zoom}&size=300x300&key=${googleMapsApiKey}&markers=color:red%7C${props.lat},${props.lng}`;
 
   return (
