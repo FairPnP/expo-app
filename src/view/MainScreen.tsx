@@ -13,6 +13,11 @@ import {AppTheme, useTheme} from '@/common';
 import {EditParkingSpaceScreen, ManageSpotScreen} from './screens';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet} from 'react-native';
+import {StripeProvider} from '@stripe/stripe-react-native';
+import * as Linking from 'expo-linking';
+import {StripeRefreshScreen, StripeReturnScreen} from '@/stripe';
+
+const prefix = Linking.createURL('/');
 
 Amplify.configure({
   Auth: {
@@ -52,6 +57,27 @@ export const MainScreen = () => {
   const {theme} = useTheme();
   const styles = getStyles(theme.appTheme);
 
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        HomeStack: {
+          screens: {
+            Home: 'home',
+            Profile: 'user',
+          },
+        },
+        Stripe: {
+          path: 'stripe',
+          screens: {
+            Return: 'return',
+            Refresh: 'refresh',
+          },
+        },
+      },
+    },
+  };
+
   return (
     <AmplifyThemeProvider
       theme={theme.amplifyTheme}
@@ -59,33 +85,55 @@ export const MainScreen = () => {
       <Authenticator.Provider>
         <Authenticator>
           <RecoilRoot>
-            <SafeAreaView style={styles.container}>
-              <NavigationContainer theme={theme.appTheme}>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name="Navigator"
-                    component={TabNavigator}
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ManageSpot"
-                    component={ManageSpotScreen}
-                    options={{
-                      headerTitle: 'Manage Parking Spot',
-                    }}
-                  />
-                  <Stack.Screen
-                    name="EditParkingSpace"
-                    component={EditParkingSpaceScreen}
-                    options={{
-                      headerTitle: 'Edit Parking Space',
-                    }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </SafeAreaView>
+            <StripeProvider
+              publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
+              // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+              // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+            >
+              <SafeAreaView style={styles.container}>
+                <NavigationContainer
+                  theme={theme.appTheme}
+                  linking={linking as any}>
+                  <Stack.Navigator>
+                    <Stack.Screen
+                      name="Navigator"
+                      component={TabNavigator}
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="ManageSpot"
+                      component={ManageSpotScreen}
+                      options={{
+                        headerTitle: 'Manage Parking Spot',
+                      }}
+                    />
+                    <Stack.Screen
+                      name="EditParkingSpace"
+                      component={EditParkingSpaceScreen}
+                      options={{
+                        headerTitle: 'Edit Parking Space',
+                      }}
+                    />
+                    <Stack.Screen
+                      name="StripeReturn"
+                      component={StripeReturnScreen}
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="StripeRefresh"
+                      component={StripeRefreshScreen}
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </SafeAreaView>
+            </StripeProvider>
           </RecoilRoot>
         </Authenticator>
       </Authenticator.Provider>
