@@ -1,16 +1,16 @@
-import {api} from '@/common';
+import {HttpError, api} from '@/common';
 import {CreateAccountResponse, ReadAccountResponse} from './dtos';
 
 const basePath = '/stripe/v1';
 
-const createAccount = async (): Promise<CreateAccountResponse> => {
-  return await api({
-    endpoint: `${basePath}/account`,
+const dashboard = (): Promise<CreateAccountResponse | HttpError> => {
+  return api({
+    endpoint: `${basePath}/account/dashboard`,
     method: 'POST',
   });
 };
 
-const readAccount = async (): Promise<ReadAccountResponse> => {
+const readAccount = (): Promise<ReadAccountResponse | HttpError> => {
   return api({
     endpoint: `${basePath}/account`,
     method: 'GET',
@@ -18,6 +18,6 @@ const readAccount = async (): Promise<ReadAccountResponse> => {
 };
 
 export const StripeAPI = {
-  createAccount,
+  dashboard,
   getAccount: readAccount,
 };

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
-import {AppTheme, useTheme, useAccessToken} from '@/common';
+import {AppTheme, useTheme, useAccessToken, isHttpError} from '@/common';
 import * as WebBrowser from 'expo-web-browser';
 import {StripeAPI} from '@/stripe';
 
@@ -20,7 +20,10 @@ export const ProfileScreen = () => {
 
   const getStripeAccount = async () => {
     let res = await StripeAPI.getAccount();
-    setStripeAccountId(res.account_id);
+
+    if (!isHttpError(res)) {
+      setStripeAccountId(res?.account_id);
+    }
   };
 
   useEffect(() => {
@@ -28,9 +31,11 @@ export const ProfileScreen = () => {
   }, []);
 
   const stripeAccount = async () => {
-    let res = await StripeAPI.createAccount();
-    let result = await WebBrowser.openBrowserAsync(res.link);
-    console.log(result);
+    let res = await StripeAPI.dashboard();
+    console.log(res);
+    if (!isHttpError(res)) {
+      let result = await WebBrowser.openBrowserAsync(res.link);
+    }
   };
 
   return (
