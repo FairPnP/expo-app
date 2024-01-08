@@ -1,11 +1,13 @@
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {AppTheme, Button, Title, useTheme} from '@/common';
 import {Building, LocationCard} from '@/buildings';
 import {Space} from '@/spaces';
 import {getAvailabilityCost} from '@/availability';
 import {friendlyDateRange, toDateTimeString} from '@/utils';
 import {ReservationAPI} from '../api';
+import {StripeAPI} from '@/stripe';
+import {useStripe} from '@stripe/stripe-react-native';
 
 export type ConfirmReservationScreenProps = {
   building: Building;
@@ -18,6 +20,7 @@ export type ConfirmReservationScreenProps = {
 export const ConfirmReservationScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const {initPaymentSheet, presentPaymentSheet} = useStripe();
 
   const {building, space, startTimestamp, endTimestamp, hourly_rate} =
     route.params as ConfirmReservationScreenProps;
@@ -25,7 +28,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const startDate = new Date(startTimestamp);
   const endDate = new Date(endTimestamp);
 
-  const onReservePressed = useCallback(async () => {
+  const handleReservation = useCallback(async () => {
     const res = await ReservationAPI.create({
       space_id: space.id,
       start_date: startDate.toISOString().slice(0, 19),
@@ -35,6 +38,41 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
     Alert.alert('Success', 'Reservation created.');
     navigation.navigate('Home');
   }, [startDate, endDate]);
+
+  const fetchPaymentSheetParams = async () =>
+    await StripeAPI.createPaymentIntent({
+      dest_account: 'acct_1OVZgSIdfTCpbyKQ',
+      amount: getAvailabilityCost(hourly_rate, startDate, endDate) * 100,
+    });
+
+  const initializePaymentSheet = async () => {
+    const params = await fetchPaymentSheetParams();
+
+    const {error} = await initPaymentSheet({
+      merchantDisplayName: 'Fair Park And Pay Ltd.',
+      customerId: params.customer_id,
+      customerEphemeralKeySecret: params.ephemeral_key,
+      paymentIntentClientSecret: params.client_secret,
+    });
+
+    if (error) {
+      console.error('Error initializing payment sheet', error);
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
+  const openPaymentSheet = async () => {
+    const {error} = await presentPaymentSheet();
+
+    if (error) {
+      console.error('Error processing payment', error);
+    } else {
+      await handleReservation();
+    }
+  };
 
   return (
     <ScrollView>
@@ -65,7 +103,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
       </View>
 
       <View style={styles.bottomArea}>
-        <Button onPress={onReservePressed}>
+        <Button onPress={openPaymentSheet}>
           <Text>Confirm Reservation</Text>
         </Button>
       </View>

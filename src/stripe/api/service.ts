@@ -3,6 +3,8 @@ import {
   ShowDashboardResponse,
   ReadAccountResponse,
   ValidateAccountResponse,
+  CreatePaymentIntentRequest,
+  CreatePaymentIntentResponse,
 } from './dtos';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -39,8 +41,25 @@ const readAccount = (): Promise<ReadAccountResponse | HttpError> => {
   });
 };
 
+const createPaymentIntent = async (
+  data: CreatePaymentIntentRequest,
+): Promise<CreatePaymentIntentResponse> => {
+  let res = await api<CreatePaymentIntentResponse>({
+    endpoint: `${basePath}/payments`,
+    method: 'POST',
+    data,
+  });
+
+  if (isHttpError(res)) {
+    throw res;
+  }
+
+  return res;
+};
+
 export const StripeAPI = {
   showDashboard,
   validateAccount,
+  createPaymentIntent,
   getAccount: readAccount,
 };
