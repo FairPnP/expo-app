@@ -1,8 +1,8 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {fetchAuthSession} from '@aws-amplify/auth';
 
-// const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
-const apiBaseUrl: string = 'http://10.0.2.2:3000';
+const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
+// const apiBaseUrl: string = 'http://10.0.2.2:3000';
 // const apiBaseUrl: string = 'http://192.168.86.40:3000';
 // const apiBaseUrl: string = 'http://localhost:3000';
 
@@ -61,6 +61,10 @@ export const api = async <T>({
     return response.data;
   } catch (error: any) {
     console.log('API call error: ', error.message);
+    if (!error.response) {
+      throw error;
+    }
+
     // Construct an HttpError and return it
     const httpError: HttpError = {
       status: error.response.status,

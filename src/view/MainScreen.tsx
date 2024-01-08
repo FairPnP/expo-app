@@ -61,19 +61,9 @@ export const MainScreen = () => {
     prefixes: [prefix],
     config: {
       screens: {
-        HomeStack: {
-          screens: {
-            Home: 'home',
-            Profile: 'user',
-          },
-        },
-        Stripe: {
-          path: 'stripe',
-          screens: {
-            Return: 'return',
-            Refresh: 'refresh',
-          },
-        },
+        Profile: 'profile',
+        StripeReturn: 'stripe/return',
+        StripeRefresh: 'stripe/refresh',
       },
     },
   };
@@ -91,9 +81,7 @@ export const MainScreen = () => {
               // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
             >
               <SafeAreaView style={styles.container}>
-                <NavigationContainer
-                  theme={theme.appTheme}
-                  linking={linking as any}>
+                <NavigationContainer theme={theme.appTheme} linking={linking}>
                   <Stack.Navigator>
                     <Stack.Screen
                       name="Navigator"

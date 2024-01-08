@@ -1,8 +1,15 @@
 // ======================================================================
-// Create DTOs
+// Dashboard DTOs
 
-export interface CreateAccountResponse {
+export interface ShowDashboardResponse {
   link: string;
+}
+
+// ======================================================================
+// Validate Account DTOs
+
+export interface ValidateAccountResponse {
+  is_valid: boolean;
 }
 
 // ======================================================================

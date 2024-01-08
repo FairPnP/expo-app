@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Building, BuildingAPI, CreateBuildingRequest} from '@/buildings';
 import {Space, SpaceAPI, useLoadSpaces} from '@/spaces';
 import {

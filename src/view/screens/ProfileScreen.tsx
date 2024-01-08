@@ -3,7 +3,6 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
 import {AppTheme, useTheme, useAccessToken, isHttpError} from '@/common';
-import * as WebBrowser from 'expo-web-browser';
 import {StripeAPI} from '@/stripe';
 
 export const ProfileScreen = () => {
@@ -30,12 +29,8 @@ export const ProfileScreen = () => {
     getStripeAccount();
   }, []);
 
-  const stripeAccount = async () => {
-    let res = await StripeAPI.dashboard();
-    console.log(res);
-    if (!isHttpError(res)) {
-      let result = await WebBrowser.openBrowserAsync(res.link);
-    }
+  const stripeAccountPressed = async () => {
+    await StripeAPI.showDashboard();
   };
 
   return (
@@ -72,7 +67,7 @@ export const ProfileScreen = () => {
         <Text style={styles.buttonText}>Settings</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={stripeAccount}>
+      <TouchableOpacity style={styles.button} onPress={stripeAccountPressed}>
         <Icon
           name="credit-card"
           size={24}
