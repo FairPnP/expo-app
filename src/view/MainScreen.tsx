@@ -16,6 +16,7 @@ import {StyleSheet} from 'react-native';
 import {StripeProvider} from '@stripe/stripe-react-native';
 import * as Linking from 'expo-linking';
 import {StripeRefreshScreen, StripeReturnScreen} from '@/stripe';
+import {ConfirmReservationScreen} from '@/reservations';
 
 const prefix = Linking.createURL('/');
 
@@ -102,6 +103,13 @@ export const MainScreen = () => {
                       component={EditParkingSpaceScreen}
                       options={{
                         headerTitle: 'Edit Parking Space',
+                      }}
+                    />
+                    <Stack.Screen
+                      name="ConfirmReservation"
+                      component={ConfirmReservationScreen}
+                      options={{
+                        headerTitle: 'Confirm Reservation',
                       }}
                     />
                     <Stack.Screen

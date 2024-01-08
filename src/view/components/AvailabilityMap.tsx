@@ -33,6 +33,7 @@ type AvailabilityMapProps = {
   ) => React.ReactNode;
   renderMarkerCard?: (marker: AvailabilityData) => React.ReactNode;
   onSearchRegion?: (region: Region) => void;
+  onMarkerSelected?: (marker: AvailabilityData) => void;
 };
 
 export const AvailabilityMap = ({
@@ -41,6 +42,7 @@ export const AvailabilityMap = ({
   renderMarker,
   renderMarkerCard,
   onSearchRegion,
+  onMarkerSelected,
 }: AvailabilityMapProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -81,6 +83,7 @@ export const AvailabilityMap = ({
       const markerId = +e.nativeEvent.id;
       const markerData = markers.find(m => m.availability?.id === markerId);
       setSelectedMarker(markerData);
+      onMarkerSelected?.(markerData);
     },
     [markers],
   );
@@ -120,10 +123,7 @@ export const AvailabilityMap = ({
                 longitude: marker.building.longitude,
               }}
               identifier={marker.availability.id.toString()}>
-              {renderMarker?.(
-                marker,
-                selectedMarker?.availability?.id === marker.availability.id,
-              )}
+              {renderMarker?.(marker, marker === selectedMarker)}
             </Marker>
           ))}
       </MapView>

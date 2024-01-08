@@ -7,14 +7,20 @@ export type LocationCardProps = {
   lng: string;
   mainText: string;
   secondaryText: string;
-  zoom: number;
+  zoom?: number;
 };
 
 export const LocationCard = (props: LocationCardProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const googleMapsApiKey = 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8';
-  const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${props.lat},${props.lng}&zoom=${props.zoom}&size=300x300&key=${googleMapsApiKey}&markers=color:red%7C${props.lat},${props.lng}`;
+  const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${
+    props.lat
+  },${props.lng}&zoom=${
+    props.zoom ?? 17
+  }&size=300x300&key=${googleMapsApiKey}&markers=color:red%7C${props.lat},${
+    props.lng
+  }`;
 
   return (
     <View style={styles.container}>

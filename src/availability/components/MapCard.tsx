@@ -10,39 +10,41 @@ import {
   AppTheme,
   ImageDownload,
 } from '@/common';
-import {getAvailabilityCost} from '../api';
+import {Availability, getAvailabilityCost} from '../api';
 import {Space, SpaceAPI} from '@/spaces';
-import {set} from 'react-hook-form';
+import {Building} from '@/buildings';
+import {useNavigation} from '@react-navigation/native';
+import {ConfirmReservationScreenProps} from '@/reservations';
 
 type Props = {
-  markerData: AvailabilityData;
+  building: Building;
+  space: Space;
+  availability: Availability;
   startDate: Date;
   endDate: Date;
-  onHandleBooking: (markerData: AvailabilityData) => void;
 };
 
 export const MapCard = ({
-  markerData,
+  building,
+  space,
+  availability,
   startDate,
   endDate,
-  onHandleBooking,
 }: Props) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const [space, setSpace] = useState<Space>(null);
+  const navigation = useNavigation();
 
-  const getSpace = useCallback(async () => {
-    const res = await SpaceAPI.read(markerData.space.id);
-    setSpace(res.space);
-  }, [markerData.space.id]);
-
-  useEffect(() => {
-    getSpace();
-  }, [getSpace]);
-
-  if (!space) {
-    return null;
-  }
+  const handleBooking = useCallback(async () => {
+    const props: ConfirmReservationScreenProps = {
+      building,
+      space,
+      startTimestamp: startDate.getTime(),
+      endTimestamp: endDate.getTime(),
+      hourly_rate: availability.hourly_rate,
+    };
+    (navigation as any).navigate('ConfirmReservation', props);
+  }, [building, space, availability, startDate, endDate]);
 
   return (
     <View>
@@ -54,19 +56,17 @@ export const MapCard = ({
         />
         <View style={styles.infoContainer}>
           <VerticalGroup>
-            <Text>{markerData.building.name}</Text>
-            <Text>{space.name}</Text>
-            <Text>{space.coverage}</Text>
+            <Text>{building.name}</Text>
+            <Text>{space?.name}</Text>
+            <Text>{space?.coverage}</Text>
             <Text>{`$${getAvailabilityCost(
-              markerData.availability,
+              availability.hourly_rate,
               startDate,
               endDate,
             ).toFixed(2)}`}</Text>
           </VerticalGroup>
           <View style={styles.buttonContainer}>
-            <Button
-              style={styles.button}
-              onPress={() => onHandleBooking(markerData)}>
+            <Button style={styles.button} onPress={handleBooking}>
               <Text>Claim Spot</Text>
             </Button>
           </View>

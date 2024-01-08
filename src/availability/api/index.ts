@@ -4,11 +4,11 @@ export * from './dtos';
 export * from './service';
 
 export const getAvailabilityCost = (
-  availability: Availability,
+  hourly_rate: number,
   startDate: Date,
   endDate: Date,
 ) => {
   const msDiff = endDate.getTime() - startDate.getTime();
   const hourDiff = msDiff / 1000 / 60 / 60;
-  return hourDiff * availability.hourly_rate;
+  return hourDiff * hourly_rate;
 };

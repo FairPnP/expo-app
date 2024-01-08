@@ -4,22 +4,18 @@ export const calendarDate = (date: Date) => {
 
 export const friendlyDateRange = (start: Date, end: Date) => {
   // get diff
-  const diff = end.getTime() - start.getTime();
+  const diff = (end.getTime() - start.getTime()) / 1000;
 
-  // show 1y 3m 2d 7h 5m 3s
-  const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-  const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor(diff / (1000 * 60));
-  const seconds = Math.floor(diff / 1000);
+  // show 1y 2d 7h 5m 3s
+  const years = Math.floor(diff / 31536000);
+  const days = Math.floor((diff % 31536000) / 86400);
+  const hours = Math.floor(((diff % 31536000) % 86400) / 3600);
+  const minutes = Math.floor((((diff % 31536000) % 86400) % 3600) / 60);
+  const seconds = (((diff % 31536000) % 86400) % 3600) % 60;
 
   const str = [];
   if (years > 0) {
     str.push(`${years}y`);
-  }
-  if (months > 0) {
-    str.push(`${months}m`);
   }
   if (days > 0) {
     str.push(`${days}d`);

@@ -1,4 +1,4 @@
-import {calendarDate} from '@/utils/calendar';
+import {calendarDate} from '@/utils';
 import React, {useState, useMemo, useCallback} from 'react';
 import {Dimensions} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';

@@ -10,7 +10,7 @@ import {
   getAvailabilityCost,
 } from '@/availability';
 import type {SearchBarState} from '../state';
-import {ReservationAPI} from '@/reservations';
+import {Space, SpaceAPI} from '@/spaces';
 
 const initialRegion = {
   latitude: 43.442384,
@@ -21,7 +21,7 @@ const initialRegion = {
 
 const REGION_DELTA = 0.02;
 
-export const SearchScreen = () => {
+export const SearchScreen = ({navigation}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const [searchResults, setSearchResults] = useState([]);
@@ -33,6 +33,7 @@ export const SearchScreen = () => {
   later.setHours(later.getHours() + 4);
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(later);
+  const [selectedSpace, setSelectedSpace] = useState<Space>(null);
 
   useLocationPermission();
 
@@ -87,7 +88,7 @@ export const SearchScreen = () => {
       return (
         <MapMarker
           text={`$${getAvailabilityCost(
-            marker.availability,
+            marker.availability.hourly_rate,
             startDate,
             endDate,
           )}`}
@@ -98,32 +99,19 @@ export const SearchScreen = () => {
     [startDate, endDate],
   );
 
-  const handleBooking = useCallback(
-    async (markerData: AvailabilityData) => {
-      const res = await ReservationAPI.create({
-        space_id: markerData.space.id,
-        start_date: startDate.toISOString().slice(0, 19),
-        end_date: endDate.toISOString().slice(0, 19),
-      });
-
-      getAvailability();
-      alert('Successfully booked!');
-    },
-    [getAvailability],
-  );
-
   const renderMarkerCard = useCallback(
     (marker: AvailabilityData) => {
       return (
         <MapCard
-          markerData={marker}
+          building={marker.building}
+          space={selectedSpace}
+          availability={marker.availability}
           startDate={startDate}
           endDate={endDate}
-          onHandleBooking={handleBooking}
         />
       );
     },
-    [handleBooking],
+    [startDate, endDate, selectedSpace],
   );
 
   const onSearchBarSubmit = useCallback(
@@ -142,6 +130,11 @@ export const SearchScreen = () => {
     [getAvailability],
   );
 
+  const onMarkerSelected = async (marker: AvailabilityData) => {
+    const res = await SpaceAPI.read(marker.space.id);
+    setSelectedSpace(res.space);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -156,6 +149,7 @@ export const SearchScreen = () => {
           onSearchRegion={setLocation}
           renderMarker={renderMarker}
           renderMarkerCard={renderMarkerCard}
+          onMarkerSelected={onMarkerSelected}
         />
       </View>
     </KeyboardAvoidingView>

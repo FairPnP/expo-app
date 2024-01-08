@@ -44,7 +44,6 @@ export const HostScreen = () => {
             secondaryText={loc.data.structured_formatting.secondary_text}
             lat={loc.details.geometry.location.lat}
             lng={loc.details.geometry.location.lng}
-            zoom={17}
           />
           <Button onPress={handleAddToMySpots}>
             <Text>Add to My Spots</Text>

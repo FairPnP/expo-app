@@ -109,16 +109,12 @@ const listAvailability = async (
 
 const searchAvailability = async (
   data: SearchAvailabilityRequest,
-): Promise<SearchAvailabilityResponse | HttpError> => {
+): Promise<SearchAvailabilityResponse> => {
   const res = await api<any>({
     endpoint: `${basePath}/search`,
     method: 'POST',
     data,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 
   return {
     availabilities: res.availabilities.map(toAvailability),
