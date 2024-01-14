@@ -55,3 +55,38 @@ export interface UpdateReservationRequest {
 export interface UpdateReservationResponse {
   reservation: Reservation;
 }
+
+// ======================================================================
+// Chat Entity
+
+export interface ChatMessage {
+  id: number;
+  sender_id: string;
+  message: string;
+  created_at: Date;
+}
+
+// ======================================================================
+// Chat DTOs
+
+export interface CreateChatMessageRequest {
+  reservation_id: number;
+  message: string;
+}
+
+export interface CreateChatMessageResponse {
+  message: ChatMessage;
+}
+
+export interface ListChatMessagesParams {
+  before_id?: number;
+  after_id?: number;
+  limit?: number;
+}
+
+export interface ListChatMessagesResponse {
+  messages: ChatMessage[];
+  reservation_id: number;
+  next_offset_id?: number;
+  limit: number;
+}

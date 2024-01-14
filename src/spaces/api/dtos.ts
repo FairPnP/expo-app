@@ -3,6 +3,7 @@
 
 export interface Space {
   id: number;
+  user_id: string;
   building_id: number;
   name: string;
   description?: string;

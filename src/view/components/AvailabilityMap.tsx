@@ -1,7 +1,6 @@
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import MapView, {
-  LatLng,
   Marker,
   MarkerPressEvent,
   PROVIDER_GOOGLE,

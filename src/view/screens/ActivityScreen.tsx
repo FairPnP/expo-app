@@ -25,15 +25,15 @@ export const ActivityScreen = () => {
   const {
     reservations,
     isLoading: isReservationsLoading,
-    refreshReservation,
+    refreshReservations,
   } = useLoadReservations();
   const {refreshSpaces} = useLoadSpaces();
 
   useEffect(() => {
     refreshAvailability();
-    refreshReservation();
+    refreshReservations();
     refreshSpaces();
-  }, [refreshAvailability, refreshReservation, refreshSpaces]);
+  }, []);
 
   const filterData = (data, comparator) => {
     return data.filter(comparator);

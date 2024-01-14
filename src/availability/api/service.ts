@@ -16,9 +16,9 @@ const basePath = '/availability/v1';
 
 export const toAvailability = (availabilityResponse: any) => ({
   ...availabilityResponse,
-  start_date: new Date(availabilityResponse.start_date),
-  end_date: new Date(availabilityResponse.end_date),
-  hourly_rate: Number(availabilityResponse.hourly_rate),
+  start_date: new Date(availabilityResponse.start_date + 'Z'),
+  end_date: new Date(availabilityResponse.end_date + 'Z'),
+  hourly_rate: Number(availabilityResponse.hourly_rate + 'Z'),
 });
 
 const createAvailability = async (

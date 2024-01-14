@@ -7,7 +7,7 @@ export const useLoadReservations = () => {
   const [reservations, setReservations] = useRecoilState(reservationState);
   const [isLoading, setLoading] = useState(false);
 
-  const refreshReservation = useCallback(async () => {
+  const refreshReservations = useCallback(async () => {
     setLoading(true);
     try {
       const reservationResponse = await ReservationAPI.list({});
@@ -19,5 +19,5 @@ export const useLoadReservations = () => {
     }
   }, [setReservations]);
 
-  return {reservations, refreshReservation, isLoading};
+  return {reservations, refreshReservations, isLoading};
 };

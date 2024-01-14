@@ -2,7 +2,7 @@ import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 import {AppTheme, Button, Title, useTheme} from '@/common';
 import {Building, LocationCard} from '@/buildings';
-import {Space} from '@/spaces';
+import {Space, SpaceCard} from '@/spaces';
 import {getAvailabilityCost} from '@/availability';
 import {friendlyDateRange, toDateTimeString} from '@/utils';
 import {ReservationAPI} from '../api';
@@ -78,6 +78,8 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
     <ScrollView>
       <View style={styles.section}>
         <Title>Location</Title>
+        <SpaceCard space={space} building={building} />
+        <View style={styles.spacer} />
         <LocationCard
           mainText={building.name}
           secondaryText={space.name}
@@ -103,6 +105,9 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
       </View>
 
       <View style={styles.bottomArea}>
+        <Button onPress={handleReservation}>
+          <Text>Test Reserve</Text>
+        </Button>
         <Button onPress={openPaymentSheet}>
           <Text>Confirm Reservation</Text>
         </Button>
@@ -117,6 +122,9 @@ const getStyles = (theme: AppTheme) =>
       padding: 16,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.border,
+    },
+    spacer: {
+      height: 16,
     },
     bottomArea: {
       padding: 16,

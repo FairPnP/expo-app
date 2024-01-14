@@ -7,14 +7,23 @@ import {
   UpdateReservationResponse,
   ListReservationsParams,
   ListReservationsResponse,
+  CreateChatMessageRequest,
+  CreateChatMessageResponse,
+  ListChatMessagesParams,
+  ListChatMessagesResponse,
 } from './dtos';
 
 const basePath = '/reservations/v1';
 
 const toReservation = (reservationResponse: any) => ({
   ...reservationResponse,
-  start_date: new Date(reservationResponse.start_date),
-  end_date: new Date(reservationResponse.end_date),
+  start_date: new Date(reservationResponse.start_date + 'Z'),
+  end_date: new Date(reservationResponse.end_date + 'Z'),
+});
+
+const toMessage = (messageResponse: any) => ({
+  ...messageResponse,
+  created_at: new Date(messageResponse.created_at + 'Z'),
 });
 
 const createReservation = async (
@@ -83,10 +92,49 @@ const listReservations = async (
   };
 };
 
+const createMessage = async (
+  data: CreateChatMessageRequest,
+): Promise<CreateChatMessageResponse> => {
+  const res = await api({
+    endpoint: `${basePath}/chat`,
+    method: 'POST',
+    data,
+  });
+
+  return {
+    message: toMessage(res.message),
+  };
+};
+
+const listMessages = async (
+  reservation_id: number,
+  params: ListChatMessagesParams,
+): Promise<ListChatMessagesResponse> => {
+  const queryString = new URLSearchParams(params as any).toString();
+  const endpoint = queryString
+    ? `${basePath}/chat/${reservation_id}?${queryString}`
+    : `${basePath}/chat/${reservation_id}`;
+  const res = await api({
+    endpoint,
+    method: 'GET',
+  });
+
+  const messages = res.messages.map(toMessage);
+
+  return {
+    messages: messages,
+    reservation_id: res.reservation_id,
+    next_offset_id: res.next_offset_id,
+    limit: res.limit,
+  };
+};
+
 export const ReservationAPI = {
   create: createReservation,
   read: readReservation,
   update: updateReservation,
   delete: deleteReservation,
   list: listReservations,
+  createMessage,
+  listMessages,
 };

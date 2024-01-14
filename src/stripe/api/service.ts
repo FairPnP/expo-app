@@ -12,7 +12,7 @@ const basePath = '/stripe/v1';
 
 const showDashboard = async (): Promise<void> => {
   let res = await api<ShowDashboardResponse>({
-    endpoint: `${basePath}/account/dashboard`,
+    endpoint: `${basePath}/accounts/dashboard`,
     method: 'POST',
   });
 
@@ -23,7 +23,7 @@ const showDashboard = async (): Promise<void> => {
 
 const validateAccount = async (): Promise<boolean> => {
   let res = await api<ValidateAccountResponse>({
-    endpoint: `${basePath}/account/validate`,
+    endpoint: `${basePath}/accounts/validate`,
     method: 'GET',
   });
 
@@ -36,7 +36,7 @@ const validateAccount = async (): Promise<boolean> => {
 
 const readAccount = (): Promise<ReadAccountResponse | HttpError> => {
   return api({
-    endpoint: `${basePath}/account`,
+    endpoint: `${basePath}/accounts`,
     method: 'GET',
   });
 };
