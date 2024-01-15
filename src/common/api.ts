@@ -30,9 +30,9 @@ export type HttpError = {
   data: any;
 };
 
-export type ErrorHandler =
-  | ((error: HttpError) => {handled: boolean; data?: any})
-  | {[status: number]: (error: HttpError) => any};
+export type ErrorHandler<T = any> =
+  | ((error: HttpError) => {handled: boolean; data?: T})
+  | {[status: number]: (error: HttpError) => Promise<T> | T};
 
 interface ApiOptions<T> {
   endpoint: string;
@@ -83,8 +83,16 @@ export const api = async <T>({
       };
 
       if (onError[httpError.status]) {
-        // Error handled by status code
-        return onError[httpError.status](httpError);
+        // Call the function associated with the status code
+        const result = onError[httpError.status](httpError);
+
+        // Check if the result is a Promise and await it if necessary
+        if (result instanceof Promise) {
+          return await result;
+        }
+
+        // Return the result directly if it's not a Promise
+        return result;
       }
 
       if (onError instanceof Function) {
