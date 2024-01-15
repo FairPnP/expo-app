@@ -12,6 +12,7 @@ import {
   ReservationChatScreen,
   ReservationDetailsScreen,
 } from '@/reservations';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,7 @@ export const MainScreen = () => {
           }}
         />
       </Stack.Navigator>
+      <Toast />
     </SafeAreaView>
   );
 };

@@ -1,4 +1,4 @@
-import {HttpError, api, isHttpError} from '@/common';
+import {ErrorHandler, api} from '@/common';
 import {
   CreateAvailabilityRequest,
   CreateAvailabilityResponse,
@@ -23,16 +23,14 @@ export const toAvailability = (availabilityResponse: any) => ({
 
 const createAvailability = async (
   data: CreateAvailabilityRequest,
-): Promise<CreateAvailabilityResponse | HttpError> => {
+  onError?: ErrorHandler,
+): Promise<CreateAvailabilityResponse> => {
   const res = await api<CreateAvailabilityResponse>({
     endpoint: `${basePath}`,
     method: 'POST',
     data,
+    onError,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 
   return {
     availability: toAvailability(res.availability),
@@ -41,15 +39,13 @@ const createAvailability = async (
 
 const readAvailability = async (
   id: number,
-): Promise<ReadAvailabilityResponse | HttpError> => {
+  onError?: ErrorHandler,
+): Promise<ReadAvailabilityResponse> => {
   const res = await api<ReadAvailabilityResponse>({
     endpoint: `${basePath}/${id}`,
     method: 'GET',
+    onError,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 
   return {
     availability: toAvailability(res.availability),
@@ -59,46 +55,42 @@ const readAvailability = async (
 const updateAvailability = async (
   id: number,
   data: UpdateAvailabilityRequest,
-): Promise<UpdateAvailabilityResponse | HttpError> => {
+  onError?: ErrorHandler,
+): Promise<UpdateAvailabilityResponse> => {
   const res = await api<UpdateAvailabilityResponse>({
     endpoint: `${basePath}/${id}`,
     method: 'PUT',
     data,
+    onError,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 
   return {
     availability: toAvailability(res.availability),
   };
 };
 
-const deleteAvailability = async (id: number): Promise<void | HttpError> => {
-  let res = await api({
+const deleteAvailability = async (
+  id: number,
+  onError?: ErrorHandler,
+): Promise<void> => {
+  await api({
     endpoint: `${basePath}/${id}`,
     method: 'DELETE',
+    onError,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 };
 
 const listAvailability = async (
   params: ListAvailabilityParams,
-): Promise<ListAvailabilityResponse | HttpError> => {
+  onError?: ErrorHandler,
+): Promise<ListAvailabilityResponse> => {
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;
   const res = await api<ListAvailabilityResponse>({
     endpoint,
     method: 'GET',
+    onError,
   });
-
-  if (isHttpError(res)) {
-    return res;
-  }
 
   return {
     availability: res.availability.map(toAvailability),
@@ -109,11 +101,13 @@ const listAvailability = async (
 
 const searchAvailability = async (
   data: SearchAvailabilityRequest,
+  onError?: ErrorHandler,
 ): Promise<SearchAvailabilityResponse> => {
-  const res = await api<any>({
+  const res = await api<SearchAvailabilityResponse>({
     endpoint: `${basePath}/search`,
     method: 'POST',
     data,
+    onError,
   });
 
   return {

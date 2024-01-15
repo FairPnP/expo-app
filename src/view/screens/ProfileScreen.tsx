@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
-import {AppTheme, useTheme, useAccessToken, isHttpError} from '@/common';
+import {AppTheme, useTheme, useAccessToken} from '@/common';
 import {StripeAPI} from '@/stripe';
 
 export const ProfileScreen = () => {
@@ -18,10 +18,12 @@ export const ProfileScreen = () => {
   const [stripeAccountId, setStripeAccountId] = useState<String>(null);
 
   const getStripeAccount = async () => {
-    let res = await StripeAPI.getAccount();
+    let res = await StripeAPI.getAccount({
+      404: () => null,
+    });
 
-    if (!isHttpError(res)) {
-      setStripeAccountId(res?.account_id);
+    if (res) {
+      setStripeAccountId(res.account_id);
     }
   };
 

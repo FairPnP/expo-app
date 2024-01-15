@@ -1,4 +1,4 @@
-import {api} from '@/common';
+import {ErrorHandler, api} from '@/common';
 import {
   CreateSpaceRequest,
   CreateSpaceResponse,
@@ -14,56 +14,72 @@ const basePath = '/spaces/v1';
 
 const createSpace = async (
   data: CreateSpaceRequest,
+  onError?: ErrorHandler,
 ): Promise<CreateSpaceResponse> => {
-  return api({
+  return await api({
     endpoint: `${basePath}`,
     method: 'POST',
     data,
+    onError,
   });
 };
 
-const readSpace = async (id: number): Promise<ReadSpaceResponse> => {
-  return api({
+const readSpace = async (
+  id: number,
+  onError?: ErrorHandler,
+): Promise<ReadSpaceResponse> => {
+  return await api({
     endpoint: `${basePath}/${id}`,
     method: 'GET',
+    onError,
   });
 };
 
 const updateSpace = async (
   id: number,
   data: UpdateSpaceRequest,
+  onError?: ErrorHandler,
 ): Promise<UpdateSpaceResponse> => {
-  return api({
+  return await api({
     endpoint: `${basePath}/${id}`,
     method: 'PUT',
     data,
+    onError,
   });
 };
 
-const deleteSpace = async (id: number): Promise<void> => {
-  return api({
+const deleteSpace = async (
+  id: number,
+  onError?: ErrorHandler,
+): Promise<void> => {
+  await api({
     endpoint: `${basePath}/${id}`,
     method: 'DELETE',
+    onError,
   });
 };
 
 const listSpaces = async (
   params: ListSpacesParams,
+  onError?: ErrorHandler,
 ): Promise<ListSpacesResponse> => {
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;
-  return api({
+  return await api({
     endpoint,
     method: 'GET',
+    onError,
   });
 };
 
 const getPresignedUrl = async (
   id: number,
+  onError?: ErrorHandler,
 ): Promise<GetPresignedUrlResponse> => {
-  return api({
+  return await api({
     endpoint: `${basePath}/${id}/presigned-url`,
     method: 'GET',
+    onError,
   });
 };
 

@@ -1,4 +1,4 @@
-import {api} from '@/common';
+import {ErrorHandler, api} from '@/common';
 import {
   CreateBuildingRequest,
   CreateBuildingResponse,
@@ -19,11 +19,13 @@ export const toBuilding = (buildingResponse: any) => ({
 
 const createBuilding = async (
   data: CreateBuildingRequest,
+  onError?: ErrorHandler,
 ): Promise<CreateBuildingResponse> => {
-  const res = await api({
+  const res = await api<CreateBuildingResponse>({
     endpoint: `${basePath}`,
     method: 'POST',
     data,
+    onError,
   });
 
   return {
@@ -31,10 +33,14 @@ const createBuilding = async (
   };
 };
 
-const readBuilding = async (id: number): Promise<ReadBuildingResponse> => {
-  const res = await api({
+const readBuilding = async (
+  id: number,
+  onError?: ErrorHandler,
+): Promise<ReadBuildingResponse> => {
+  const res = await api<ReadBuildingResponse>({
     endpoint: `${basePath}/${id}`,
     method: 'GET',
+    onError,
   });
 
   return {
@@ -45,11 +51,13 @@ const readBuilding = async (id: number): Promise<ReadBuildingResponse> => {
 const updateBuilding = async (
   id: number,
   data: UpdateBuildingRequest,
+  onError?: ErrorHandler,
 ): Promise<UpdateBuildingResponse> => {
-  const res = await api({
+  const res = await api<UpdateBuildingResponse>({
     endpoint: `${basePath}/${id}`,
     method: 'PUT',
     data,
+    onError,
   });
 
   return {
@@ -57,21 +65,27 @@ const updateBuilding = async (
   };
 };
 
-const deleteBuilding = async (id: number): Promise<void> => {
-  return api({
+const deleteBuilding = async (
+  id: number,
+  onError?: ErrorHandler,
+): Promise<void> => {
+  await api({
     endpoint: `${basePath}/${id}`,
     method: 'DELETE',
+    onError,
   });
 };
 
 const listBuildings = async (
   params: ListBuildingsParams,
+  onError?: ErrorHandler,
 ): Promise<ListBuildingsResponse> => {
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;
-  const res = await api({
+  const res = await api<ListBuildingsResponse>({
     endpoint,
     method: 'GET',
+    onError,
   });
 
   return {

@@ -1,5 +1,7 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {fetchAuthSession} from '@aws-amplify/auth';
+import axiosRetry from 'axios-retry';
+import Toast from 'react-native-toast-message';
 
 const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 // const apiBaseUrl: string = 'http://10.0.2.2:3000';
@@ -12,15 +14,7 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-export type HttpError = {
-  status: number;
-  message: string;
-};
-
-export const isHttpError = (error: any): error is HttpError => {
-  return error.status !== undefined;
-};
+axiosRetry(apiClient, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 const getAccessToken = async (): Promise<string | undefined> => {
   try {
@@ -31,17 +25,28 @@ const getAccessToken = async (): Promise<string | undefined> => {
   }
 };
 
-interface ApiOptions {
+export type HttpError = {
+  status: number;
+  data: any;
+};
+
+export type ErrorHandler =
+  | ((error: HttpError) => {handled: boolean; data?: any})
+  | {[status: number]: (error: HttpError) => any};
+
+interface ApiOptions<T> {
   endpoint: string;
   method: string;
   data?: any;
+  onError?: ErrorHandler;
 }
 
 export const api = async <T>({
   endpoint,
   method,
   data = null,
-}: ApiOptions): Promise<T | HttpError> => {
+  onError,
+}: ApiOptions<T>): Promise<T> => {
   const url = `api${endpoint}`;
   console.log('API call', method, url);
   try {
@@ -60,16 +65,45 @@ export const api = async <T>({
 
     return response.data;
   } catch (error: any) {
-    console.log('API call error: ', error.message);
     if (!error.response) {
+      // Network error (no response received)
+      Toast.show({
+        type: 'error',
+        text1: 'Netword Error',
+        text2: 'Please check your internet connection and try again.',
+      });
+
       throw error;
     }
 
-    // Construct an HttpError and return it
-    const httpError: HttpError = {
-      status: error.response.status,
-      message: error.message,
-    };
-    return httpError;
+    if (onError) {
+      const httpError: HttpError = {
+        status: error.response.status,
+        data: error.response.data,
+      };
+
+      if (onError[httpError.status]) {
+        // Error handled by status code
+        return onError[httpError.status](httpError);
+      }
+
+      if (onError instanceof Function) {
+        // Error handled by generic handler
+        const result = onError(httpError) as {handled: boolean; data?: T};
+        if (result.handled) {
+          // Error handled, no further action needed
+          return result.data;
+        }
+      }
+    }
+
+    // Log unhandled errors
+    console.error('Unhandled API error:', error);
+    Toast.show({
+      type: 'error',
+      text1: 'An unexpected error occurred',
+      text2: 'Please try again later',
+    });
+    throw error;
   }
 };

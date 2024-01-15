@@ -1,4 +1,4 @@
-import {HttpError, api, isHttpError} from '@/common';
+import {ErrorHandler, api} from '@/common';
 import {
   ShowDashboardResponse,
   ReadAccountResponse,
@@ -16,9 +16,7 @@ const showDashboard = async (): Promise<void> => {
     method: 'POST',
   });
 
-  if (!isHttpError(res)) {
-    await WebBrowser.openBrowserAsync(res.link);
-  }
+  await WebBrowser.openBrowserAsync(res.link);
 };
 
 const validateAccount = async (): Promise<boolean> => {
@@ -27,32 +25,29 @@ const validateAccount = async (): Promise<boolean> => {
     method: 'GET',
   });
 
-  if (!isHttpError(res)) {
-    return res.is_valid;
-  }
-
-  return false;
+  return res.is_valid;
 };
 
-const readAccount = (): Promise<ReadAccountResponse | HttpError> => {
-  return api({
+const readAccount = async (
+  onError?: ErrorHandler,
+): Promise<ReadAccountResponse> => {
+  return await api({
     endpoint: `${basePath}/accounts`,
     method: 'GET',
+    onError,
   });
 };
 
 const createPaymentIntent = async (
   data: CreatePaymentIntentRequest,
+  onError?: ErrorHandler,
 ): Promise<CreatePaymentIntentResponse> => {
   let res = await api<CreatePaymentIntentResponse>({
     endpoint: `${basePath}/payments`,
     method: 'POST',
     data,
+    onError,
   });
-
-  if (isHttpError(res)) {
-    throw res;
-  }
 
   return res;
 };
