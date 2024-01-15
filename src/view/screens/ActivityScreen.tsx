@@ -1,12 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
-import {AppTheme, ListView, useTheme, Text} from '@/common';
+import {View, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
+import {AppTheme, ListView, useTheme, Text, LoadingSpinner} from '@/common';
 import {AvailabilityItem, useLoadAvailability} from '@/availability';
 import {ReservationItem, useLoadReservations} from '@/reservations';
 import {useLoadSpaces} from '@/spaces';
@@ -61,7 +55,7 @@ export const ActivityScreen = () => {
       activeTab === 'Bookings' ? renderReservationItem : renderAvailabilityItem;
 
     return isLoading ? (
-      <ActivityIndicator size="large" color={theme.appTheme.colors.primary} />
+      <LoadingSpinner />
     ) : (
       <ListView
         data={filteredData}

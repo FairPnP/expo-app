@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, ScrollView, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
 import {MySpot, MyFavorite, Space, useLoadSpaces} from '@/spaces';
-import {useTheme, AppTheme, Title, ListView} from '@/common';
+import {useTheme, AppTheme, Title, ListView, LoadingSpinner} from '@/common';
 import {Building} from '@/buildings';
 import {ManageSpotScreenProps} from './ManageSpotScreen';
 import {SearchBar} from '../components';
@@ -63,7 +63,7 @@ export const HomeScreen = ({}: HomeScreenProps) => {
         <View style={styles.page}>
           <Title>My Spots</Title>
           {isLoading ? (
-            <ActivityIndicator size="large" color={theme.colors.primary} />
+            <LoadingSpinner />
           ) : (
             <ListView
               data={spaces}

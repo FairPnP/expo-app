@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {AppTheme, useTheme} from '../themes';
+import {LoadingSpinner} from './LoadingSpinner';
 
 type ImageDownloadProps = {
   url: string;
@@ -27,11 +28,7 @@ export const ImageDownload = ({url, style, imageStyle}: ImageDownloadProps) => {
 
   return (
     <View style={[styles.imageContainer, style]}>
-      {loading && (
-        <View style={styles.spinnerContainer}>
-          <ActivityIndicator color={styles.spinner.color} />
-        </View>
-      )}
+      {loading && <LoadingSpinner />}
       {imageUri && (
         <Image
           resizeMode="cover"
@@ -45,13 +42,6 @@ export const ImageDownload = ({url, style, imageStyle}: ImageDownloadProps) => {
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    spinnerContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    spinner: {
-      color: theme.colors.primary,
-    },
     imageContainer: {
       backgroundColor: theme.colors.disabled,
     },

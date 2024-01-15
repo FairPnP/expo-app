@@ -38,7 +38,7 @@ interface ApiOptions<T> {
   endpoint: string;
   method: string;
   data?: any;
-  onError?: ErrorHandler;
+  onError?: ErrorHandler<T>;
 }
 
 export const api = async <T>({
@@ -86,12 +86,12 @@ export const api = async <T>({
         // Call the function associated with the status code
         const result = onError[httpError.status](httpError);
 
-        // Check if the result is a Promise and await it if necessary
+        // If the result is a Promise, wait for it to resolve
         if (result instanceof Promise) {
           return await result;
         }
 
-        // Return the result directly if it's not a Promise
+        // Otherwise, return the result
         return result;
       }
 

@@ -1,12 +1,9 @@
-import {ActivityIndicator, Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert} from 'react-native';
 import React, {useEffect} from 'react';
-import {AppTheme, useTheme} from '@/common';
 import {StripeAPI} from '../api';
+import {LoadingSpinner} from '@/common';
 
 export const StripeReturnScreen = ({navigation}) => {
-  const theme = useTheme().theme.appTheme;
-  const styles = getStyles(theme);
-
   const validateStripeAccount = async () => {
     await StripeAPI.validateAccount();
     Alert.alert('Success', 'Stripe account created.');
@@ -17,20 +14,5 @@ export const StripeReturnScreen = ({navigation}) => {
     validateStripeAccount();
   }, []);
 
-  return (
-    <View style={styles.spinnerContainer}>
-      <ActivityIndicator color={styles.spinner.color} />
-    </View>
-  );
+  return <LoadingSpinner />;
 };
-
-const getStyles = (theme: AppTheme) =>
-  StyleSheet.create({
-    spinnerContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    spinner: {
-      color: theme.colors.primary,
-    },
-  });

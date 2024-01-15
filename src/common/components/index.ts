@@ -11,3 +11,4 @@ export * from './SwitchInput';
 export * from './DateTimePicker';
 export * from './ImageUpload';
 export * from './ImageDownload';
+export * from './LoadingSpinner';
