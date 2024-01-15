@@ -14,7 +14,6 @@ export const ReservationItem = ({reservation}: ReservationItemProps) => {
   const styles = getStyles(theme);
   const navigation = useNavigation() as any;
   const {spaces, buildings} = useLoadSpaces();
-  console.log(spaces, reservation?.space_id);
 
   const space = useMemo(
     () => spaces.find(s => s.id === reservation?.space_id),

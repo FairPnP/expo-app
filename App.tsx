@@ -1,12 +1,11 @@
 import 'react-native-url-polyfill/auto';
 import {polyfillWebCrypto} from 'expo-standard-web-crypto';
-
 polyfillWebCrypto();
+import {enableLatestRenderer} from 'react-native-maps';
+enableLatestRenderer();
 
 import * as React from 'react';
 import {MainScreen} from './src/view/MainScreen';
-import {enableLatestRenderer} from 'react-native-maps';
-
 import {RecoilRoot} from 'recoil';
 import {StripeProvider} from '@stripe/stripe-react-native';
 import {
@@ -15,8 +14,25 @@ import {
 } from '@aws-amplify/ui-react-native';
 import {Amplify} from 'aws-amplify';
 import {ThemeProvider, useTheme} from '@/common/themes/themeContext';
+import {NavigationContainer} from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+import * as Sentry from 'sentry-expo';
 
-enableLatestRenderer();
+Sentry.init({
+  dsn: 'https://a54aeb03d5eb52cfd26eb17885590110@o4506571966906368.ingest.sentry.io/4506571968479232',
+  enableInExpoDevelopment: true,
+  debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  patchGlobalPromise: false,
+  integrations: [
+    new Sentry.Native.ReactNativeTracing({
+      shouldCreateSpanForRequest: url => {
+        return !__DEV__ || !url.startsWith(`http://192.168`);
+      },
+    }),
+  ],
+});
+
+const prefix = Linking.createURL('/');
 
 Amplify.configure({
   Auth: {
@@ -38,20 +54,23 @@ Amplify.configure({
         requireSpecialCharacters: true,
       },
     },
-    // oauth: {
-    //   domain: 'fairpnp-dev.auth.us-east-2.amazoncognito.com',
-    //   scope: ['email', 'profile', 'openid'],
-    //   redirectSignIn: 'fairpnp://',
-    //   redirectSignOut: 'fairpnp://',
-    //   responseType: 'code',
-    //   googleClientId:
-    //     '841374583718-9hj367s57cll8kft7pa3lihhj2ovub73.apps.googleusercontent.com',
-    // },
   },
 });
 
-export default function App() {
+function App() {
   const theme = useTheme().theme;
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Profile: 'profile',
+        StripeReturn: 'stripe/return',
+        StripeRefresh: 'stripe/refresh',
+      },
+    },
+  };
+
   return (
     <ThemeProvider>
       <AmplifyThemeProvider
@@ -65,7 +84,9 @@ export default function App() {
                 // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
                 // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
               >
-                <MainScreen />
+                <NavigationContainer theme={theme.appTheme} linking={linking}>
+                  <MainScreen />
+                </NavigationContainer>
               </StripeProvider>
             </RecoilRoot>
           </Authenticator>
@@ -74,3 +95,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default App;

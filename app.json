@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -43,7 +43,7 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": null,
+          "merchantIdentifier": {},
           "enableGooglePay": true
         }
       ],
@@ -60,12 +60,24 @@
         {
           "microphonePermission": false
         }
-      ]
+      ],
+      "sentry-expo"
     ],
     "extra": {
       "eas": {
         "projectId": "1a42a9cc-a4cb-426b-8ad0-ad11242d9e70"
       }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "fair-park-and-pay-ltd",
+            "project": "fairpnp"
+          }
+        }
+      ]
     }
   }
 }
