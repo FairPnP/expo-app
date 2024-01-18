@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {Suspense, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Platform, KeyboardAvoidingView} from 'react-native';
-import {AppTheme, useTheme} from '@/common';
+import {AppTheme, LoadingSpinner, useTheme} from '@/common';
 import {useLocationPermission} from '@/common/hooks/useLocationPermission';
-import {AvailabilityData, AvailabilityMap, SearchBar} from '../components';
+import {AvailabilityData, SearchBar} from '../components';
 import {
   AvailabilityAPI,
   MapCard,
@@ -11,6 +11,12 @@ import {
 } from '@/availability';
 import type {SearchBarState} from '../state';
 import {Space, SpaceAPI} from '@/spaces';
+
+const AvailabilityMap = React.lazy(() =>
+  import('../components/AvailabilityMap').then(module => ({
+    default: module.AvailabilityMap,
+  })),
+);
 
 const initialRegion = {
   latitude: 43.442384,
@@ -130,10 +136,10 @@ export const SearchScreen = ({navigation}) => {
     [getAvailability],
   );
 
-  const onMarkerSelected = async (marker: AvailabilityData) => {
+  const onMarkerSelected = useCallback(async (marker: AvailabilityData) => {
     const res = await SpaceAPI.read(marker.space.id);
     setSelectedSpace(res.space);
-  };
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -143,14 +149,16 @@ export const SearchScreen = ({navigation}) => {
         <SearchBar onSubmit={onSearchBarSubmit} />
       </View>
       <View style={styles.map}>
-        <AvailabilityMap
-          location={location}
-          markers={searchResults}
-          onSearchRegion={setLocation}
-          renderMarker={renderMarker}
-          renderMarkerCard={renderMarkerCard}
-          onMarkerSelected={onMarkerSelected}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <AvailabilityMap
+            location={location}
+            markers={searchResults}
+            onSearchRegion={setLocation}
+            renderMarker={renderMarker}
+            renderMarkerCard={renderMarkerCard}
+            onMarkerSelected={onMarkerSelected}
+          />
+        </Suspense>
       </View>
     </KeyboardAvoidingView>
   );
