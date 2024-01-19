@@ -1,6 +1,6 @@
 import {AvailabilityAPI, SearchAvailabilityRequest} from '@/api';
 import {useQuery} from '@tanstack/react-query';
-import {AVAILABILITY_QUERY_KEY} from '.';
+import {AVAILABILITY_QUERY_KEY} from './consts';
 
 export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
   return useQuery({

@@ -1,7 +1,7 @@
 // useUpdateSpace.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {SpaceAPI, UpdateSpaceRequest} from '@/api';
-import {MY_SPACES_QUERY_KEY} from '.';
+import {MY_SPACES_QUERY_KEY} from './consts';
 
 export const useUpdateSpace = () => {
   const queryClient = useQueryClient();

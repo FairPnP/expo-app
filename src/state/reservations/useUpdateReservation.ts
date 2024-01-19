@@ -1,7 +1,7 @@
 // useUpdateReservation.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {ReservationAPI, UpdateReservationRequest} from '@/api';
-import {MY_RESERVATIONS_QUERY_KEY} from '.';
+import {MY_RESERVATIONS_QUERY_KEY} from './consts';
 
 export const useUpdateReservation = () => {
   const queryClient = useQueryClient();

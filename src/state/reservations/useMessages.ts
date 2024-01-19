@@ -1,6 +1,6 @@
 import {ListChatMessagesParams, Reservation, ReservationAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
-import {MESSAGES_QUERY_KEY} from '.';
+import {MESSAGES_QUERY_KEY} from './consts';
 
 export const useMessages = (
   reservation_id: number,

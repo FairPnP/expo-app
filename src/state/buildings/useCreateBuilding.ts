@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {CreateBuildingRequest, BuildingAPI, Building} from '@/api';
-import {BUILDINGS_QUERY_KEY} from '.';
+import {BUILDINGS_QUERY_KEY} from './consts';
 
 export const useCreateBuilding = () => {
   const queryClient = useQueryClient();

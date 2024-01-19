@@ -4,7 +4,3 @@ export * from './useUpdateReservation';
 export * from './useReservation';
 export * from './useMessages';
 export * from './useCreateMessage';
-
-export const MY_RESERVATIONS_QUERY_KEY = 'my-reservations';
-export const RESERVATION_QUERY_KEY = 'reservation';
-export const MESSAGES_QUERY_KEY = 'messages';

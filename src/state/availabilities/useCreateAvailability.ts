@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {CreateAvailabilityRequest, Availability, AvailabilityAPI} from '@/api';
-import {MY_AVAILABILITIES_QUERY_KEY} from '.';
+import {MY_AVAILABILITIES_QUERY_KEY} from './consts';
 
 export const useCreateAvailability = () => {
   const queryClient = useQueryClient();

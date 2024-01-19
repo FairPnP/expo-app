@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {SPACE_QUERY_KEY} from '.';
+import {SPACE_QUERY_KEY} from './consts';
 import {SpaceAPI} from '@/api';
 
 export const useSpace = (id: number) => {

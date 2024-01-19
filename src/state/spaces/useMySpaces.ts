@@ -1,6 +1,6 @@
 import {Space, SpaceAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
-import {MY_SPACES_QUERY_KEY} from '.';
+import {MY_SPACES_QUERY_KEY} from './consts';
 
 export const useMySpaces = (offset_id?: number) => {
   const query = useQuery({

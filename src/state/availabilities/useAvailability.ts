@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {AVAILABILITY_QUERY_KEY} from '.';
+import {AVAILABILITY_QUERY_KEY} from './consts';
 import {AvailabilityAPI} from '@/api';
 
 export const useAvailability = (id: number) => {

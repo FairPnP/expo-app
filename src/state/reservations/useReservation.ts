@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {RESERVATION_QUERY_KEY} from '.';
+import {RESERVATION_QUERY_KEY} from './consts';
 import {ReservationAPI} from '@/api';
 
 export const useReservation = (id: number) => {

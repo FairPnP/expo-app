@@ -1,6 +1,6 @@
 import {Reservation, ReservationAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
-import {MY_RESERVATIONS_QUERY_KEY} from '.';
+import {MY_RESERVATIONS_QUERY_KEY} from './consts';
 
 export const useMyReservations = (offset_id?: number) => {
   const query = useQuery({
