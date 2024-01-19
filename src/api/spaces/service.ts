@@ -63,8 +63,8 @@ const listSpaces = async (
   params: ListSpacesParams,
   onError?: ErrorHandler,
 ): Promise<ListSpacesResponse> => {
-  Object.keys(params).forEach(key =>
-    params[key] === undefined ? delete params[key] : {},
+  Object.keys(params).forEach(
+    key => params[key] === undefined && delete params[key],
   );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;

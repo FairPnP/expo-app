@@ -1,9 +1,10 @@
 import {Space, SpaceAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
+import {SPACES_QUERY_KEY} from '.';
 
 export const useSpaces = (offset_id?: number) => {
   const query = useQuery({
-    queryKey: ['spaces', offset_id],
+    queryKey: [SPACES_QUERY_KEY, offset_id],
     queryFn: async () => {
       const response = await SpaceAPI.list({
         offset_id,

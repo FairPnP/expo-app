@@ -11,7 +11,7 @@ import {
   uploadToS3,
 } from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useAccessToken} from '@/state';
+import {useAccessToken, useCreateSpace, useUpdateSpace} from '@/state';
 
 export type EditParkingSpaceScreenProps = {
   building: Building | CreateBuildingRequest;
@@ -41,6 +41,8 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const tokens = useAccessToken();
+  const {mutateAsync: createSpace} = useCreateSpace();
+  const {mutateAsync: updateSpace} = useUpdateSpace();
 
   const [selectedImage, setSelectedImage] = useState(null);
   const onImageSelected = useCallback((uri: string) => {
@@ -64,10 +66,10 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
     }
   }, [building]);
 
-  const createSpace = useCallback(
+  const handleCreateSpace = useCallback(
     async (data: FormValues) => {
       const building = await getBuilding();
-      const space = await SpaceAPI.create({
+      const space = await createSpace({
         name: data.space_name,
         building_id: building.id,
         description: data.description,
@@ -79,13 +81,16 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
       });
 
       if (selectedImage) {
-        const presignedUrl = await SpaceAPI.getPresignedUrl(space.space.id);
+        const presignedUrl = await SpaceAPI.getPresignedUrl(space.id);
         await uploadToS3(presignedUrl.url, selectedImage);
 
         const userId = tokens?.idToken?.payload.sub;
-        const pictureUrl = `https://fairpnp-dev-user-content.s3.us-east-2.amazonaws.com/user-uploads/${userId}/space-images/${space.space.id}.jpg`;
-        await SpaceAPI.update(space.space.id, {
-          picture_url: pictureUrl,
+        const pictureUrl = `https://fairpnp-dev-user-content.s3.us-east-2.amazonaws.com/user-uploads/${userId}/space-images/${space.id}.jpg`;
+        await updateSpace({
+          spaceId: space.id,
+          updateData: {
+            picture_url: pictureUrl,
+          },
         });
       }
 
@@ -95,7 +100,7 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
   );
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    createSpace(data).then(() => {
+    handleCreateSpace(data).then(() => {
       navigation.goBack();
     });
   };

@@ -89,8 +89,8 @@ const listReservations = async (
   params: ListReservationsParams,
   onError?: ErrorHandler,
 ): Promise<ListReservationsResponse> => {
-  Object.keys(params).forEach(key =>
-    params[key] === undefined ? delete params[key] : {},
+  Object.keys(params).forEach(
+    key => params[key] === undefined && delete params[key],
   );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;

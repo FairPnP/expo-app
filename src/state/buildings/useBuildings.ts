@@ -1,7 +1,7 @@
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {Building, BuildingAPI} from '@/api';
 
-export const useBuildings = buildingIds => {
+export const useBuildings = (buildingIds: number[]) => {
   const queryClient = useQueryClient();
 
   const query = useQuery({
@@ -15,7 +15,7 @@ export const useBuildings = buildingIds => {
       // If all buildings are cached, return them directly
       if (idsToFetch.length === 0) {
         return buildingIds.map(id =>
-          queryClient.getQueryData(['building', id]),
+          queryClient.getQueryData<Building>(['building', id]),
         );
       }
 
@@ -29,7 +29,11 @@ export const useBuildings = buildingIds => {
       });
 
       // Return all requested buildings
-      return buildingIds.map(id => queryClient.getQueryData(['building', id]));
+      const buildings = buildingIds.map(id =>
+        queryClient.getQueryData<Building>(['building', id]),
+      );
+
+      return buildings;
     },
     staleTime: Infinity,
     gcTime: Infinity,

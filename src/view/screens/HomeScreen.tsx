@@ -43,7 +43,7 @@ export const HomeScreen = ({}: HomeScreenProps) => {
     ({item}: {item: Space}) => {
       return (
         <MySpot
-          building={buildings.find(b => b.id === item.building_id)}
+          building={buildings?.find(b => b.id === item.building_id)}
           mySpot={item}
           onPress={handleSpotPress}
         />
