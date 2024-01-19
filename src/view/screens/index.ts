@@ -6,4 +6,3 @@ export * from './SplashScreen';
 export * from './HostScreen';
 export * from './ManageSpotScreen';
 export * from './EditParkingSpaceScreen';
-// export * from './ViewParkingSpaceScreen';

@@ -1,16 +1,18 @@
 import React, {useCallback, useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import {Building} from '@/buildings';
-import {AppTheme, useTheme, Title, Text, Button} from '@/common';
 import {
-  AvailabilityAPI,
-  AvailabilityDatePicker,
+  Title,
+  Text,
+  Button,
   AvailabilityOptions,
   AvailabilityOptionsPicker,
-} from '@/availability';
-import {Space, SpaceCard} from '@/spaces';
+  AvailabilityDatePicker,
+  SpaceCard,
+} from '../components';
 import {toDateTimeString, toDollarString} from '@/utils';
+import {AvailabilityAPI, Building, Space} from '@/api';
+import {useTheme, AppTheme} from '@/view/theme';
 
 export type ManageSpotScreenProps = {
   building: Building;

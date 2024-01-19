@@ -1,19 +1,17 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Building, BuildingAPI, CreateBuildingRequest} from '@/buildings';
-import {Space, SpaceAPI, useLoadSpaces} from '@/spaces';
-import {
-  AppTheme,
-  Button,
-  SelectInput,
-  Text,
-  TextInput,
-  useTheme,
-  ImageUpload,
-  useAccessToken,
-} from '@/common';
+import React, {useCallback, useState} from 'react';
+import {Button, SelectInput, Text, TextInput, ImageUpload} from '../components';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {uploadToS3} from '@/common/s3';
+import {
+  Building,
+  BuildingAPI,
+  CreateBuildingRequest,
+  Space,
+  SpaceAPI,
+  uploadToS3,
+} from '@/api';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useAccessToken} from '@/state';
 
 export type EditParkingSpaceScreenProps = {
   building: Building | CreateBuildingRequest;
@@ -40,7 +38,6 @@ function isBuilding(
 
 export const EditParkingSpaceScreen = ({navigation, route}) => {
   const {building} = route.params as EditParkingSpaceScreenProps;
-  const {refreshSpaces} = useLoadSpaces();
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const tokens = useAccessToken();
@@ -99,7 +96,6 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     createSpace(data).then(() => {
-      refreshSpaces();
       navigation.goBack();
     });
   };

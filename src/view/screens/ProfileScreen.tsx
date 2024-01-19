@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
-import {AppTheme, useTheme, useAccessToken} from '@/common';
-import {StripeAPI} from '@/stripe';
+import {useAccessToken} from '@/state';
+import {useTheme, AppTheme} from '@/view/theme';
+import {StripeAPI} from '@/api';
 
 export const ProfileScreen = () => {
   const tokens = useAccessToken();

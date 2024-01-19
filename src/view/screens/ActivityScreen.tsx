@@ -1,9 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
-import {AppTheme, ListView, useTheme, Text, LoadingSpinner} from '@/common';
-import {AvailabilityItem, useLoadAvailability} from '@/availability';
-import {ReservationItem, useLoadReservations} from '@/reservations';
-import {useLoadSpaces} from '@/spaces';
+import {
+  ListView,
+  Text,
+  LoadingSpinner,
+  ReservationItem,
+  AvailabilityItem,
+} from '../components';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useAvailabilities, useReservations} from '@/state';
 
 export const ActivityScreen = () => {
   const [activeTab, setActiveTab] = useState('Bookings');
@@ -11,34 +16,21 @@ export const ActivityScreen = () => {
   const {theme} = useTheme();
   const styles = getStyles(theme.appTheme);
 
-  const {
-    availabilities,
-    isLoading: isAvailabiltyLoading,
-    refreshAvailability,
-  } = useLoadAvailability();
-  const {
-    reservations,
-    isLoading: isReservationsLoading,
-    refreshReservations,
-  } = useLoadReservations();
-  const {refreshSpaces} = useLoadSpaces();
+  const {data: reservations, isLoading: isReservationsLoading} =
+    useReservations();
 
-  useEffect(() => {
-    refreshAvailability();
-    refreshReservations();
-    refreshSpaces();
-  }, []);
-
-  const filterData = (data, comparator) => {
-    return data.filter(comparator);
-  };
+  const {data: availabilities, isLoading: isAvailabiltyLoading} =
+    useAvailabilities();
 
   const renderContent = useCallback(() => {
     const date = new Date();
     const isLoading =
       activeTab === 'Bookings' ? isReservationsLoading : isAvailabiltyLoading;
-    const data = activeTab === 'Bookings' ? reservations : availabilities;
-    const filteredData = filterData(data, item => {
+    const data =
+      activeTab === 'Bookings'
+        ? reservations?.reservations
+        : availabilities?.availability;
+    const filteredData = data?.filter(item => {
       switch (activeSubTab) {
         case 'Upcoming':
           return item.start_date > date;

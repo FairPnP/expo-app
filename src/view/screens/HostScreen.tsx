@@ -1,10 +1,10 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {AppTheme, useTheme, Button, Text} from '@/common';
-import {CreateBuildingRequest, LocationCard} from '@/buildings';
+import {Button, LocationCard, MapsSearch, Text} from '../components';
 import {EditParkingSpaceScreenProps} from './EditParkingSpaceScreen';
-import {MapsSearch} from '@/availability';
 import {useNavigation} from '@react-navigation/native';
+import {useTheme, AppTheme} from '@/view/theme';
+import {CreateBuildingRequest} from '@/api';
 
 export const HostScreen = () => {
   const navigation = useNavigation<any>();

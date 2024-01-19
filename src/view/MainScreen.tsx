@@ -2,17 +2,19 @@ import * as React from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {TabNavigator} from './navigation';
-import {AppTheme, useTheme} from '@/common';
 import {EditParkingSpaceScreen, ManageSpotScreen} from './screens';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet} from 'react-native';
-import {StripeRefreshScreen, StripeReturnScreen} from '@/stripe';
+
+import Toast from 'react-native-toast-message';
+import {AppTheme, useTheme} from './theme';
 import {
   ConfirmReservationScreen,
   ReservationChatScreen,
   ReservationDetailsScreen,
-} from '@/reservations';
-import Toast from 'react-native-toast-message';
+  StripeRefreshScreen,
+  StripeReturnScreen,
+} from './components';
 
 const Stack = createNativeStackNavigator();
 

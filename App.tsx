@@ -5,19 +5,23 @@ import {enableLatestRenderer} from 'react-native-maps';
 enableLatestRenderer();
 
 import * as React from 'react';
-import {MainScreen} from './src/view/MainScreen';
-import {RecoilRoot} from 'recoil';
 import {StripeProvider} from '@stripe/stripe-react-native';
 import {
   Authenticator,
   ThemeProvider as AmplifyThemeProvider,
 } from '@aws-amplify/ui-react-native';
 import {Amplify} from 'aws-amplify';
-import {ThemeProvider, useTheme} from '@/common/themes/themeContext';
+import {ThemeProvider, useTheme, MainScreen} from '@/view';
 import {NavigationContainer} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import * as Sentry from 'sentry-expo';
+import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
+import {useEffect} from 'react';
+import {AppState, Platform} from 'react-native';
+import type {AppStateStatus} from 'react-native';
+import {focusManager} from '@tanstack/react-query';
 
+// sentry
 Sentry.init({
   dsn: 'https://a54aeb03d5eb52cfd26eb17885590110@o4506571966906368.ingest.sentry.io/4506571968479232',
   enableInExpoDevelopment: true,
@@ -32,8 +36,10 @@ Sentry.init({
   ],
 });
 
+// deep linking
 const prefix = Linking.createURL('/');
 
+// amplify
 Amplify.configure({
   Auth: {
     Cognito: {
@@ -57,6 +63,22 @@ Amplify.configure({
   },
 });
 
+// react query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // axios already handles retries
+      retry: false,
+    },
+  },
+});
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== 'web') {
+    focusManager.setFocused(status === 'active');
+  }
+}
+
+// app
 function App() {
   const theme = useTheme().theme;
 
@@ -71,6 +93,12 @@ function App() {
     },
   };
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', onAppStateChange);
+
+    return () => subscription.remove();
+  }, []);
+
   return (
     <ThemeProvider>
       <AmplifyThemeProvider
@@ -78,7 +106,7 @@ function App() {
         colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
         <Authenticator.Provider>
           <Authenticator>
-            <RecoilRoot>
+            <QueryClientProvider client={queryClient}>
               <StripeProvider
                 publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
                 // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
@@ -88,7 +116,7 @@ function App() {
                   <MainScreen />
                 </NavigationContainer>
               </StripeProvider>
-            </RecoilRoot>
+            </QueryClientProvider>
           </Authenticator>
         </Authenticator.Provider>
       </AmplifyThemeProvider>

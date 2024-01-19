@@ -1,19 +1,19 @@
 import React, {Suspense, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Platform, KeyboardAvoidingView} from 'react-native';
-import {AppTheme, LoadingSpinner, useTheme} from '@/common';
-import {useLocationPermission} from '@/common/hooks/useLocationPermission';
-import {AvailabilityData, SearchBar} from '../components';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useLocationPermission} from '@/state';
 import {
-  AvailabilityAPI,
+  AvailabilityData,
+  LoadingSpinner,
   MapCard,
   MapMarker,
-  getAvailabilityCost,
-} from '@/availability';
-import type {SearchBarState} from '../state';
-import {Space, SpaceAPI} from '@/spaces';
+  SearchBar,
+  SearchBarState,
+} from '../components';
+import {AvailabilityAPI, Space, SpaceAPI, getAvailabilityCost} from '@/api';
 
 const AvailabilityMap = React.lazy(() =>
-  import('../components/AvailabilityMap').then(module => ({
+  import('../components/availabilities/AvailabilityMap').then(module => ({
     default: module.AvailabilityMap,
   })),
 );
@@ -55,8 +55,8 @@ export const SearchScreen = ({navigation}) => {
     });
 
     for (const a of avail.availabilities) {
-      const space = avail.spaces.find(s => s.id === a.space_id);
-      const building = avail.buildings.find(b => b.id === space.building_id);
+      const space = avail.spaces[a.space_id];
+      const building = avail.buildings[space.building_id];
 
       list.push({
         availability: a,

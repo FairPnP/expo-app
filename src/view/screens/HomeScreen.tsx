@@ -1,12 +1,18 @@
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {MySpot, MyFavorite, Space, useLoadSpaces} from '@/spaces';
-import {useTheme, AppTheme, Title, ListView, LoadingSpinner} from '@/common';
-import {Building} from '@/buildings';
+import {
+  Title,
+  ListView,
+  LoadingSpinner,
+  MySpot,
+  MyFavorite,
+} from '../components';
 import {ManageSpotScreenProps} from './ManageSpotScreen';
 import {SearchBar} from '../components';
 import {useNavigation} from '@react-navigation/native';
-// import {useRecoilState} from 'recoil';
+import {useTheme, AppTheme} from '@/view/theme';
+import {Building, Space} from '@/api';
+import {useBuildings, useSpaces} from '@/state';
 
 const favorites: Space[] = [];
 
@@ -17,13 +23,11 @@ export const HomeScreen = ({}: HomeScreenProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  const {spaces, buildings, isLoading, refreshSpaces} = useLoadSpaces();
+  const {data: spaces, isLoading} = useSpaces();
+  const {data: buildings} = useBuildings(
+    spaces?.spaces.map(s => s.building_id),
+  );
 
-  useEffect(() => {
-    refreshSpaces();
-  }, [refreshSpaces]);
-
-  // const [favorites, setFavorites] = useRecoilState(myFavoritesState);
   const handleSpotPress = useCallback(
     (space: Space, building: Building) => {
       const props: ManageSpotScreenProps = {
@@ -66,7 +70,7 @@ export const HomeScreen = ({}: HomeScreenProps) => {
             <LoadingSpinner />
           ) : (
             <ListView
-              data={spaces}
+              data={spaces?.spaces}
               renderItem={renderSpot}
               keyExtractor={item => item.id.toString()}
               emptyMessage="You have no registered parking spots"
