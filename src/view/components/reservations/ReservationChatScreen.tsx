@@ -1,9 +1,15 @@
 import {StyleSheet, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useTheme, AppTheme} from '@/view/theme';
-import {ReservationAPI} from '@/api';
-import {useAccessToken, useReservations, useSpaces} from '@/state';
+import {
+  useAccessToken,
+  useCreateMessage,
+  useMessages,
+  useReservation,
+  useSpace,
+} from '@/state';
+import {LoadingSpinner} from '../common';
 
 export type ReservationChatScreenProps = {
   reservation_id: number;
@@ -22,74 +28,61 @@ type MessageData = {
 export const ReservationChatScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const [messages, setMessages] = useState<MessageData[]>([]);
-  const [messageOffset, setMessageOffset] = useState(null);
+  // const [messageOffset, setMessageOffset] = useState(undefined);
   const {reservation_id} = route.params as ReservationChatScreenProps;
   const tokens = useAccessToken();
   const userId = tokens?.idToken?.payload.sub;
 
-  const {reservationMap} = useReservations();
-  const {spaceMap} = useSpaces();
-  const reservation = reservationMap?.[reservation_id];
-  const space = spaceMap?.[reservation?.space_id];
+  const {mutateAsync: createMessage} = useCreateMessage(reservation_id);
+  const {
+    data: messageData,
+    isLoading: isLoadingMessages,
+    refetch: refetchMessages,
+  } = useMessages(reservation_id, {
+    // after_id: messageOffset,
+  });
+  const {data: reservation} = useReservation(reservation_id);
+  const {data: space} = useSpace(reservation?.space_id);
   const isHost = userId === space?.user_id;
 
-  const loadMessages = useCallback(async () => {
-    const res = await ReservationAPI.listMessages(
-      reservation_id,
-      messageOffset ? {after_id: messageOffset} : {},
-    );
-    const data = res.messages.map(message => {
-      return {
-        _id: message.id,
-        text: message.message,
-        createdAt: new Date(message.created_at),
-        user: {
-          _id: message.sender_id,
-          name:
-            message.sender_id === userId ? 'You' : isHost ? 'Host' : 'Guest',
-        },
-      };
-    });
-
-    // append new messages to the end of the list
-    const newMessages = data.filter(
-      message => !messages.find(m => m._id === message._id),
-    );
-
-    if (newMessages.length > 0) {
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, newMessages),
-      );
-
-      // update message offset
-      setMessageOffset(newMessages[0]._id);
-    }
-  }, [messages, messageOffset]);
-
   useEffect(() => {
-    // initial load
-    loadMessages();
-    // while page is open, load messages every 5 seconds
     const interval = setInterval(() => {
-      loadMessages();
+      refetchMessages();
     }, 5000);
 
-    // when page is closed, stop loading messages
     return () => clearInterval(interval);
-  }, [loadMessages]);
+  }, [refetchMessages]);
+
+  const messages: MessageData[] = useMemo(
+    () =>
+      messageData?.messages.map(message => {
+        return {
+          _id: message.id,
+          text: message.message,
+          createdAt: new Date(message.created_at),
+          user: {
+            _id: message.sender_id,
+            name:
+              message.sender_id === userId ? 'You' : isHost ? 'Host' : 'Guest',
+          },
+        };
+      }),
+    [messageData?.messages, userId, isHost],
+  );
 
   const onSend = useCallback(
     messages => {
-      ReservationAPI.createMessage({
+      createMessage({
         reservation_id,
         message: messages[0].text,
-      }).then(() => {
-        loadMessages();
       });
     },
-    [loadMessages],
+    [reservation_id, createMessage],
   );
+
+  if (!reservation || !space || !messages || isLoadingMessages) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <View style={styles.container}>

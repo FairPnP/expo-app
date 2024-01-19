@@ -1,7 +1,7 @@
 // useUpdateSpace.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {SpaceAPI, UpdateSpaceRequest} from '@/api';
-import {SPACES_QUERY_KEY} from '.';
+import {MY_SPACES_QUERY_KEY} from '.';
 
 export const useUpdateSpace = () => {
   const queryClient = useQueryClient();
@@ -19,10 +19,13 @@ export const useUpdateSpace = () => {
     },
     onSuccess: updatedSpace => {
       // Invalidate and refetch spaces query to update the list
-      queryClient.invalidateQueries({queryKey: [SPACES_QUERY_KEY]});
+      // queryClient.invalidateQueries({queryKey: [MY_SPACES_QUERY_KEY]});
 
       // Update the individual space in the cache if needed
-      queryClient.setQueryData(['space', updatedSpace.id], updatedSpace);
+      queryClient.setQueryData(
+        [MY_SPACES_QUERY_KEY, updatedSpace.id],
+        updatedSpace,
+      );
 
       // Additional handling if there are other queries that depend on this space's data
     },

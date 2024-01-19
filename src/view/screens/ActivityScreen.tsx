@@ -8,7 +8,7 @@ import {
   AvailabilityItem,
 } from '../components';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useAvailabilities, useReservations} from '@/state';
+import {useMyAvailabilities, useMyReservations} from '@/state';
 
 export const ActivityScreen = () => {
   const [activeTab, setActiveTab] = useState('Bookings');
@@ -17,10 +17,10 @@ export const ActivityScreen = () => {
   const styles = getStyles(theme.appTheme);
 
   const {data: reservations, isLoading: isReservationsLoading} =
-    useReservations();
+    useMyReservations();
 
   const {data: availabilities, isLoading: isAvailabiltyLoading} =
-    useAvailabilities();
+    useMyAvailabilities();
 
   const renderContent = useCallback(() => {
     const date = new Date();

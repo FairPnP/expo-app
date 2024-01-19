@@ -150,7 +150,7 @@ const listMessages = async (
 
 export const ReservationAPI = {
   create: createReservation,
-  read: readReservation,
+  get: readReservation,
   update: updateReservation,
   delete: deleteReservation,
   list: listReservations,

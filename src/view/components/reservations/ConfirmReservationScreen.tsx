@@ -3,16 +3,11 @@ import React, {useCallback, useEffect} from 'react';
 import {friendlyDateRange, toDateTimeString} from '@/utils';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {
-  Building,
-  ReservationAPI,
-  Space,
-  StripeAPI,
-  getAvailabilityCost,
-} from '@/api';
+import {Building, Space, StripeAPI, getAvailabilityCost} from '@/api';
 import {Button, Title} from '../common';
 import {SpaceCard} from '../spaces';
 import {LocationCard} from '../buildings';
+import {useCreateReservation} from '@/state';
 
 export type ConfirmReservationScreenProps = {
   building: Building;
@@ -26,6 +21,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const {initPaymentSheet, presentPaymentSheet} = useStripe();
+  const {mutateAsync: createReservation} = useCreateReservation();
 
   const {building, space, startTimestamp, endTimestamp, hourly_rate} =
     route.params as ConfirmReservationScreenProps;
@@ -34,7 +30,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const endDate = new Date(endTimestamp);
 
   const handleReservation = useCallback(async () => {
-    const res = await ReservationAPI.create({
+    await createReservation({
       space_id: space.id,
       start_date: startDate.toISOString().slice(0, 19),
       end_date: endDate.toISOString().slice(0, 19),

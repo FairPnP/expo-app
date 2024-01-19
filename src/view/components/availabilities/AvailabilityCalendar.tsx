@@ -1,9 +1,10 @@
-import {AvailabilityAPI, Space} from '@/api';
-import React, {useState, useEffect, useCallback} from 'react';
+import {Space} from '@/api';
+import React, {useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Calendar, CalendarProvider} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import {useTheme} from '@/view/theme';
+import {useMyAvailabilities} from '@/state';
 
 export type AvailabilityCalendarProps = {
   style?: any;
@@ -15,16 +16,11 @@ export const AvailabilityCalendar = ({
   space,
 }: AvailabilityCalendarProps) => {
   const theme = useTheme().theme.appTheme;
-  const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+  const {data: availabilities} = useMyAvailabilities();
 
-  const getAvailabilities = useCallback(async () => {
-    const availabilitiesResponse = await AvailabilityAPI.list({
-      space_id: space.id,
-    });
-    const availabilities = availabilitiesResponse.availability;
-
+  const markedDates = useMemo(() => {
     const markers: MarkedDates = {};
-    for (const availability of availabilities) {
+    for (const availability of availabilities.availability) {
       const startDate = new Date(availability.start_date);
       const endDate = new Date(availability.end_date);
       const startDay = startDate.toISOString().slice(0, 10);
@@ -62,13 +58,8 @@ export const AvailabilityCalendar = ({
         }
       }
     }
-
-    setMarkedDates(markers);
-  }, [space.id, theme.colors.primary, theme.colors.text]);
-
-  useEffect(() => {
-    getAvailabilities();
-  }, [getAvailabilities]);
+    return markers;
+  }, [space.id, theme.colors.primary, theme.colors.text, availabilities]);
 
   return (
     <View style={[styles.container, style]}>

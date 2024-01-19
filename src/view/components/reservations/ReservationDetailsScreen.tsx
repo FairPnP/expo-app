@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {friendlyDateRange} from '@/utils';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useBuildings, useReservations, useSpaces} from '@/state';
+import {useBuildings, useMyReservations, useMySpaces} from '@/state';
 import {Title, Text, Button} from '../common';
 import {SpaceCard} from '../spaces';
 
@@ -15,10 +15,10 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
   const styles = getStyles(theme);
 
   const {reservation_id} = route.params as ReservationDetailsScreenProps;
-  const {reservationMap} = useReservations();
+  const {reservationMap} = useMyReservations();
   const reservation = reservationMap?.[reservation_id];
-  const {spaceMap} = useSpaces();
-  const {buildingMap} = useBuildings(Object.keys(spaceMap));
+  const {spaceMap} = useMySpaces();
+  const {buildingMap} = useBuildings(Object.keys(spaceMap).map(Number));
 
   const space = spaceMap?.[reservation?.space_id];
   const building = buildingMap?.[space?.building_id];

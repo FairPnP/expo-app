@@ -1,9 +1,10 @@
 import {Reservation, ReservationAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
+import {MY_RESERVATIONS_QUERY_KEY} from '.';
 
-export const useReservations = (offset_id?: number) => {
+export const useMyReservations = (offset_id?: number) => {
   const query = useQuery({
-    queryKey: ['reservations', offset_id],
+    queryKey: [MY_RESERVATIONS_QUERY_KEY, offset_id],
     queryFn: async () => {
       const response = await ReservationAPI.list({
         offset_id,
@@ -11,6 +12,8 @@ export const useReservations = (offset_id?: number) => {
       });
       return response;
     },
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 
   const reservationMap = query.data?.reservations.reduce(

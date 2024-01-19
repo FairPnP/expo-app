@@ -11,8 +11,9 @@ import {
   SpaceCard,
 } from '../components';
 import {toDateTimeString, toDollarString} from '@/utils';
-import {AvailabilityAPI, Building, Space} from '@/api';
+import {Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
+import {useCreateAvailability} from '@/state';
 
 export type ManageSpotScreenProps = {
   building: Building;
@@ -24,9 +25,9 @@ export const ManageSpotScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  // const [availabilities, setAvailabilities] = useState<Availability[]>([]);
   const [isWhenSectionOpen, setIsWhenSectionOpen] = useState(true);
   const [isOptionsSectionOpen, setIsOptionsSectionOpen] = useState(false);
+  const {mutateAsync: createAvailability} = useCreateAvailability();
 
   // State for date range and options
   const today = new Date();
@@ -54,23 +55,12 @@ export const ManageSpotScreen = ({navigation, route}) => {
     }
   };
 
-  // const getAvailabilities = useCallback(async () => {
-  //   const availabilitiesResponse = await AvailabilityAPI.list({
-  //     space_id: space.id,
-  //   });
-  //   setAvailabilities(availabilitiesResponse.availability);
-  // }, [space.id]);
-
-  // useEffect(() => {
-  //   getAvailabilities();
-  // }, [getAvailabilities]);
-
   const onDateRangeSelected = (startDate, endDate) => {
     setSelectedDateRange({startDate, endDate});
   };
 
   const onSubmit = useCallback(async () => {
-    const res = await AvailabilityAPI.create({
+    await createAvailability({
       space_id: space.id,
       start_date: selectedDateRange.startDate.toISOString().slice(0, 19),
       end_date: selectedDateRange.endDate.toISOString().slice(0, 19),

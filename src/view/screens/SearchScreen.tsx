@@ -1,7 +1,11 @@
-import React, {Suspense, useCallback, useEffect, useState} from 'react';
+import React, {Suspense, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View, Platform, KeyboardAvoidingView} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useLocationPermission} from '@/state';
+import {
+  useLocationPermission,
+  useSearchAvailabilities,
+  useSpace,
+} from '@/state';
 import {
   AvailabilityData,
   LoadingSpinner,
@@ -10,7 +14,7 @@ import {
   SearchBar,
   SearchBarState,
 } from '../components';
-import {AvailabilityAPI, Space, SpaceAPI, getAvailabilityCost} from '@/api';
+import {getAvailabilityCost} from '@/api';
 
 const AvailabilityMap = React.lazy(() =>
   import('../components/availabilities/AvailabilityMap').then(module => ({
@@ -30,7 +34,6 @@ const REGION_DELTA = 0.02;
 export const SearchScreen = ({navigation}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const [searchResults, setSearchResults] = useState([]);
 
   const [location, setLocation] = useState(initialRegion);
   const today = new Date();
@@ -39,24 +42,26 @@ export const SearchScreen = ({navigation}) => {
   later.setHours(later.getHours() + 4);
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(later);
-  const [selectedSpace, setSelectedSpace] = useState<Space>(null);
+  const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
+  const {data: searchResults} = useSearchAvailabilities({
+    start_date: startDate.toISOString().slice(0, 19),
+    end_date: endDate.toISOString().slice(0, 19),
+    latitude: location.latitude,
+    longitude: location.longitude,
+    lat_delta: location.latitudeDelta / 2,
+    long_delta: location.longitudeDelta / 2,
+  });
+  const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
 
-  useLocationPermission();
-
-  const getAvailability = useCallback(async () => {
+  const markers = useMemo(() => {
     const list: AvailabilityData[] = [];
-    const avail = await AvailabilityAPI.search({
-      start_date: startDate.toISOString().slice(0, 19),
-      end_date: endDate.toISOString().slice(0, 19),
-      latitude: location.latitude,
-      longitude: location.longitude,
-      lat_delta: location.latitudeDelta / 2,
-      long_delta: location.longitudeDelta / 2,
-    });
+    if (!searchResults) {
+      return list;
+    }
 
-    for (const a of avail.availabilities) {
-      const space = avail.spaces[a.space_id];
-      const building = avail.buildings[space.building_id];
+    for (const a of searchResults.availabilities) {
+      const space = searchResults.spaces[a.space_id];
+      const building = searchResults.buildings[space.building_id];
 
       list.push({
         availability: a,
@@ -82,12 +87,9 @@ export const SearchScreen = ({navigation}) => {
       filteredList.push(minAvailability);
     }
 
-    setSearchResults(filteredList);
+    return filteredList;
   }, [startDate, endDate, location]);
-
-  useEffect(() => {
-    getAvailability();
-  }, [getAvailability]);
+  useLocationPermission();
 
   const renderMarker = useCallback(
     (marker: AvailabilityData, isSelected: boolean) => {
@@ -133,13 +135,14 @@ export const SearchScreen = ({navigation}) => {
       setStartDate(state.startDate);
       setEndDate(state.endDate);
     },
-    [getAvailability],
+    [
+      setLocation,
+      setStartDate,
+      setEndDate,
+      location.latitudeDelta,
+      location.longitudeDelta,
+    ],
   );
-
-  const onMarkerSelected = useCallback(async (marker: AvailabilityData) => {
-    const res = await SpaceAPI.read(marker.space.id);
-    setSelectedSpace(res.space);
-  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -152,11 +155,11 @@ export const SearchScreen = ({navigation}) => {
         <Suspense fallback={<LoadingSpinner />}>
           <AvailabilityMap
             location={location}
-            markers={searchResults}
+            markers={markers}
             onSearchRegion={setLocation}
             renderMarker={renderMarker}
             renderMarkerCard={renderMarkerCard}
-            onMarkerSelected={onMarkerSelected}
+            onMarkerSelected={setSelectedMarker}
           />
         </Suspense>
       </View>

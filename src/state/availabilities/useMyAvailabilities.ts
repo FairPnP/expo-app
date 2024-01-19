@@ -1,9 +1,10 @@
 import {AvailabilityAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
+import {MY_AVAILABILITIES_QUERY_KEY} from '.';
 
-export const useAvailabilities = (offset_id?: number) => {
+export const useMyAvailabilities = (offset_id?: number) => {
   return useQuery({
-    queryKey: ['availabilities', offset_id],
+    queryKey: [MY_AVAILABILITIES_QUERY_KEY, offset_id],
     queryFn: async () => {
       const response = await AvailabilityAPI.list({
         offset_id,

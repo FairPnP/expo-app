@@ -88,7 +88,7 @@ const getPresignedUrl = async (
 
 export const SpaceAPI = {
   create: createSpace,
-  read: readSpace,
+  get: readSpace,
   update: updateSpace,
   delete: deleteSpace,
   list: listSpaces,

@@ -12,7 +12,7 @@ import {SearchBar} from '../components';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
-import {useBuildings, useSpaces} from '@/state';
+import {useBuildings, useMySpaces} from '@/state';
 
 const favorites: Space[] = [];
 
@@ -23,7 +23,7 @@ export const HomeScreen = ({}: HomeScreenProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  const {data: spaces, isLoading} = useSpaces();
+  const {data: spaces, isLoading} = useMySpaces();
   const {data: buildings} = useBuildings(
     spaces?.spaces.map(s => s.building_id),
   );
