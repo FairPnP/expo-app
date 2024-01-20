@@ -12,14 +12,14 @@ export const useCreateReservation = () => {
     },
     onSuccess: newReservation => {
       // Invalidate and refetch reservations query to update the list
-      // queryClient.invalidateQueries({queryKey: [MY_RESERVATIONS_QUERY_KEY]});
+      queryClient.invalidateQueries({queryKey: [MY_RESERVATIONS_QUERY_KEY]});
 
       // Optionally, update the reservations cache directly if you want to append the new reservation
       // without needing a refetch. This depends on your application's behavior.
-      queryClient.setQueryData<Reservation[]>(
-        [MY_RESERVATIONS_QUERY_KEY],
-        old => [...old, newReservation],
-      );
+      // queryClient.setQueryData<Reservation[]>(
+      //   [MY_RESERVATIONS_QUERY_KEY],
+      //   old => [...old, newReservation],
+      // );
 
       return newReservation;
     },

@@ -5,7 +5,7 @@ today.setHours(0, 0, 0, 0);
 today.setHours(today.getHours() + 1);
 const later = new Date(today.getHours() + 4);
 
-export const useSearchBar = () => {
+export const useSearchBarState = () => {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(later);
   const [location, setLocation] = useState({

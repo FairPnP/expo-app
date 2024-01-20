@@ -5,4 +5,4 @@ export * from './spaces';
 
 export * from './useAccessToken';
 export * from './useLocationPermission';
-export * from './useSearchBar';
+export * from './useSearchBarState';

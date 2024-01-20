@@ -4,7 +4,7 @@ import Collapsible from 'react-native-collapsible';
 import {Title} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useSearchBar} from '@/state';
+import {useSearchBarState} from '@/state';
 import {MapsSearch} from './MapSearch';
 import {AvailabilityDatePicker} from '../availabilities';
 
@@ -25,7 +25,7 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const sb = useSearchBar();
+  const sb = useSearchBarState();
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);

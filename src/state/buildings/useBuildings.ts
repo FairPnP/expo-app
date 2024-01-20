@@ -4,10 +4,12 @@ import {Building, BuildingAPI} from '@/api';
 export const useBuildings = (buildingIds: number[]) => {
   const queryClient = useQueryClient();
 
+  buildingIds = buildingIds?.filter(id => id !== undefined);
+
   const query = useQuery({
     queryKey: ['buildings', buildingIds],
     queryFn: async () => {
-      // Filter out IDs that are already cached
+      // Filter out IDs that are already cached, or undefined
       const idsToFetch = buildingIds.filter(
         id => queryClient.getQueryData(['building', id]) === undefined,
       );
@@ -47,7 +49,6 @@ export const useBuildings = (buildingIds: number[]) => {
     },
     {} as Record<number, Building>,
   );
-
   return {
     ...query,
     buildingMap,

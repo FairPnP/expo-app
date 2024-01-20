@@ -8,7 +8,11 @@ import {
   AvailabilityItem,
 } from '../components';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useMyAvailabilities, useMyReservations} from '@/state';
+import {
+  useHostReservations,
+  useMyAvailabilities,
+  useMyReservations,
+} from '@/state';
 
 export const ActivityScreen = () => {
   const [activeTab, setActiveTab] = useState('Bookings');
@@ -16,6 +20,8 @@ export const ActivityScreen = () => {
   const {theme} = useTheme();
   const styles = getStyles(theme.appTheme);
 
+  const {data: hostReservations, isLoading: isHostReservationsLoading} =
+    useHostReservations();
   const {data: reservations, isLoading: isReservationsLoading} =
     useMyReservations();
 
@@ -25,10 +31,12 @@ export const ActivityScreen = () => {
   const renderContent = useCallback(() => {
     const date = new Date();
     const isLoading =
-      activeTab === 'Bookings' ? isReservationsLoading : isAvailabiltyLoading;
+      activeTab === 'Bookings'
+        ? isReservationsLoading && isHostReservationsLoading
+        : isAvailabiltyLoading;
     const data =
       activeTab === 'Bookings'
-        ? reservations?.reservations
+        ? reservations?.reservations.concat(hostReservations?.reservations)
         : availabilities?.availability;
     const filteredData = data?.filter(item => {
       switch (activeSubTab) {
@@ -66,6 +74,8 @@ export const ActivityScreen = () => {
     availabilities,
     styles.content,
     theme.appTheme.colors.primary,
+    hostReservations,
+    isHostReservationsLoading,
   ]);
 
   const renderReservationItem = ({item}) => (

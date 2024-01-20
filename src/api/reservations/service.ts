@@ -11,6 +11,7 @@ import {
   CreateChatMessageResponse,
   ListChatMessagesParams,
   ListChatMessagesResponse,
+  ListHostReservationsParams,
 } from './dtos';
 
 const basePath = '/reservations/v1';
@@ -107,6 +108,30 @@ const listReservations = async (
   };
 };
 
+const listHostReservations = async (
+  params: ListHostReservationsParams,
+  onError?: ErrorHandler,
+): Promise<ListReservationsResponse> => {
+  Object.keys(params).forEach(
+    key => params[key] === undefined && delete params[key],
+  );
+  const queryString = new URLSearchParams(params as any).toString();
+  const endpoint = queryString
+    ? `${basePath}/host?${queryString}`
+    : `${basePath}/host`;
+  const res = await api<ListReservationsResponse>({
+    endpoint,
+    method: 'GET',
+    onError,
+  });
+
+  return {
+    reservations: res.reservations.map(toReservation),
+    next_offset_id: res.next_offset_id,
+    limit: res.limit,
+  };
+};
+
 const createMessage = async (
   data: CreateChatMessageRequest,
   onError?: ErrorHandler,
@@ -154,6 +179,7 @@ export const ReservationAPI = {
   update: updateReservation,
   delete: deleteReservation,
   list: listReservations,
+  listForHost: listHostReservations,
   createMessage,
   listMessages,
 };

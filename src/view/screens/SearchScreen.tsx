@@ -88,7 +88,7 @@ export const SearchScreen = ({navigation}) => {
     }
 
     return filteredList;
-  }, [startDate, endDate, location]);
+  }, [startDate, endDate, location, searchResults]);
   useLocationPermission();
 
   const renderMarker = useCallback(

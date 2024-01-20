@@ -12,14 +12,14 @@ export const useCreateAvailability = () => {
     },
     onSuccess: newAvailability => {
       // Invalidate and refetch availabilities query to update the list
-      // queryClient.invalidateQueries({queryKey: [MY_AVAILABILITIES_QUERY_KEY]});
+      queryClient.invalidateQueries({queryKey: [MY_AVAILABILITIES_QUERY_KEY]});
 
       // Optionally, update the availabilities cache directly if you want to append the new availability
       // without needing a refetch. This depends on your application's behavior.
-      queryClient.setQueryData<Availability[]>(
-        [MY_AVAILABILITIES_QUERY_KEY],
-        old => [...old, newAvailability],
-      );
+      // queryClient.setQueryData<Availability[]>(
+      //   [MY_AVAILABILITIES_QUERY_KEY],
+      //   old => [...old, newAvailability],
+      // );
 
       return newAvailability;
     },

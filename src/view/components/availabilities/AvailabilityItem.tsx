@@ -13,7 +13,7 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const {spaceMap} = useMySpaces();
-  const {buildingMap} = useBuildings(Object.keys(spaceMap));
+  const {buildingMap} = useBuildings(Object.keys(spaceMap).map(Number));
 
   const space = useMemo(
     () => spaceMap?.[availability.space_id],

@@ -1,4 +1,4 @@
-import {ListChatMessagesParams, Reservation, ReservationAPI} from '@/api';
+import {ListChatMessagesParams, ReservationAPI} from '@/api';
 import {useQuery} from '@tanstack/react-query';
 import {MESSAGES_QUERY_KEY} from './consts';
 

@@ -2,8 +2,8 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {friendlyDateRange} from '@/utils';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useBuildings, useMyReservations, useMySpaces} from '@/state';
-import {Title, Text, Button} from '../common';
+import {useBuildings, useReservation, useSpace} from '@/state';
+import {Title, Text, Button, LoadingSpinner} from '../common';
 import {SpaceCard} from '../spaces';
 
 export type ReservationDetailsScreenProps = {
@@ -15,23 +15,26 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
   const styles = getStyles(theme);
 
   const {reservation_id} = route.params as ReservationDetailsScreenProps;
-  const {reservationMap} = useMyReservations();
-  const reservation = reservationMap?.[reservation_id];
-  const {spaceMap} = useMySpaces();
-  const {buildingMap} = useBuildings(Object.keys(spaceMap).map(Number));
-
-  const space = spaceMap?.[reservation?.space_id];
-  const building = buildingMap?.[space?.building_id];
+  const {data: reservation} = useReservation(reservation_id);
+  const {data: space} = useSpace(reservation?.space_id);
+  const {data: building} = useBuildings([space?.building_id]);
 
   const onChatButtonPressed = () => {
-    navigation.navigate('ReservationChat', {reservation_id: reservation.id});
+    if (!reservation) {
+      return;
+    }
+    navigation.navigate('ReservationChat', {reservation_id: reservation?.id});
   };
+
+  if (!reservation || !space || !building) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <ScrollView>
       <View style={styles.section}>
         <Title>Reservation</Title>
-        <SpaceCard building={building} space={space} />
+        <SpaceCard building={building?.[0]} space={space} />
         <Text>
           {friendlyDateRange(reservation.start_date, reservation.end_date)}
         </Text>

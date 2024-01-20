@@ -5,6 +5,7 @@ import {useAuthenticator} from '@aws-amplify/ui-react-native';
 import {useAccessToken} from '@/state';
 import {useTheme, AppTheme} from '@/view/theme';
 import {StripeAPI} from '@/api';
+import {useQueryClient} from '@tanstack/react-query';
 
 export const ProfileScreen = () => {
   const tokens = useAccessToken();
@@ -12,6 +13,7 @@ export const ProfileScreen = () => {
   const userId = tokens?.idToken?.payload.sub;
 
   const {signOut} = useAuthenticator(context => [context.user]);
+  const queryClient = useQueryClient();
 
   const {theme, toggleTheme} = useTheme();
   const styles = getStyles(theme.appTheme);
@@ -34,6 +36,11 @@ export const ProfileScreen = () => {
 
   const stripeAccountPressed = async () => {
     await StripeAPI.showDashboard();
+  };
+
+  const onSignOut = () => {
+    queryClient.clear();
+    signOut();
   };
 
   return (
@@ -80,7 +87,7 @@ export const ProfileScreen = () => {
         <Text style={styles.buttonText}>Stripe Account</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={signOut}>
+      <TouchableOpacity style={styles.button} onPress={onSignOut}>
         <Icon name="logout" size={24} color="#6e6e6e" style={styles.icon} />
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>

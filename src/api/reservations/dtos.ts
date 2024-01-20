@@ -38,6 +38,11 @@ export interface ListReservationsParams {
   user?: boolean;
 }
 
+export interface ListHostReservationsParams {
+  offset_id?: number;
+  limit?: number;
+}
+
 export interface ListReservationsResponse {
   reservations: Reservation[];
   next_offset_id?: number;
