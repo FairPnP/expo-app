@@ -12,6 +12,8 @@ import {
   ListChatMessagesParams,
   ListChatMessagesResponse,
   ListHostReservationsParams,
+  ListConversationsParams,
+  ListConversationsResponse,
 } from './dtos';
 
 const basePath = '/reservations/v1';
@@ -25,6 +27,11 @@ const toReservation = (reservationResponse: any) => ({
 const toMessage = (messageResponse: any) => ({
   ...messageResponse,
   created_at: new Date(messageResponse.created_at + 'Z'),
+});
+
+const toConversaion = (chatSummaryResponse: any) => ({
+  ...chatSummaryResponse,
+  created_at: new Date(chatSummaryResponse.created_at + 'Z'),
 });
 
 const createReservation = async (
@@ -153,6 +160,9 @@ const listMessages = async (
   params: ListChatMessagesParams,
   onError?: ErrorHandler,
 ): Promise<ListChatMessagesResponse> => {
+  Object.keys(params).forEach(
+    key => params[key] === undefined && delete params[key],
+  );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString
     ? `${basePath}/chat/${reservation_id}?${queryString}`
@@ -173,6 +183,34 @@ const listMessages = async (
   };
 };
 
+const listConversations = async (
+  host: boolean,
+  params: ListConversationsParams,
+  onError?: ErrorHandler,
+): Promise<ListConversationsResponse> => {
+  Object.keys(params).forEach(
+    key => params[key] === undefined && delete params[key],
+  );
+  const queryString = new URLSearchParams(params as any).toString();
+  const path = host ? 'host' : 'guest';
+  const endpoint = queryString
+    ? `${basePath}/chat/${path}?${queryString}`
+    : `${basePath}/chat/${path}`;
+  const res = await api<ListConversationsResponse>({
+    endpoint,
+    method: 'GET',
+    onError,
+  });
+
+  const conversations = res.conversations.map(toConversaion);
+
+  return {
+    conversations,
+    next_offset_id: res.next_offset_id,
+    limit: res.limit,
+  };
+};
+
 export const ReservationAPI = {
   create: createReservation,
   get: readReservation,
@@ -182,4 +220,5 @@ export const ReservationAPI = {
   listForHost: listHostReservations,
   createMessage,
   listMessages,
+  listConversations,
 };

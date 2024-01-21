@@ -71,6 +71,14 @@ export interface ChatMessage {
   created_at: Date;
 }
 
+export interface ChatSummary {
+  reservation_id: number;
+  user_id: string;
+  message_id: number;
+  message: string;
+  created_at: Date;
+}
+
 // ======================================================================
 // Chat DTOs
 
@@ -92,6 +100,20 @@ export interface ListChatMessagesParams {
 export interface ListChatMessagesResponse {
   messages: ChatMessage[];
   reservation_id: number;
+  next_offset_id?: number;
+  limit: number;
+}
+
+// ======================================================================
+// Conversation DTOs
+
+export interface ListConversationsParams {
+  offset_id?: number;
+  limit?: number;
+}
+
+export interface ListConversationsResponse {
+  conversations: ChatSummary[];
   next_offset_id?: number;
   limit: number;
 }

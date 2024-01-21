@@ -11,7 +11,8 @@ import {
   ThemeProvider as AmplifyThemeProvider,
 } from '@aws-amplify/ui-react-native';
 import {Amplify} from 'aws-amplify';
-import {ThemeProvider, useTheme, MainScreen} from '@/view';
+import {MainScreen} from '@/view/MainScreen';
+import {ThemeProvider, useTheme} from '@/view/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import * as Sentry from 'sentry-expo';
@@ -20,6 +21,8 @@ import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import type {AppStateStatus} from 'react-native';
 import {focusManager} from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
+import {AppModeProvider} from '@/state';
 
 // sentry
 Sentry.init({
@@ -113,8 +116,11 @@ function App() {
                 // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
               >
                 <NavigationContainer theme={theme.appTheme} linking={linking}>
-                  <MainScreen />
+                  <AppModeProvider>
+                    <MainScreen />
+                  </AppModeProvider>
                 </NavigationContainer>
+                <Toast />
               </StripeProvider>
             </QueryClientProvider>
           </Authenticator>

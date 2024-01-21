@@ -5,3 +5,4 @@ export * from './reservations';
 export * from './availabilities';
 export * from './stripe';
 export * from './s3';
+export * from './mmkv';
