@@ -19,13 +19,13 @@ export const ParkingHome = () => {
         <Section title="Parking">
           <Text>Parking</Text>
         </Section>
-        <Section title="Parking">
+        <Section title="Upcoming">
           <Text>Parking</Text>
         </Section>
       </ScrollView>
       <View style={styles.bottomArea}>
         <Section>
-          <Title>Switch to Hosting</Title>
+          <Title style={{marginVertical: 4}}>Manage your listings</Title>
           <IconButton
             icon="directions"
             text="Switch to Hosting"

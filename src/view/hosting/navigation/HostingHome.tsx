@@ -79,7 +79,7 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
       </ScrollView>
       <View style={styles.bottomArea}>
         <Section>
-          <Title>Switch to Parking</Title>
+          <Title style={{marginVertical: 4}}>Looking for parking?</Title>
           <IconButton
             icon="directions"
             text="Switch to Parking"

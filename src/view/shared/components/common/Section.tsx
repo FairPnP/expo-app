@@ -22,7 +22,7 @@ export const Section = ({children, style, title}: SectionProps) => {
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     section: {
-      padding: 10,
+      paddingHorizontal: 10,
     },
     title: {
       fontSize: 28,
