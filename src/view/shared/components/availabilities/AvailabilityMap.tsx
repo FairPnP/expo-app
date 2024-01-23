@@ -54,8 +54,12 @@ export const AvailabilityMap = ({
   const [searchedState, setSearchedState] = useState<Region>(null);
 
   useEffect(() => {
+    console.log(location);
     if (location) {
       mapRef.current?.animateToRegion(location, 1000);
+    }
+    if (location && !searchedState) {
+      setSearchedState(location);
     }
   }, [location]);
 
