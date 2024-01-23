@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {friendlyDateRange} from '@/utils';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useBuildings, useReservation, useSpace} from '@/state';
+import {useBuilding, useReservation, useSpace} from '@/state';
 import {Title, Text, Button, LoadingSpinner, SpaceCard} from '@/view/shared';
 
 export type ReservationDetailsScreenProps = {
@@ -16,7 +16,7 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
   const {reservation_id} = route.params as ReservationDetailsScreenProps;
   const {data: reservation} = useReservation(reservation_id);
   const {data: space} = useSpace(reservation?.space_id);
-  const {data: building} = useBuildings([space?.building_id]);
+  const {data: building} = useBuilding(space?.building_id);
 
   const onChatButtonPressed = () => {
     if (!reservation) {
@@ -33,7 +33,7 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
     <ScrollView>
       <View style={styles.section}>
         <Title>Reservation</Title>
-        <SpaceCard building={building?.[0]} space={space} />
+        <SpaceCard building={building} space={space} />
         <Text>
           {friendlyDateRange(reservation.start_date, reservation.end_date)}
         </Text>

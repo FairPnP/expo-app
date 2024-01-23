@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Availability} from '@/api';
-import {useBuildings, useMySpaces} from '@/state';
+import {useBuilding, useSpace} from '@/state';
 import {Text} from '../common';
 
 export type AvailabilityItemProps = {
@@ -12,17 +12,8 @@ export type AvailabilityItemProps = {
 export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {spaceMap} = useMySpaces();
-  const {buildingMap} = useBuildings(Object.keys(spaceMap).map(Number));
-
-  const space = useMemo(
-    () => spaceMap?.[availability.space_id],
-    [spaceMap, availability.space_id],
-  );
-  const building = useMemo(
-    () => buildingMap?.[space?.building_id],
-    [buildingMap, space?.building_id],
-  );
+  const {data: space} = useSpace(availability.space_id);
+  const {data: building} = useBuilding(space?.building_id);
 
   return (
     <View style={styles.container}>

@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {HorizontalGroup, Text, Title, VerticalGroup} from '../common';
+import {HorizontalGroup, Text, VerticalGroup} from '../common';
 import {ChatSummary} from '@/api';
-import {useBuildings, useReservation, useSpace} from '@/state';
+import {useBuilding, useReservation, useSpace} from '@/state';
 import {FontAwesome5} from '@expo/vector-icons';
-import {toDateString, toDateTimeString, toTimeString} from '@/utils';
+import {toDateString, toTimeString} from '@/utils';
 
 export type ConversationItemProps = {
   summary: ChatSummary;
@@ -18,7 +18,7 @@ export const ConversationItem = ({summary, onPress}: ConversationItemProps) => {
 
   const {data: reservation} = useReservation(summary.reservation_id);
   const {data: space} = useSpace(reservation?.space_id);
-  const {data: building} = useBuildings([space?.building_id]);
+  const {data: building} = useBuilding(space?.building_id);
 
   const onConversationPress = () => {
     onPress(summary);
@@ -38,7 +38,7 @@ export const ConversationItem = ({summary, onPress}: ConversationItemProps) => {
             style={styles.icon}
           />
           <VerticalGroup style={styles.textArea}>
-            <Text>{building?.[0].name}</Text>
+            <Text>{building?.name}</Text>
             <Text>{space?.name}</Text>
             <Text style={styles.message}>{summary.message}</Text>
           </VerticalGroup>

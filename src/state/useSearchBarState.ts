@@ -8,7 +8,10 @@ const later = new Date(today.getHours() + 4);
 export const useSearchBarState = () => {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(later);
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  }>(undefined);
 
   return {
     startDate,

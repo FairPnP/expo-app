@@ -97,7 +97,7 @@ const listBuildings = async (
 
 export const BuildingAPI = {
   create: createBuilding,
-  read: readBuilding,
+  get: readBuilding,
   update: updateBuilding,
   delete: deleteBuilding,
   list: listBuildings,

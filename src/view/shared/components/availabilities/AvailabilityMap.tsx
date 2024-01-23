@@ -54,14 +54,23 @@ export const AvailabilityMap = ({
   const [searchedState, setSearchedState] = useState<Region>(null);
 
   useEffect(() => {
-    console.log(location);
     if (location) {
       mapRef.current?.animateToRegion(location, 1000);
-    }
-    if (location && !searchedState) {
-      setSearchedState(location);
+      if (!searchedState) {
+        setSearchedState(location);
+      }
     }
   }, [location]);
+
+  useEffect(() => {
+    // deselect marker if its not longer in the list
+    if (
+      selectedMarker &&
+      !markers?.find(m => m.availability.id === selectedMarker.availability.id)
+    ) {
+      setSelectedMarker(null);
+    }
+  }, [markers, selectedMarker]);
 
   const handleRegionChange = useCallback(
     (r: Region) => {

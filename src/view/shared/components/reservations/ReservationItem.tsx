@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Reservation} from '@/api';
-import {useBuildings, useMySpaces} from '@/state';
+import {useBuilding, useSpace} from '@/state';
 import {Text} from '../common';
 
 export type ReservationItemProps = {
@@ -14,17 +14,8 @@ export const ReservationItem = ({reservation}: ReservationItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const navigation = useNavigation() as any;
-  const {spaceMap} = useMySpaces();
-  const {buildingMap} = useBuildings(Object.keys(spaceMap).map(Number));
-
-  const space = useMemo(
-    () => spaceMap?.[reservation.space_id],
-    [spaceMap, reservation.space_id],
-  );
-  const building = useMemo(
-    () => buildingMap?.[space?.building_id],
-    [buildingMap, space?.building_id],
-  );
+  const {data: space} = useSpace(reservation.space_id);
+  const {data: building} = useBuilding(space?.building_id);
 
   const onPress = useCallback(() => {
     if (!reservation) {
