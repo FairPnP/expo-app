@@ -4,9 +4,10 @@ import {RouteProp} from '@react-navigation/native';
 import {InboxScreen} from '@/view/shared';
 import {FontAwesome5} from '@expo/vector-icons';
 import {ProfileScreen} from './ProfileScreen';
-import {HomeScreen} from './HomeScreen';
+import {HostingHomeScreen} from './HostingHome';
 import {ReservationsScreen} from './ReservationsScreen';
 import {ListingsScreen} from './ListingsScreen';
+import {useTheme} from '@/view/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +35,8 @@ const TabBarIcon: React.FC<TabBarIconProps> = ({route, color, size}) => {
 };
 
 export const HostingNavigator = () => {
+  const theme = useTheme().theme.appTheme;
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -52,9 +55,11 @@ export const HostingNavigator = () => {
         tabBarStyle: {
           height: 60,
           paddingBottom: 6,
+          backgroundColor: theme.colors.card,
+          color: theme.colors.text,
         },
       })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HostingHomeScreen} />
       <Tab.Screen name="Listings" component={ListingsScreen} />
       <Tab.Screen name="Reservations" component={ReservationsScreen} />
       <Tab.Screen name="Inbox" component={InboxScreen} />

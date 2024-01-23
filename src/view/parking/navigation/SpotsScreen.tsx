@@ -17,8 +17,8 @@ import {
 export const SpotsScreen = () => {
   const [activeTab, setActiveTab] = useState('Bookings');
   const [activeSubTab, setActiveSubTab] = useState('Upcoming');
-  const {theme} = useTheme();
-  const styles = getStyles(theme.appTheme);
+  const theme = useTheme().theme.appTheme;
+  const styles = getStyles(theme);
 
   const {data: hostReservations, isLoading: isHostReservationsLoading} =
     useHostReservations();
@@ -73,7 +73,7 @@ export const SpotsScreen = () => {
     reservations,
     availabilities,
     styles.content,
-    theme.appTheme.colors.primary,
+    theme.colors.primary,
     hostReservations,
     isHostReservationsLoading,
   ]);
@@ -123,6 +123,7 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: theme.colors.background,
     },
     tabsContainer: {
       flexDirection: 'row',

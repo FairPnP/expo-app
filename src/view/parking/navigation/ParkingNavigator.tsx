@@ -7,6 +7,7 @@ import {SpotsScreen} from './SpotsScreen';
 import {InboxScreen} from '@/view/shared';
 import {ProfileScreen} from './ProfileScreen';
 import {FontAwesome5} from '@expo/vector-icons';
+import {useTheme} from '@/view/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +35,8 @@ const TabBarIcon: React.FC<TabBarIconProps> = ({route, color, size}) => {
 };
 
 export const ParkingNavigator = () => {
+  const theme = useTheme().theme.appTheme;
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -52,6 +55,8 @@ export const ParkingNavigator = () => {
         tabBarStyle: {
           height: 60,
           paddingBottom: 6,
+          backgroundColor: theme.colors.card,
+          color: theme.colors.text,
         },
       })}>
       <Tab.Screen name="Home" component={ParkingHome} />

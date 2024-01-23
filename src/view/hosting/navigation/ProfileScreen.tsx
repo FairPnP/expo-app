@@ -4,8 +4,8 @@ import {useAuthenticator} from '@aws-amplify/ui-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {StripeAPI} from '@/api';
 import {useQueryClient} from '@tanstack/react-query';
-import {FontAwesome5} from '@expo/vector-icons';
 import {useAppMode, useAuth} from '@/state';
+import {IconButton} from '@/view/shared';
 
 export const ProfileScreen = () => {
   const {tokens} = useAuth();
@@ -67,55 +67,19 @@ export const ProfileScreen = () => {
 
       <View style={styles.separator} />
 
-      <TouchableOpacity style={styles.button} onPress={toggleTheme}>
-        <FontAwesome5
-          name="tv"
-          size={24}
-          color={theme.appTheme.colors.text}
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Toggle Theme</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <FontAwesome5
-          name="cog"
-          size={24}
-          color="#6e6e6e"
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Settings</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={stripeAccountPressed}>
-        <FontAwesome5
-          name="stripe"
-          size={24}
-          color="#6e6e6e"
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Stripe Account</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={onSwitchToParking}>
-        <FontAwesome5
-          name="parking"
-          size={24}
-          color="#6e6e6e"
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Switch to Parking</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={onSignOut}>
-        <FontAwesome5
-          name="sign-out-alt"
-          size={24}
-          color="#6e6e6e"
-          style={styles.icon}
-        />
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
+      <IconButton icon="tv" text="Toggle Theme" onPress={toggleTheme} />
+      <IconButton icon="cog" text="Settings" onPress={() => {}} />
+      <IconButton
+        icon="cc-stripe"
+        text="Stripe Account"
+        onPress={stripeAccountPressed}
+      />
+      <IconButton
+        icon="directions"
+        text="Switch to Parking"
+        onPress={onSwitchToParking}
+      />
+      <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
     </View>
   );
 };
@@ -151,21 +115,5 @@ const getStyles = (theme: AppTheme) =>
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
       width: '100%',
-    },
-    button: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 16,
-      width: '100%',
-      backgroundColor: theme.colors.card,
-    },
-    buttonText: {
-      fontSize: 20,
-      color: theme.colors.text,
-    },
-    icon: {
-      width: 36,
-      marginHorizontal: 10,
-      color: theme.colors.text,
     },
   });

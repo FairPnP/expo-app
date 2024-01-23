@@ -94,7 +94,7 @@ const getStyles = (theme: AppTheme) =>
     },
     searchIcon: {
       position: 'absolute',
-      top: 16,
+      top: 11,
       left: 16,
     },
     infoArea: {

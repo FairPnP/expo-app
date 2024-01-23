@@ -34,9 +34,22 @@ export const ListingsScreen = () => {
       activeTab === 'Bookings'
         ? isReservationsLoading && isHostReservationsLoading
         : isAvailabiltyLoading;
+
+    const combinedReservations =
+      (reservations?.reservations ?? []).concat(
+        hostReservations?.reservations ?? [],
+      ) || [];
+
+    const uniqueReservations = combinedReservations.reduce((acc, current) => {
+      if (!acc.find(reservation => reservation.id === current.id)) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+
     const data =
       activeTab === 'Bookings'
-        ? reservations?.reservations.concat(hostReservations?.reservations)
+        ? uniqueReservations
         : availabilities?.availability;
     const filteredData = data?.filter(item => {
       switch (activeSubTab) {
@@ -123,6 +136,7 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: theme.colors.background,
     },
     tabsContainer: {
       flexDirection: 'row',

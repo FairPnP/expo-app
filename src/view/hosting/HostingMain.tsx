@@ -10,10 +10,14 @@ import {
 } from '../shared';
 import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
 import {ManageSpotScreen} from './stack/ManageSpotScreen';
+import {AppTheme, useTheme} from '../theme';
 
 const Stack = createNativeStackNavigator();
 
 export const HostingMain = () => {
+  const theme = useTheme().theme.appTheme;
+  const styles = getStyles(theme);
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator>
@@ -65,8 +69,10 @@ export const HostingMain = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+  });

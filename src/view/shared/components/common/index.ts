@@ -9,3 +9,5 @@ export * from './LoadingSpinner';
 export * from './forms';
 export * from './HorizontalGroup';
 export * from './VerticalGroup';
+export * from './Section';
+export * from './IconButton';

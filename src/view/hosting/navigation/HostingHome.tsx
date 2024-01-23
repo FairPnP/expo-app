@@ -1,21 +1,32 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {Title, ListView, LoadingSpinner} from '@/view/shared';
+import {
+  Title,
+  ListView,
+  LoadingSpinner,
+  Section,
+  IconButton,
+} from '@/view/shared';
 import {ManageSpotScreenProps} from '../stack/ManageSpotScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
-import {useBuildings, useMySpaces} from '@/state';
+import {useAppMode, useBuildings, useMySpaces} from '@/state';
 import {MySpot} from '../components';
 
 const favorites: Space[] = [];
 
 type HomeScreenProps = {};
 
-export const HomeScreen = ({}: HomeScreenProps) => {
+export const HostingHomeScreen = ({}: HomeScreenProps) => {
   const navigation = useNavigation<any>();
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const {setAppMode} = useAppMode();
+
+  const onSwitchToParking = () => {
+    setAppMode('parking');
+  };
 
   const {data: spaces, isLoading} = useMySpaces();
   const {data: buildings} = useBuildings(
@@ -52,10 +63,8 @@ export const HomeScreen = ({}: HomeScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.separator} />
-      <ScrollView>
-        <View style={styles.page}>
-          <Title>My Spots</Title>
+      <ScrollView style={styles.topArea}>
+        <Section title="My Spots">
           {isLoading ? (
             <LoadingSpinner />
           ) : (
@@ -66,8 +75,18 @@ export const HomeScreen = ({}: HomeScreenProps) => {
               emptyMessage="You have no registered parking spots"
             />
           )}
-        </View>
+        </Section>
       </ScrollView>
+      <View style={styles.bottomArea}>
+        <Section>
+          <Title>Switch to Parking</Title>
+          <IconButton
+            icon="directions"
+            text="Switch to Parking"
+            onPress={onSwitchToParking}
+          />
+        </Section>
+      </View>
     </View>
   );
 };
@@ -76,20 +95,17 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: theme.colors.background,
     },
-    page: {
-      flex: 1,
-      padding: 8,
+    topArea: {
+      marginBottom: 100,
     },
-    spacer: {
-      height: 20,
-    },
-    topBar: {
-      paddingVertical: 8,
-      paddingHorizontal: 8,
-    },
-    separator: {
-      borderBottomColor: theme.colors.border,
-      borderBottomWidth: 1,
+    bottomArea: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
+      height: 100,
+      borderTopColor: theme.colors.border,
+      borderTopWidth: 1,
     },
   });

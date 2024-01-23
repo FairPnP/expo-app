@@ -10,10 +10,14 @@ import {
   StripeReturnScreen,
 } from '../shared';
 import {ConfirmReservationScreen} from './stack/ConfirmReservationScreen';
+import {AppTheme, useTheme} from '../theme';
 
 const Stack = createNativeStackNavigator();
 
 export const ParkingMain = () => {
+  const theme = useTheme().theme.appTheme;
+  const styles = getStyles(theme);
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator>
@@ -64,8 +68,10 @@ export const ParkingMain = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+  });
