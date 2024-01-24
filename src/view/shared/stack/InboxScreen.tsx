@@ -1,7 +1,13 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useConversations} from '@/state';
-import {ConversationItem, ListView, LoadingSpinner, Title} from '../components';
+import {
+  ConversationItem,
+  ListView,
+  LoadingSpinner,
+  Section,
+  Title,
+} from '../components';
 import {ChatSummary} from '@/api';
 import {AppTheme, useTheme} from '@/view/theme';
 
@@ -31,16 +37,15 @@ export const InboxScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={styles.page}>
-          <Title>Inbox</Title>
-          <View style={styles.separator} />
+        <Section title="Inbox">
           <ListView
             data={conversations?.conversations}
             renderItem={renderConversation}
             keyExtractor={item => item.reservation_id.toString()}
             emptyMessage="Inbox is empty."
+            style={styles.content}
           />
-        </View>
+        </Section>
       </ScrollView>
     </View>
   );
@@ -52,10 +57,6 @@ const getStyles = (theme: AppTheme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
     },
-    page: {
-      flex: 1,
-      padding: 8,
-    },
     spacer: {
       height: 20,
     },
@@ -63,8 +64,7 @@ const getStyles = (theme: AppTheme) =>
       paddingVertical: 8,
       paddingHorizontal: 8,
     },
-    separator: {
-      borderBottomColor: theme.colors.border,
-      borderBottomWidth: 1,
+    content: {
+      padding: 4,
     },
   });

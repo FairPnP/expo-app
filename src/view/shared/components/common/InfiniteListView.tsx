@@ -63,7 +63,7 @@ export const InfiniteListView = <T extends unknown>({
   );
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       {chunkedData.length === 0 ? (
         <Text style={styles.message}>{emptyMessage}</Text>
       ) : (
@@ -85,6 +85,10 @@ export const InfiniteListView = <T extends unknown>({
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
+    container: {
+      flex: 1,
+      minHeight: 100,
+    },
     message: {
       color: theme.colors.text,
       fontSize: 16,

@@ -34,7 +34,7 @@ export const ListView = <T extends unknown>({
           renderItem={renderItem}
           ItemSeparatorComponent={renderSeparator}
           keyExtractor={keyExtractor}
-          style={style}
+          contentContainerStyle={style}
           estimatedItemSize={300}
         />
       )}

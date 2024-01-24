@@ -82,8 +82,8 @@ export const AvailabilityMap = ({
       if (!showRefresh && searchedState) {
         const latDiff = Math.abs(r.latitude - searchedState.latitude);
         const longDiff = Math.abs(r.longitude - searchedState.longitude);
-        const latRange = searchedState.latitudeDelta / 2;
-        const longRange = searchedState.longitudeDelta / 2;
+        const latRange = searchedState.latitudeDelta / 4;
+        const longRange = searchedState.longitudeDelta / 4;
         if (latDiff > latRange || longDiff > longRange) {
           setShowRefresh(true);
         }
