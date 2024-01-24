@@ -30,18 +30,18 @@ export const InboxScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <ScrollView> */}
-      <View style={styles.page}>
-        <Title>Inbox</Title>
-        <View style={styles.separator} />
-        <ListView
-          data={conversations?.conversations}
-          renderItem={renderConversation}
-          keyExtractor={item => item.reservation_id.toString()}
-          emptyMessage="Inbox is empty."
-        />
-      </View>
-      {/* </ScrollView> */}
+      <ScrollView>
+        <View style={styles.page}>
+          <Title>Inbox</Title>
+          <View style={styles.separator} />
+          <ListView
+            data={conversations?.conversations}
+            renderItem={renderConversation}
+            keyExtractor={item => item.reservation_id.toString()}
+            emptyMessage="Inbox is empty."
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };

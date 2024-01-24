@@ -1,12 +1,7 @@
 import React, {useCallback} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 import {AppTheme, useTheme} from '@/view/theme';
+import {FlashList} from '@shopify/flash-list';
 
 export type InfiniteListViewProps<T> = {
   data: T[];
@@ -72,7 +67,7 @@ export const InfiniteListView = <T extends unknown>({
       {chunkedData.length === 0 ? (
         <Text style={styles.message}>{emptyMessage}</Text>
       ) : (
-        <FlatList
+        <FlashList
           data={chunkedData}
           renderItem={renderPage}
           keyExtractor={(item, index) => index.toString()}
@@ -81,6 +76,7 @@ export const InfiniteListView = <T extends unknown>({
           onEndReachedThreshold={0.5}
           horizontal
           showsHorizontalScrollIndicator={false}
+          estimatedItemSize={300}
         />
       )}
     </View>

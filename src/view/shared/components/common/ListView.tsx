@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {AppTheme, useTheme} from '@/view/theme';
+import {FlashList} from '@shopify/flash-list';
 
 export type ListViewProps<T> = {
   data: T[];
@@ -23,25 +24,30 @@ export const ListView = <T extends unknown>({
   const renderSeparator = () => <View style={styles.separator} />;
 
   return (
-    <>
+    <View style={styles.container}>
       {data?.length === 0 ? (
         <Text style={styles.message}>{emptyMessage}</Text>
       ) : (
-        <FlatList
+        <FlashList
           scrollEnabled={false}
           data={data}
           renderItem={renderItem}
           ItemSeparatorComponent={renderSeparator}
           keyExtractor={keyExtractor}
           style={style}
+          estimatedItemSize={300}
         />
       )}
-    </>
+    </View>
   );
 };
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
+    container: {
+      flex: 1,
+      minHeight: 100,
+    },
     message: {
       color: theme.colors.text,
       fontSize: 16,
