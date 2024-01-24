@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "841374583718",
+    "project_id": "spring-market-406119",
+    "storage_bucket": "spring-market-406119.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841374583718:android:d2cc086643141185a39d67",
+        "android_client_info": {
+          "package_name": "com.fairpnp.fairpnp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841374583718-9hj367s57cll8kft7pa3lihhj2ovub73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841374583718-9hj367s57cll8kft7pa3lihhj2ovub73.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

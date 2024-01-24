@@ -1,11 +1,7 @@
 import React, {Suspense, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View, Platform, KeyboardAvoidingView} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {
-  useLocationPermission,
-  useSearchAvailabilities,
-  useSpace,
-} from '@/state';
+import {useSearchAvailabilities, useSpace} from '@/state';
 
 import {getAvailabilityCost} from '@/api';
 import {AvailabilityData, LoadingSpinner} from '@/view/shared';
@@ -86,7 +82,6 @@ export const MapScreen = ({navigation}) => {
 
     return filteredList;
   }, [startDate, endDate, location, searchResults]);
-  useLocationPermission();
 
   const renderMarker = useCallback(
     (marker: AvailabilityData, isSelected: boolean) => {

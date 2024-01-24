@@ -1,6 +1,7 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import MapView, {
+  LatLng,
   Marker,
   MarkerPressEvent,
   PROVIDER_GOOGLE,
@@ -9,6 +10,7 @@ import MapView, {
 import {Text} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Availability, Building, SpaceResult} from '@/api';
+import {useLocation} from '@/state/useLocation';
 
 export type AvailabilityData = {
   availability: Availability;
@@ -52,6 +54,7 @@ export const AvailabilityMap = ({
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
   const [showRefresh, setShowRefresh] = useState(false);
   const [searchedState, setSearchedState] = useState<Region>(null);
+  useLocation();
 
   useEffect(() => {
     if (location) {

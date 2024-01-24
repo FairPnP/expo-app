@@ -1,31 +1,43 @@
-import {Space, SpaceAPI} from '@/api';
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
+import {SpaceAPI} from '@/api';
 import {MY_SPACES_QUERY_KEY} from './consts';
 
-export const useMySpaces = (offset_id?: number) => {
-  const query = useQuery({
-    queryKey: [MY_SPACES_QUERY_KEY, offset_id],
-    queryFn: async () => {
+export const useMySpaces = (limit = 3) => {
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+  } = useInfiniteQuery({
+    queryKey: [MY_SPACES_QUERY_KEY],
+    queryFn: async ({pageParam = undefined}) => {
       const response = await SpaceAPI.list({
-        offset_id,
-        user: true,
+        offset_id: pageParam,
+        limit: limit,
       });
       return response;
     },
-    staleTime: Infinity,
-    gcTime: Infinity,
+    getNextPageParam: lastPage => lastPage.next_offset_id,
+    initialPageParam: undefined,
   });
 
-  const spaceMap = query.data?.spaces.reduce(
-    (acc, space) => {
-      acc[space.id] = space;
-      return acc;
-    },
-    {} as Record<number, Space>,
-  );
+  // Flatten the paginated data
+  const spaces = data?.pages.flatMap(page => page.spaces) ?? [];
 
   return {
-    ...query,
-    spaceMap,
+    spaces,
+    isLoading,
+    isError,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
   };
 };

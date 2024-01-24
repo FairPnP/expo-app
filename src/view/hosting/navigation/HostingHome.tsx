@@ -2,10 +2,10 @@ import React, {useCallback} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {
   Title,
-  ListView,
   LoadingSpinner,
   Section,
   IconButton,
+  InfiniteListView,
 } from '@/view/shared';
 import {ManageSpotScreenProps} from '../stack/ManageSpotScreen';
 import {useNavigation} from '@react-navigation/native';
@@ -28,10 +28,9 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
     setAppMode('parking');
   };
 
-  const {data: spaces, isLoading} = useMySpaces();
-  const {data: buildings} = useBuildings(
-    spaces?.spaces.map(s => s.building_id),
-  );
+  const {spaces, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading} =
+    useMySpaces(5);
+  const {data: buildings} = useBuildings(spaces?.map(s => s.building_id));
 
   const handleSpotPress = useCallback(
     (space: Space, building: Building) => {
@@ -68,11 +67,15 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
           {isLoading ? (
             <LoadingSpinner />
           ) : (
-            <ListView
-              data={spaces?.spaces}
+            <InfiniteListView
+              data={spaces}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
               renderItem={renderSpot}
               keyExtractor={item => item.id.toString()}
               emptyMessage="You have no registered parking spots"
+              itemsPerPage={5}
             />
           )}
         </Section>

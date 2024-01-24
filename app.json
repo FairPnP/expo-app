@@ -34,7 +34,8 @@
           "apiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
         }
       },
-      "package": "com.fairpnp.fairpnp"
+      "package": "com.fairpnp.fairpnp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
