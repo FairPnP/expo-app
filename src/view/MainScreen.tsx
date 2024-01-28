@@ -1,25 +1,17 @@
 import React, {Suspense} from 'react';
 import {useAppMode} from '@/state';
 import {LoadingScreen} from './LoadingScreen';
-
-const ParkingMain = React.lazy(() =>
-  import('./parking/ParkingMain').then(module => ({
-    default: module.ParkingMain,
-  })),
-);
-const HostingMain = React.lazy(() =>
-  import('./hosting/HostingMain').then(module => ({
-    default: module.HostingMain,
-  })),
-);
+import {View} from 'react-native';
+import {ParkingMain} from './parking/ParkingMain';
+import {HostingMain} from './hosting/HostingMain';
 
 export const MainScreen = () => {
   const {appMode} = useAppMode();
 
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      {appMode === 'hosting' && <HostingMain />}
+    <View style={{flex: 1}}>
       {appMode === 'parking' && <ParkingMain />}
-    </Suspense>
+      {appMode === 'hosting' && <HostingMain />}
+    </View>
   );
 };

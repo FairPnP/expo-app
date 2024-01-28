@@ -14,6 +14,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.fairpnp.fairpnp",
+      "entitlements": {
+        "com.apple.developer.in-app-payments": ["merchant.com.fairpnp.fairpnp"]
+      },
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyCLyaEZP8HDbjZcqJOz9EXeiRXMJeGVDwU"
@@ -44,7 +48,7 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": {},
+          "merchantIdentifier": "merchant.com.fairpnp.fairpnp",
           "enableGooglePay": true
         }
       ],

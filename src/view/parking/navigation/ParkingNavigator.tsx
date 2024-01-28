@@ -8,6 +8,7 @@ import {InboxScreen} from '@/view/shared';
 import {ProfileScreen} from './ProfileScreen';
 import {FontAwesome5} from '@expo/vector-icons';
 import {useTheme} from '@/view/theme';
+import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,7 @@ export const ParkingNavigator = () => {
         // Make sure to pass route to the screenOptions
         headerShown: false,
         tabBarHideOnKeyboard: true,
+        tabBarLabelPosition: 'below-icon',
         // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: ({focused, color, size}) => (
           <TabBarIcon
@@ -53,8 +55,8 @@ export const ParkingNavigator = () => {
           />
         ),
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 6,
+          height: Platform.OS == 'ios' ? 70 : 60,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 6,
           backgroundColor: theme.colors.card,
           color: theme.colors.text,
         },

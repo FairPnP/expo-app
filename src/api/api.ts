@@ -10,9 +10,6 @@ const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 axiosRetry(apiClient, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
@@ -52,13 +49,21 @@ export const api = async <T>({
   try {
     const accessToken: string | undefined = await getAccessToken();
 
+    // Initialize headers with Authorization
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    // Add 'Content-Type' header for requests with a body
+    if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const config: AxiosRequestConfig = {
       url,
       method: method,
       data: data,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: headers,
     };
 
     const response: AxiosResponse<T> = await apiClient(config);
@@ -72,6 +77,8 @@ export const api = async <T>({
         text1: 'Netword Error',
         text2: 'Please check your internet connection and try again.',
       });
+
+      console.error('Network error:', method, url);
 
       throw error;
     }

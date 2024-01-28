@@ -1,6 +1,6 @@
 import {StripeAPI} from '@/api';
 import React, {useEffect} from 'react';
-import {LoadingSpinner} from '@/view/shared';
+import {LoadingSpinner} from '../components';
 
 export const StripeRefreshScreen = ({navigation}) => {
   const stripeAccount = async () => {

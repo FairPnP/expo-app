@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import React, {useEffect} from 'react';
 import {StripeAPI} from '@/api';
-import {LoadingSpinner} from '@/view/shared';
+import {LoadingSpinner} from '../components';
 
 export const StripeReturnScreen = ({navigation}) => {
   const validateStripeAccount = async () => {

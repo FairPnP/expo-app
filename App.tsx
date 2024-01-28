@@ -23,6 +23,7 @@ import type {AppStateStatus} from 'react-native';
 import {focusManager} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import {AppModeProvider} from '@/state';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 // sentry
 Sentry.init({
@@ -103,30 +104,31 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <AmplifyThemeProvider
-        theme={theme.amplifyTheme}
-        colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
-        <Authenticator.Provider>
-          <Authenticator>
-            <QueryClientProvider client={queryClient}>
-              <StripeProvider
-                publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
-                // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-                // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
-              >
-                <NavigationContainer theme={theme.appTheme} linking={linking}>
-                  <AppModeProvider>
-                    <MainScreen />
-                  </AppModeProvider>
-                </NavigationContainer>
-                <Toast />
-              </StripeProvider>
-            </QueryClientProvider>
-          </Authenticator>
-        </Authenticator.Provider>
-      </AmplifyThemeProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <AmplifyThemeProvider
+          theme={theme.amplifyTheme}
+          colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
+          <Authenticator.Provider>
+            <Authenticator>
+              <QueryClientProvider client={queryClient}>
+                <StripeProvider
+                  publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
+                  // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+                  merchantIdentifier="merchant.com.fairpnp.fairpnp">
+                  <NavigationContainer theme={theme.appTheme} linking={linking}>
+                    <AppModeProvider>
+                      <MainScreen />
+                    </AppModeProvider>
+                  </NavigationContainer>
+                  <Toast />
+                </StripeProvider>
+              </QueryClientProvider>
+            </Authenticator>
+          </Authenticator.Provider>
+        </AmplifyThemeProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 

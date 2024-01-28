@@ -19,7 +19,7 @@ export const HostingMain = () => {
   const styles = getStyles(theme);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <Stack.Navigator>
         <Stack.Screen
           name="Navigator"
