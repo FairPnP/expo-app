@@ -18,7 +18,7 @@ export const SpaceCard = ({building, space, style}: SpaceCardProps) => {
     <View style={[styles.container, style]}>
       <HorizontalGroup>
         <ImageDownload
-          url={space?.picture_url}
+          url={space?.img_urls?.[0]}
           style={styles.image}
           imageStyle={styles.image}
         />

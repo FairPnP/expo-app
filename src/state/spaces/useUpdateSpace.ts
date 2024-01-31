@@ -1,34 +1,41 @@
 // useUpdateSpace.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {SpaceAPI, UpdateSpaceRequest} from '@/api';
+import {SpaceAPI, UpdateSpaceRequest, uploadToS3} from '@/api';
 import {MY_SPACES_QUERY_KEY} from './consts';
 
-export const useUpdateSpace = () => {
+export const useUpdateSpaceImages = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
       spaceId,
-      updateData,
+      imageUris,
     }: {
       spaceId: number;
-      updateData: UpdateSpaceRequest;
+      imageUris: string[];
     }) => {
-      const response = await SpaceAPI.update(spaceId, updateData);
-      return response.space;
-    },
-    onSuccess: updatedSpace => {
-      // Invalidate and refetch spaces query to update the list
-      // queryClient.invalidateQueries({queryKey: [MY_SPACES_QUERY_KEY]});
-
-      // Update the individual space in the cache if needed
-      queryClient.setQueryData(
-        [MY_SPACES_QUERY_KEY, updatedSpace.id],
-        updatedSpace,
+      // create presigned urls
+      const presignedUrls = await SpaceAPI.createPresignedUrls(
+        spaceId,
+        imageUris.length,
+      );
+      // upload images to s3
+      await Promise.all(
+        imageUris.map((img, i) =>
+          uploadToS3(presignedUrls.data[i].presigned_url, img),
+        ),
       );
 
-      // Additional handling if there are other queries that depend on this space's data
+      // update space images
+      await SpaceAPI.postImageUpload(
+        presignedUrls.data.map(p => p.space_image_id),
+      );
+
+      return spaceId;
     },
-    // Optional: onError, onMutate, etc.
+    onSuccess: spaceId => {
+      // Invalidate and refetch spaces query to update the list
+      queryClient.invalidateQueries({queryKey: [MY_SPACES_QUERY_KEY]});
+    },
   });
 };

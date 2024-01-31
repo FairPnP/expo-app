@@ -7,12 +7,12 @@ export interface Space {
   building_id: number;
   name: string;
   description?: string;
-  picture_url?: string;
   max_vehicle_size: string;
   coverage: string;
   height_clearance_cm?: number;
   access_restrictions?: string;
   parking_instructions?: string;
+  img_urls?: string[];
 }
 
 // ======================================================================
@@ -22,7 +22,6 @@ export interface CreateSpaceRequest {
   building_id: number;
   name: string;
   description?: string;
-  picture_url?: string;
   max_vehicle_size: string;
   coverage: string;
   height_clearance_cm?: number;
@@ -63,7 +62,6 @@ export interface ListSpacesResponse {
 export interface UpdateSpaceRequest {
   name?: string;
   description?: string;
-  picture_url?: string;
   max_vehicle_size?: string;
   coverage?: string;
   height_clearance_cm?: number;
@@ -78,6 +76,12 @@ export interface UpdateSpaceResponse {
 // ======================================================================
 // Presigned URL DTOs
 
-export interface GetPresignedUrlResponse {
-  url: string;
+export interface PresignedUrl {
+  space_image_id: number;
+  slot_id: number;
+  presigned_url: string;
+}
+
+export interface CreatePresignedUrlsResponse {
+  data: PresignedUrl[];
 }

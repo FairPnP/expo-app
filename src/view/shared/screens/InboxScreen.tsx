@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useConversations} from '@/state';
 import {
@@ -6,10 +6,10 @@ import {
   ListView,
   LoadingSpinner,
   Section,
-  Title,
 } from '../components';
 import {ChatSummary} from '@/api';
 import {AppTheme, useTheme} from '@/view/theme';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const InboxScreen = ({navigation}) => {
   const theme = useTheme().theme.appTheme;
@@ -35,7 +35,7 @@ export const InboxScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <Section title="Inbox">
           <ListView
@@ -47,7 +47,7 @@ export const InboxScreen = ({navigation}) => {
           />
         </Section>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

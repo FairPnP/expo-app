@@ -6,6 +6,7 @@ import {StripeAPI} from '@/api';
 import {useQueryClient} from '@tanstack/react-query';
 import {useAppMode, useAuth} from '@/state';
 import {IconButton} from '@/view/shared';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ProfileScreen = () => {
   const {tokens} = useAuth();
@@ -49,7 +50,7 @@ export const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.label}>Email:</Text>
         <Text style={styles.email}>{email}</Text>
@@ -80,7 +81,7 @@ export const ProfileScreen = () => {
         onPress={onSwitchToParking}
       />
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -7,7 +7,7 @@ import {
   UpdateSpaceResponse,
   ListSpacesParams,
   ListSpacesResponse,
-  GetPresignedUrlResponse,
+  CreatePresignedUrlsResponse,
 } from './dtos';
 
 const basePath = '/spaces/v1';
@@ -75,14 +75,33 @@ const listSpaces = async (
   });
 };
 
-const getPresignedUrl = async (
-  id: number,
+const createPresignedUrls = async (
+  space_id: number,
+  num_images: number,
   onError?: ErrorHandler,
-): Promise<GetPresignedUrlResponse> => {
+): Promise<CreatePresignedUrlsResponse> => {
   return await api({
-    endpoint: `${basePath}/${id}/presigned-url`,
-    method: 'GET',
+    endpoint: `${basePath}/images`,
+    method: 'POST',
     onError,
+    data: {
+      space_id,
+      num_images,
+    },
+  });
+};
+
+export const postImageUpload = async (
+  space_image_ids: number[],
+  onError?: ErrorHandler,
+): Promise<void> => {
+  return await api({
+    endpoint: `${basePath}/images/complete`,
+    method: 'PUT',
+    onError,
+    data: {
+      space_image_ids,
+    },
   });
 };
 
@@ -92,5 +111,6 @@ export const SpaceAPI = {
   update: updateSpace,
   delete: deleteSpace,
   list: listSpaces,
-  getPresignedUrl,
+  createPresignedUrls,
+  postImageUpload,
 };

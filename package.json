@@ -12,7 +12,8 @@
     "eas:android:preview": "eas build --profile preview --platform android",
     "eas:ios:preview": "eas build --profile preview --platform ios",
     "eas:android:prod": "eas build --profile production --platform android",
-    "eas:ios:prod": "eas build --profile production --platform ios"
+    "eas:ios:prod": "eas build --profile production --platform ios",
+    "eas:ios:submit": "eas submit --platform ios"
   },
   "dependencies": {
     "@aws-amplify/auth": "^6.0.9",

@@ -5,6 +5,7 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {FontAwesome5} from '@expo/vector-icons';
 import {IconButton} from '@/view/shared';
 import {Icon} from '@aws-amplify/ui-react-native/dist/primitives';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ProfileScreen = () => {
   const {tokens, userId, signOut} = useAuth();
@@ -19,7 +20,7 @@ export const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.label}>Email:</Text>
         <Text style={styles.email}>{email}</Text>
@@ -40,7 +41,7 @@ export const ProfileScreen = () => {
         onPress={onSwitchToHosting}
       />
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={signOut} />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -6,6 +6,7 @@ import {useSearchAvailabilities, useSpace} from '@/state';
 import {getAvailabilityCost} from '@/api';
 import {AvailabilityData, LoadingSpinner} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar, SearchBarState} from '../components';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const AvailabilityMap = React.lazy(() =>
   import('@/view/shared/components/availabilities/AvailabilityMap').then(
@@ -137,25 +138,26 @@ export const MapScreen = ({navigation}) => {
   );
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <View style={styles.topBar}>
-        <SearchBar onSubmit={onSearchBarSubmit} />
-      </View>
-      <View style={styles.map}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <AvailabilityMap
-            location={location}
-            markers={markers}
-            onSearchRegion={setLocation}
-            renderMarker={renderMarker}
-            renderMarkerCard={renderMarkerCard}
-            onMarkerSelected={setSelectedMarker}
-          />
-        </Suspense>
-      </View>
-    </KeyboardAvoidingView>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.topBar}>
+          <SearchBar onSubmit={onSearchBarSubmit} />
+        </View>
+        <View style={styles.map}>
+          <Suspense fallback={<LoadingSpinner />}>
+            <AvailabilityMap
+              location={location}
+              markers={markers}
+              onSearchRegion={setLocation}
+              renderMarker={renderMarker}
+              renderMarkerCard={renderMarkerCard}
+              onMarkerSelected={setSelectedMarker}
+            />
+          </Suspense>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

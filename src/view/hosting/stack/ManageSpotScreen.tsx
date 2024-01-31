@@ -14,6 +14,7 @@ import {toDateTimeString, toDollarString} from '@/utils';
 import {Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useCreateAvailability} from '@/state';
+import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
 
 export type ManageSpotScreenProps = {
   building: Building;
@@ -73,8 +74,8 @@ export const ManageSpotScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <SpaceCard style={styles.spaceCard} building={building} space={space} />
+      <View style={styles.imageContainer}>
+        <ImageSwiper urls={space.img_urls} />
       </View>
       <View style={styles.separator} />
       <Title>Add Availability</Title>
@@ -113,11 +114,9 @@ export const ManageSpotScreen = ({navigation, route}) => {
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      padding: 8,
       flex: 1,
     },
-    infoContainer: {
-      padding: 8,
+    imageContainer: {
       alignItems: 'center',
     },
     spaceCard: {

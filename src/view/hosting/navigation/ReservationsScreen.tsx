@@ -9,6 +9,7 @@ import {
 import {useTheme, AppTheme} from '@/view/theme';
 import {useHostReservations} from '@/state';
 import {Reservation} from '@/api';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ReservationsScreen = () => {
   const theme = useTheme().theme.appTheme;
@@ -62,7 +63,7 @@ export const ReservationsScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <Section title="Upcoming">
           <ListView
@@ -89,7 +90,7 @@ export const ReservationsScreen = () => {
           />
         </Section>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

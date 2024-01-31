@@ -2,16 +2,9 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {Button, SelectInput, Text, TextInput, ImageUpload} from '@/view/shared';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {
-  Building,
-  BuildingAPI,
-  CreateBuildingRequest,
-  Space,
-  SpaceAPI,
-  uploadToS3,
-} from '@/api';
+import {Building, BuildingAPI, CreateBuildingRequest, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useAuth, useCreateSpace, useUpdateSpace} from '@/state';
+import {useAuth, useCreateSpace, useUpdateSpaceImages} from '@/state';
 
 export type EditParkingSpaceScreenProps = {
   building: Building | CreateBuildingRequest;
@@ -42,12 +35,15 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
   const styles = getStyles(theme);
   const {userId} = useAuth();
   const {mutateAsync: createSpace} = useCreateSpace();
-  const {mutateAsync: updateSpace} = useUpdateSpace();
+  const {mutateAsync: uploadSpaceImages} = useUpdateSpaceImages();
 
-  const [selectedImage, setSelectedImage] = useState(null);
-  const onImageSelected = useCallback((uri: string) => {
-    setSelectedImage(uri);
-  }, []);
+  const [selectedImages, setSelectedImages] = useState<string[]>(null);
+  const onImagesSelected = useCallback(
+    (uris: string[]) => {
+      setSelectedImages(uris);
+    },
+    [setSelectedImages],
+  );
 
   const formMethods = useForm();
 
@@ -80,22 +76,11 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
         parking_instructions: data.parking_instructions,
       });
 
-      if (selectedImage) {
-        const presignedUrl = await SpaceAPI.getPresignedUrl(space.id);
-        await uploadToS3(presignedUrl.url, selectedImage);
-
-        const pictureUrl = `https://fairpnp-dev-user-content.s3.us-east-2.amazonaws.com/user-uploads/${userId}/space-images/${space.id}.jpg`;
-        await updateSpace({
-          spaceId: space.id,
-          updateData: {
-            picture_url: pictureUrl,
-          },
-        });
+      if (selectedImages) {
+        await uploadSpaceImages({spaceId: space.id, imageUris: selectedImages});
       }
-
-      return space;
     },
-    [getBuilding, selectedImage, userId],
+    [getBuilding, selectedImages, userId, createSpace],
   );
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
@@ -109,7 +94,7 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
       <Text>{building.name}</Text>
       <View style={styles.separator} />
 
-      <ImageUpload onImageSelected={onImageSelected} />
+      <ImageUpload maxImages={5} onImagesSelected={onImagesSelected} />
 
       <FormProvider {...formMethods}>
         <TextInput

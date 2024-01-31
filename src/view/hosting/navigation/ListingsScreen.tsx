@@ -13,6 +13,7 @@ import {
   useMyAvailabilities,
   useMyReservations,
 } from '@/state';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ListingsScreen = () => {
   const [activeTab, setActiveTab] = useState('Bookings');
@@ -99,7 +100,7 @@ export const ListingsScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.tabsContainer}>
         <TouchableOpacity
           style={[styles.tab, activeTab === 'Bookings' && styles.activeTab]}
@@ -128,7 +129,7 @@ export const ListingsScreen = () => {
       </View>
 
       <ScrollView>{renderContent()}</ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

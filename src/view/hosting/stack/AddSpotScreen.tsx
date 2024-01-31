@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {Button, LocationCard, LocationSearch, Text} from '@/view/shared';
-import {EditParkingSpaceScreenProps} from '../stack/EditParkingSpaceScreen';
+import {EditParkingSpaceScreenProps} from './EditParkingSpaceScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {CreateBuildingRequest} from '@/api';
 
-export const HostScreen = () => {
+export const AddSpotScreen = () => {
   const navigation = useNavigation<any>();
   const [loc, setSelectedLocation] = useState<any>(null);
 

@@ -46,7 +46,7 @@ export const MapCard = ({
     <View>
       <HorizontalGroup>
         <ImageDownload
-          url={space?.picture_url}
+          url={space?.img_urls?.[0]}
           style={styles.image}
           imageStyle={styles.image}
         />

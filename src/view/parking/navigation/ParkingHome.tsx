@@ -3,6 +3,7 @@ import React from 'react';
 import {IconButton, Section, Text, Title} from '@/view/shared';
 import {AppTheme, useTheme} from '@/view/theme';
 import {useAppMode} from '@/state';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ParkingHome = () => {
   const theme = useTheme().theme.appTheme;
@@ -14,7 +15,7 @@ export const ParkingHome = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.topArea}>
         <Section title="Parking">
           <Text>Parking</Text>
@@ -33,7 +34,7 @@ export const ParkingHome = () => {
           />
         </Section>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

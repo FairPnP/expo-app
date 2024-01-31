@@ -6,6 +6,7 @@ import {
   Section,
   IconButton,
   InfiniteListView,
+  Button,
 } from '@/view/shared';
 import {ManageSpotScreenProps} from '../stack/ManageSpotScreen';
 import {useNavigation} from '@react-navigation/native';
@@ -13,6 +14,7 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
 import {useAppMode, useBuildings, useMySpaces} from '@/state';
 import {MySpot} from '../components';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const favorites: Space[] = [];
 
@@ -60,9 +62,16 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
     navigation.navigate('Search');
   };
 
+  const onAddSpot = () => {
+    navigation.navigate('AddSpot');
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.topArea}>
+        <Button onPress={onAddSpot}>
+          <Title>Add Spot</Title>
+        </Button>
         <Section title="My Spots">
           {isLoading ? (
             <LoadingSpinner />
@@ -90,7 +99,7 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
           />
         </Section>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

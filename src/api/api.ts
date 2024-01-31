@@ -113,7 +113,7 @@ export const api = async <T>({
     }
 
     // Log unhandled errors
-    console.error('Unhandled API error:', error);
+    console.error('Unhandled API error:', method, url, error);
     Toast.show({
       type: 'error',
       text1: 'An unexpected error occurred',

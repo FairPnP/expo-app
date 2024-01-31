@@ -3,38 +3,42 @@ import {StyleSheet, Image, TouchableOpacity, View, Text} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 type ImageUploadProps = {
-  onImageSelected: (uri: string) => void;
+  onImagesSelected: (uris: string[]) => void;
+  maxImages?: number;
 };
 
-export const ImageUpload = ({onImageSelected}: ImageUploadProps) => {
-  const [imgUri, setImgUri] = useState(null);
+export const ImageUpload = ({
+  onImagesSelected,
+  maxImages,
+}: ImageUploadProps) => {
+  const [imgUris, setImgUris] = useState(null);
 
   const onButtonPress = useCallback(async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
       aspect: [4, 3],
-      selectionLimit: 1,
+      selectionLimit: maxImages ?? 1,
       quality: 0.8,
-      allowsMultipleSelection: false,
+      allowsMultipleSelection: maxImages !== 1,
       base64: false,
     });
 
     if (!result.canceled) {
-      setImgUri(result.assets[0].uri);
-      onImageSelected(result.assets[0].uri);
+      const uris = result.assets.map(asset => asset.uri);
+      setImgUris(uris);
+      onImagesSelected(uris);
     }
-    
-  }, [onImageSelected]);
+  }, [onImagesSelected]);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imageContainer} onPress={onButtonPress}>
-        {imgUri ? (
+        {imgUris ? (
           <Image
             resizeMode="cover"
             style={styles.image}
-            source={{uri: imgUri}}
+            source={{uri: imgUris[0]}}
           />
         ) : (
           <View style={styles.placeholderContainer}>
