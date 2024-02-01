@@ -8,25 +8,22 @@ import {
   AvailabilityOptions,
   AvailabilityOptionsPicker,
   AvailabilityDatePicker,
-  SpaceCard,
+  Section,
 } from '@/view/shared';
 import {toDateTimeString, toDollarString} from '@/utils';
 import {Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useCreateAvailability} from '@/state';
 import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-// ====================================================
-// OLD FOR REFERENCING
-// ====================================================
-
-export type SpotScreenProps = {
+export type ViewSpotScreenProps = {
   building: Building;
   space: Space;
 };
 
-export const SpotScreen = ({navigation, route}) => {
-  const {building, space} = route.params as SpotScreenProps;
+export const ViewSpotScreen = ({navigation, route}) => {
+  const {building, space} = route.params as ViewSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
@@ -78,38 +75,17 @@ export const SpotScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageSwiper urls={space.img_urls} />
-      </View>
-      <View style={styles.separator} />
-      <Title>Add Availability</Title>
-      <View style={styles.card}>
-        <TouchableOpacity onPress={() => onCardPressed('when')}>
-          <Title>When</Title>
-          <View style={styles.cardTextContainer}>
-            <Text>From: {toDateTimeString(selectedDateRange.startDate)}</Text>
-            <Text>To: {toDateTimeString(selectedDateRange.endDate)}</Text>
-          </View>
-        </TouchableOpacity>
-        <Collapsible collapsed={!isWhenSectionOpen}>
-          <AvailabilityDatePicker onDateRangeSelected={onDateRangeSelected} />
-        </Collapsible>
-      </View>
-      <View style={styles.card}>
-        <TouchableOpacity onPress={() => onCardPressed('options')}>
-          <Title>Options</Title>
-          <Text>Hourly Rate: {toDollarString(options.hourlyRate)}</Text>
-          <Text>Minimum Hours: {options.minHours.toString()}</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={!isOptionsSectionOpen}>
-          <AvailabilityOptionsPicker onOptionsChanged={setOptions} />
-        </Collapsible>
-      </View>
-
-      <View style={styles.bottomArea}>
-        <Button onPress={onSubmit}>
-          <Text>Add Availability</Text>
+      <SafeAreaView style={styles.headerArea}>
+        <Button onPress={() => navigation.goBack()}>
+          <Text>{'<'}</Text>
         </Button>
+      </SafeAreaView>
+      <ImageSwiper urls={space.img_urls} />
+      <View style={styles.contentArea}>
+        <Section title={space.name}>
+          <Title>{building.name}</Title>
+          <Text>{space.description}</Text>
+        </Section>
       </View>
     </View>
   );
@@ -120,34 +96,19 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: 1,
     },
-    imageContainer: {
-      alignItems: 'center',
-    },
-    spaceCard: {
-      width: '100%',
-    },
-    separator: {
-      borderBottomColor: theme.colors.border,
-      borderBottomWidth: 1,
-      marginVertical: 8,
-    },
-    card: {
+    headerArea: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
       padding: 8,
-      borderRadius: 8,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-      backgroundColor: theme.colors.card,
-      marginVertical: 8,
-    },
-    cardTextContainer: {
-      paddingHorizontal: 4,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignContent: 'center',
+      zIndex: 1,
     },
-    bottomArea: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      paddingVertical: 4,
-      paddingHorizontal: 8,
+    contentArea: {
+      flex: 1,
+      padding: 16,
     },
   });

@@ -8,31 +8,47 @@ import {
   ListSpacesParams,
   ListSpacesResponse,
   CreatePresignedUrlsResponse,
+  Space,
 } from './dtos';
 
 const basePath = '/spaces/v1';
+
+const toSpace = (data: any): Space => {
+  return {
+    ...data,
+    description: 'left side of the driveway',
+  };
+};
 
 const createSpace = async (
   data: CreateSpaceRequest,
   onError?: ErrorHandler,
 ): Promise<CreateSpaceResponse> => {
-  return await api({
+  let space = await api({
     endpoint: `${basePath}`,
     method: 'POST',
     data,
     onError,
   });
+
+  return {
+    space: toSpace(space),
+  };
 };
 
 const readSpace = async (
   id: number,
   onError?: ErrorHandler,
 ): Promise<ReadSpaceResponse> => {
-  return await api({
+  let space = await api({
     endpoint: `${basePath}/${id}`,
     method: 'GET',
     onError,
   });
+
+  return {
+    space: toSpace(space),
+  };
 };
 
 const updateSpace = async (
@@ -40,12 +56,16 @@ const updateSpace = async (
   data: UpdateSpaceRequest,
   onError?: ErrorHandler,
 ): Promise<UpdateSpaceResponse> => {
-  return await api({
+  let space = await api({
     endpoint: `${basePath}/${id}`,
     method: 'PUT',
     data,
     onError,
   });
+
+  return {
+    space: toSpace(space),
+  };
 };
 
 const deleteSpace = async (
@@ -68,11 +88,17 @@ const listSpaces = async (
   );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : basePath;
-  return await api({
+  let res = await api({
     endpoint,
     method: 'GET',
     onError,
   });
+
+  return {
+    spaces: res.spaces.map(toSpace),
+    next_offset_id: res.next_offset_id,
+    limit: res.limit,
+  };
 };
 
 const createPresignedUrls = async (

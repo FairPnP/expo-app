@@ -8,7 +8,7 @@ import {
   InfiniteListView,
   Button,
 } from '@/view/shared';
-import {ManageSpotScreenProps} from '../stack/ManageSpotScreen';
+import {ViewSpotScreenProps} from '../stack/ViewSpotScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
@@ -36,11 +36,11 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
 
   const handleSpotPress = useCallback(
     (space: Space, building: Building) => {
-      const props: ManageSpotScreenProps = {
+      const props: ViewSpotScreenProps = {
         building: building,
         space: space,
       };
-      navigation.navigate('ManageSpot', props);
+      navigation.navigate('ViewSpot', props);
     },
     [navigation],
   );
