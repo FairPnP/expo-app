@@ -1,11 +1,11 @@
 import {ErrorHandler, api} from '../../api';
 import {
-  ListSpaceSummarysParams,
-  ListSpaceSummarysResponse,
+  ListSpaceSummariesParams,
+  ListSpaceSummariesResponse,
   SpaceSummary,
 } from './dtos';
 
-const basePath = '/space_summarys/v1';
+const basePath = '/space_summaries/v1';
 
 const toSpaceSummary = (res: any): SpaceSummary => ({
   space_id: '1',
@@ -30,25 +30,25 @@ const getSpaceSummary = async (
   return toSpaceSummary(res);
 };
 
-const listSpaceSummarys = async (
-  params: ListSpaceSummarysParams,
+const listSpaceSummaries = async (
+  params: ListSpaceSummariesParams,
   onError?: ErrorHandler,
-): Promise<ListSpaceSummarysResponse> => {
+): Promise<ListSpaceSummariesResponse> => {
   Object.keys(params).forEach(
     key => params[key] === undefined && delete params[key],
   );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : `${basePath}`;
-  const res = await api<ListSpaceSummarysResponse>({
+  const res = await api<ListSpaceSummariesResponse>({
     endpoint,
     method: 'GET',
     onError,
   });
 
-  const space_summarys = res.space_summarys.map(toSpaceSummary);
+  const space_summaries = res.space_summaries.map(toSpaceSummary);
 
   return {
-    space_summarys: space_summarys,
+    space_summaries: space_summaries,
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };

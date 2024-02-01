@@ -14,13 +14,13 @@ export interface GetUserSummaryResponse {
   user_summary: UserSummary;
 }
 
-export interface ListUserSummarysParams {
+export interface ListUserSummariesParams {
   offset_id?: number;
   limit?: number;
 }
 
-export interface ListUserSummarysResponse {
-  user_summarys: UserSummary[];
+export interface ListUserSummariesResponse {
+  user_summaries: UserSummary[];
   next_offset_id?: number;
   limit: number;
 }

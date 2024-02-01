@@ -14,13 +14,13 @@ export interface GetSpaceSummaryResponse {
   space_summary: SpaceSummary;
 }
 
-export interface ListSpaceSummarysParams {
+export interface ListSpaceSummariesParams {
   offset_id?: number;
   limit?: number;
 }
 
-export interface ListSpaceSummarysResponse {
-  space_summarys: SpaceSummary[];
+export interface ListSpaceSummariesResponse {
+  space_summaries: SpaceSummary[];
   next_offset_id?: number;
   limit: number;
 }

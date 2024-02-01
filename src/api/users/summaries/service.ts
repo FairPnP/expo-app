@@ -1,11 +1,11 @@
 import {ErrorHandler, api} from '../../api';
 import {
-  ListUserSummarysParams,
-  ListUserSummarysResponse,
+  ListUserSummariesParams,
+  ListUserSummariesResponse,
   UserSummary,
 } from './dtos';
 
-const basePath = '/user_summarys/v1';
+const basePath = '/user_summaries/v1';
 
 const toUserSummary = (res: any): UserSummary => ({
   user_id: '1',
@@ -30,25 +30,25 @@ const getUserSummary = async (
   return toUserSummary(res);
 };
 
-const listUserSummarys = async (
-  params: ListUserSummarysParams,
+const listUserSummaries = async (
+  params: ListUserSummariesParams,
   onError?: ErrorHandler,
-): Promise<ListUserSummarysResponse> => {
+): Promise<ListUserSummariesResponse> => {
   Object.keys(params).forEach(
     key => params[key] === undefined && delete params[key],
   );
   const queryString = new URLSearchParams(params as any).toString();
   const endpoint = queryString ? `${basePath}?${queryString}` : `${basePath}`;
-  const res = await api<ListUserSummarysResponse>({
+  const res = await api<ListUserSummariesResponse>({
     endpoint,
     method: 'GET',
     onError,
   });
 
-  const user_summarys = res.user_summarys.map(toUserSummary);
+  const user_summaries = res.user_summaries.map(toUserSummary);
 
   return {
-    user_summarys: user_summarys,
+    user_summaries: user_summaries,
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };
