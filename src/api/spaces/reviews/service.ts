@@ -10,17 +10,10 @@ import {
 const basePath = '/space_reviews/v1';
 
 const toSpaceReview = (res: any): SpaceReview => ({
-  id: 1,
-  space_id: '1',
-  user_id: '1',
-  message: 'awesome space.',
-  stars: 5,
-  created_at: new Date(),
+  ...res,
+  created_at: new Date(res.created_at + 'Z'),
+  last_modified: new Date(res.updated_at + 'Z'),
 });
-// const toSpaceReview = (res: any): SpaceReview => ({
-//   ...res,
-//   created_at: new Date(res.created_at + 'Z'),
-// });
 
 const createSpaceReview = async (
   data: CreateSpaceReviewRequest,
@@ -60,4 +53,9 @@ const listSpaceReviews = async (
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };
+};
+
+export const SpaceReviewAPI = {
+  create: createSpaceReview,
+  list: listSpaceReviews,
 };

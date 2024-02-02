@@ -3,6 +3,8 @@ import {View, StyleSheet} from 'react-native';
 import {HorizontalGroup, ImageDownload, Text, VerticalGroup} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
+import {useSpaceSummary} from '@/state';
+import {FontAwesome} from '@expo/vector-icons';
 
 export type SpaceCardProps = {
   building: Building;
@@ -13,6 +15,8 @@ export type SpaceCardProps = {
 export const SpaceCard = ({building, space, style}: SpaceCardProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+
+  const {data: summary} = useSpaceSummary(space?.id);
 
   return (
     <View style={[styles.container, style]}>
@@ -25,6 +29,20 @@ export const SpaceCard = ({building, space, style}: SpaceCardProps) => {
         <VerticalGroup style={styles.textContainer}>
           <Text>{building?.name}</Text>
           <Text>{space?.name}</Text>
+          <HorizontalGroup>
+            <HorizontalGroup>
+              <FontAwesome name="star" size={16} />
+              <Text>
+                {summary?.average_stars > 0
+                  ? summary?.average_stars.toString()
+                  : '-'}
+              </Text>
+            </HorizontalGroup>
+            <Text>
+              {summary?.total_reviews}{' '}
+              {summary?.total_reviews === 1 ? 'review' : 'reviews'}
+            </Text>
+          </HorizontalGroup>
         </VerticalGroup>
       </HorizontalGroup>
     </View>

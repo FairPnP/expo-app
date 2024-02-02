@@ -1,6 +1,6 @@
 // useUpdateSpace.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {SpaceAPI, UpdateSpaceRequest, uploadToS3} from '@/api';
+import {SpaceImageAPI, uploadToS3} from '@/api';
 import {MY_SPACES_QUERY_KEY} from './consts';
 
 export const useUpdateSpaceImages = () => {
@@ -15,7 +15,7 @@ export const useUpdateSpaceImages = () => {
       imageUris: string[];
     }) => {
       // create presigned urls
-      const presignedUrls = await SpaceAPI.createPresignedUrls(
+      const presignedUrls = await SpaceImageAPI.createPresignedUrls(
         spaceId,
         imageUris.length,
       );
@@ -27,7 +27,7 @@ export const useUpdateSpaceImages = () => {
       );
 
       // update space images
-      await SpaceAPI.postImageUpload(
+      await SpaceImageAPI.postImageUpload(
         presignedUrls.data.map(p => p.space_image_id),
       );
 

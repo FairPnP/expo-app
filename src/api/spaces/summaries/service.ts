@@ -1,5 +1,6 @@
 import {ErrorHandler, api} from '../../api';
 import {
+  GetSpaceSummaryResponse,
   ListSpaceSummariesParams,
   ListSpaceSummariesResponse,
   SpaceSummary,
@@ -7,27 +8,25 @@ import {
 
 const basePath = '/space_summaries/v1';
 
-const toSpaceSummary = (res: any): SpaceSummary => ({
-  space_id: '1',
-  total_reviews: 1,
-  average_stars: 5,
-});
 // const toSpaceSummary = (res: any): SpaceSummary => ({
 //   ...res,
 //   created_at: new Date(res.created_at + 'Z'),
 // });
+const toSpaceSummary = (res: any): SpaceSummary => res as SpaceSummary;
 
 const getSpaceSummary = async (
-  space_id: string,
+  space_id: number,
   onError?: ErrorHandler,
-): Promise<SpaceSummary> => {
-  const res = await api<SpaceSummary>({
+): Promise<GetSpaceSummaryResponse> => {
+  const res = await api<GetSpaceSummaryResponse>({
     endpoint: `${basePath}/${space_id}`,
     method: 'GET',
     onError,
   });
 
-  return toSpaceSummary(res);
+  return {
+    space_summary: toSpaceSummary(res.space_summary),
+  };
 };
 
 const listSpaceSummaries = async (
@@ -52,4 +51,9 @@ const listSpaceSummaries = async (
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };
+};
+
+export const SpaceSummaryAPI = {
+  get: getSpaceSummary,
+  list: listSpaceSummaries,
 };

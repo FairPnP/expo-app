@@ -10,17 +10,9 @@ import {
 const basePath = '/user_reviews/v1';
 
 const toUserReview = (res: any): UserReview => ({
-  id: 1,
-  from_user_id: '1',
-  to_user_id: '2',
-  message: 'awesome dude.',
-  stars: 5,
-  created_at: new Date(),
+  ...res,
+  created_at: new Date(res.created_at + 'Z'),
 });
-// const toUserReview = (res: any): UserReview => ({
-//   ...res,
-//   created_at: new Date(res.created_at + 'Z'),
-// });
 
 const createUserReview = async (
   data: CreateUserReviewRequest,
@@ -60,4 +52,9 @@ const listUserReviews = async (
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };
+};
+
+export const UserReviewAPI = {
+  create: createUserReview,
+  list: listUserReviews,
 };

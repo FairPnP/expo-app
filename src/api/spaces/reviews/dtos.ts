@@ -3,11 +3,12 @@
 
 export interface SpaceReview {
   id: number;
-  space_id: string;
   user_id: string;
+  space_id: number;
   message: string;
   stars: number;
   created_at: Date;
+  last_modified: Date;
 }
 
 // ======================================================================

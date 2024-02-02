@@ -72,16 +72,3 @@ export interface UpdateSpaceRequest {
 export interface UpdateSpaceResponse {
   space: Space;
 }
-
-// ======================================================================
-// Presigned URL DTOs
-
-export interface PresignedUrl {
-  space_image_id: number;
-  slot_id: number;
-  presigned_url: string;
-}
-
-export interface CreatePresignedUrlsResponse {
-  data: PresignedUrl[];
-}

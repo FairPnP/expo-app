@@ -2,7 +2,8 @@
 // SpaceSummary Entity
 
 export interface SpaceSummary {
-  space_id: string;
+  host_user_id: string;
+  space_id: number;
   total_reviews: number;
   average_stars: number;
 }

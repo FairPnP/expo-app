@@ -1,5 +1,6 @@
 import {ErrorHandler, api} from '../../api';
 import {
+  GetUserSummaryResponse,
   ListUserSummariesParams,
   ListUserSummariesResponse,
   UserSummary,
@@ -7,27 +8,25 @@ import {
 
 const basePath = '/user_summaries/v1';
 
-const toUserSummary = (res: any): UserSummary => ({
-  user_id: '1',
-  total_reviews: 1,
-  average_stars: 5,
-});
 // const toUserSummary = (res: any): UserSummary => ({
 //   ...res,
 //   created_at: new Date(res.created_at + 'Z'),
 // });
+const toUserSummary = (res: any): UserSummary => res as UserSummary;
 
 const getUserSummary = async (
   user_id: string,
   onError?: ErrorHandler,
-): Promise<UserSummary> => {
-  const res = await api<UserSummary>({
+): Promise<GetUserSummaryResponse> => {
+  const res = await api<GetUserSummaryResponse>({
     endpoint: `${basePath}/${user_id}`,
     method: 'GET',
     onError,
   });
 
-  return toUserSummary(res);
+  return {
+    user_summary: toUserSummary(res.user_summary),
+  };
 };
 
 const listUserSummaries = async (
@@ -52,4 +51,9 @@ const listUserSummaries = async (
     next_offset_id: res.next_offset_id,
     limit: res.limit,
   };
+};
+
+export const UserSummaryAPI = {
+  get: getUserSummary,
+  list: listUserSummaries,
 };
