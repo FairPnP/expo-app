@@ -6,7 +6,9 @@ export const useSpaceSummary = (space_id: number) => {
   return useQuery({
     queryKey: [SPACE_QUERY_KEY, space_id],
     queryFn: async () => {
-      const response = await SpaceSummaryAPI.get(space_id);
+      const response = await SpaceSummaryAPI.get(space_id, {
+        404: () => null,
+      });
       return response.space_summary;
     },
     enabled: !!space_id,

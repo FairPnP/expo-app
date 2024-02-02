@@ -2,7 +2,7 @@ import {useInfiniteQuery} from '@tanstack/react-query';
 import {SpaceReviewAPI} from '@/api';
 import {SPACE_QUERY_KEY} from './consts';
 
-export const useSpaceReviews = (limit = 10) => {
+export const useSpaceReviews = (space_id, limit = 10) => {
   const {
     data,
     isLoading,
@@ -17,6 +17,7 @@ export const useSpaceReviews = (limit = 10) => {
     queryKey: [SPACE_QUERY_KEY],
     queryFn: async ({pageParam = undefined}) => {
       const response = await SpaceReviewAPI.list({
+        space_id,
         offset_id: pageParam,
         limit: limit,
       });
@@ -27,10 +28,10 @@ export const useSpaceReviews = (limit = 10) => {
   });
 
   // Flatten the paginated data
-  const spaces = data?.pages.flatMap(page => page.space_reviews) ?? [];
+  const spaceReviews = data?.pages.flatMap(page => page.space_reviews) ?? [];
 
   return {
-    spaces,
+    spaceReviews,
     isLoading,
     isError,
     fetchNextPage,

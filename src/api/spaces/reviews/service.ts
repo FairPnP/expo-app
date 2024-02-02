@@ -12,7 +12,7 @@ const basePath = '/space_reviews/v1';
 const toSpaceReview = (res: any): SpaceReview => ({
   ...res,
   created_at: new Date(res.created_at + 'Z'),
-  last_modified: new Date(res.updated_at + 'Z'),
+  last_modified: new Date(res.last_modified + 'Z'),
 });
 
 const createSpaceReview = async (

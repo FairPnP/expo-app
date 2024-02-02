@@ -53,7 +53,9 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
         </View>
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>
+        <Title style={{marginVertical: 12}}>Where?</Title>
         <LocationSearch onLocationSelected={onLocationSelected} />
+        <Title style={{marginVertical: 12}}>When?</Title>
         <AvailabilityDatePicker onDateRangeSelected={onDateRangeSelected} />
         <View style={styles.bottomArea}>
           <TouchableOpacity

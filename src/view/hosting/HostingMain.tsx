@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HostingNavigator} from './navigation/HostingNavigator';
 import {
   ReservationChatScreen,
+  SpaceReviewsScreen,
   StripeRefreshScreen,
   StripeReturnScreen,
 } from '../shared';
@@ -63,6 +64,13 @@ export const HostingMain = () => {
         component={ReservationChatScreen}
         options={{
           headerTitle: 'Chat',
+        }}
+      />
+      <Stack.Screen
+        name="SpaceReviews"
+        component={SpaceReviewsScreen}
+        options={{
+          headerTitle: '',
         }}
       />
     </Stack.Navigator>

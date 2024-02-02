@@ -2,6 +2,7 @@ export * from './ListView';
 export * from './Title';
 export * from './Button';
 export * from './Text';
+export * from './TextLink';
 export * from './DateTimePicker';
 export * from './ImageUpload';
 export * from './ImageDownload';

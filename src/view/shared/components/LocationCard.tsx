@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
+import {StaticMap} from './StaticMap';
 
 export type LocationCardProps = {
   lat: string;
@@ -13,14 +14,6 @@ export type LocationCardProps = {
 export const LocationCard = (props: LocationCardProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const googleMapsApiKey = 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8';
-  const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${
-    props.lat
-  },${props.lng}&zoom=${
-    props.zoom ?? 17
-  }&size=300x300&key=${googleMapsApiKey}&markers=color:red%7C${props.lat},${
-    props.lng
-  }`;
 
   return (
     <View style={styles.container}>
@@ -28,7 +21,13 @@ export const LocationCard = (props: LocationCardProps) => {
         <Text style={styles.mainText}>{props.mainText}</Text>
         <Text style={styles.secondaryText}>{props.secondaryText}</Text>
       </View>
-      <Image source={{uri: imageUrl}} style={styles.image} />
+      <StaticMap
+        lat={props.lat}
+        lng={props.lng}
+        width={300}
+        height={225}
+        zoom={props.zoom}
+      />
     </View>
   );
 };
@@ -43,11 +42,6 @@ const getStyles = (theme: AppTheme) =>
       borderWidth: 1,
       borderColor: theme.colors.border,
       padding: 20,
-    },
-    image: {
-      width: 300,
-      height: 300,
-      borderRadius: 8,
     },
     textContainer: {
       alignItems: 'center',

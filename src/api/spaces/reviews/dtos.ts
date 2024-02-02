@@ -25,6 +25,7 @@ export interface CreateSpaceReviewResponse {
 }
 
 export interface ListSpaceReviewsParams {
+  space_id: number;
   offset_id?: number;
   limit?: number;
 }

@@ -1,49 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, ScaledSize} from 'react-native';
-import {AppTheme, useTheme} from '@/view/theme';
+import React from 'react';
+import {View, ScaledSize} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import {ImageDownload} from './ImageDownload';
 
 type ImageSwiperProps = {
   urls: string[];
+  width: number;
+  height: number;
 };
 
-const calcDimensions = (window: ScaledSize) => {
-  const width = window.width;
-  const height = Math.min(window.width * 0.75, window.height * 0.4);
-  return {width, height};
-};
-
-export const ImageSwiper = ({urls}: ImageSwiperProps) => {
-  const [dimensions, setDimensions] = useState(
-    calcDimensions(Dimensions.get('window')),
-  );
-
-  useEffect(() => {
-    const onChange = ({window}: {window: ScaledSize}) => {
-      setDimensions(calcDimensions(window));
-    };
-
-    const listener = Dimensions.addEventListener('change', onChange);
-    return () => listener.remove();
-  }, []);
-
+export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
   const renderItem = ({item}) => {
     return (
       <ImageDownload
         url={item}
         style={{
-          width: dimensions.width,
-          height: dimensions.height,
+          width: width,
+          height: height,
         }}
       />
     );
   };
 
-  const key = `${dimensions.width}x${dimensions.height}`;
+  const key = `${width}x${height}`;
 
   return (
-    <View style={{width: dimensions.width, height: dimensions.height}}>
+    <View style={{width: width, height: height}}>
       <FlashList
         key={key}
         scrollEnabled={true}
@@ -51,7 +33,7 @@ export const ImageSwiper = ({urls}: ImageSwiperProps) => {
         renderItem={renderItem}
         keyExtractor={item => item}
         horizontal={true}
-        estimatedItemSize={dimensions.width}
+        estimatedItemSize={width}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={true}
       />

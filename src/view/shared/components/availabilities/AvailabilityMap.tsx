@@ -112,7 +112,7 @@ export const AvailabilityMap = ({
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={{height: '100%'}}
+        style={StyleSheet.absoluteFillObject}
         provider={PROVIDER_GOOGLE}
         initialRegion={region}
         showsUserLocation={true}

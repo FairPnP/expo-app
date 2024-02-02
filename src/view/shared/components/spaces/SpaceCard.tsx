@@ -4,7 +4,8 @@ import {HorizontalGroup, ImageDownload, Text, VerticalGroup} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
 import {useSpaceSummary} from '@/state';
-import {FontAwesome} from '@expo/vector-icons';
+import {ReviewStars} from '../ReviewStars';
+import {ReviewsLabel} from '../ReviewsLabel';
 
 export type SpaceCardProps = {
   building: Building;
@@ -30,18 +31,8 @@ export const SpaceCard = ({building, space, style}: SpaceCardProps) => {
           <Text>{building?.name}</Text>
           <Text>{space?.name}</Text>
           <HorizontalGroup>
-            <HorizontalGroup>
-              <FontAwesome name="star" size={16} />
-              <Text>
-                {summary?.average_stars > 0
-                  ? summary?.average_stars.toString()
-                  : '-'}
-              </Text>
-            </HorizontalGroup>
-            <Text>
-              {summary?.total_reviews}{' '}
-              {summary?.total_reviews === 1 ? 'review' : 'reviews'}
-            </Text>
+            <ReviewStars stars={summary?.average_stars} />
+            <ReviewsLabel totalReviews={summary?.total_reviews} />
           </HorizontalGroup>
         </VerticalGroup>
       </HorizontalGroup>

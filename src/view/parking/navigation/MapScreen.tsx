@@ -1,12 +1,18 @@
 import React, {Suspense, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View, Platform, KeyboardAvoidingView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Platform,
+  KeyboardAvoidingView,
+  Dimensions,
+} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useSearchAvailabilities, useSpace} from '@/state';
-
 import {getAvailabilityCost} from '@/api';
-import {AvailabilityData, LoadingSpinner, Text} from '@/view/shared';
+import {AvailabilityData, LoadingSpinner} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar, SearchBarState} from '../components';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 const AvailabilityMap = React.lazy(() =>
   import('@/view/shared/components/availabilities/AvailabilityMap').then(
@@ -28,6 +34,10 @@ const REGION_DELTA = 0.02;
 export const MapScreen = ({navigation}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const inset = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+  const mapHeight =
+    Dimensions.get('window').height - inset.bottom - tabBarHeight - 72;
 
   const [location, setLocation] = useState(initialRegion);
   const today = new Date();
@@ -144,7 +154,7 @@ export const MapScreen = ({navigation}) => {
         <View style={styles.topBar}>
           <SearchBar onSubmit={onSearchBarSubmit} />
         </View>
-        <View style={styles.map}>
+        <View style={[styles.map, {height: mapHeight}]}>
           <Suspense fallback={<LoadingSpinner />}>
             <AvailabilityMap
               location={location}
@@ -168,7 +178,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     topBar: {
-      height: '10%',
+      height: 72,
       paddingVertical: 4,
       paddingHorizontal: 8,
       backgroundColor: theme.colors.background,
@@ -176,7 +186,6 @@ const getStyles = (theme: AppTheme) =>
       borderBottomWidth: 1,
     },
     map: {
-      height: '90%',
       zIndex: -1,
     },
   });

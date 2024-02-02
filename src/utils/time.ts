@@ -23,3 +23,9 @@ export const toDateString = (date: Date) => {
 export const toDateTimeString = (date: Date) => {
   return `${toDateString(date)} ${toTimeString(date)}`;
 };
+
+export const toMonthYearString = (date: Date) => {
+  return (
+    date.toLocaleString('default', {month: 'long'}) + ' ' + date.getFullYear()
+  );
+};

@@ -4,3 +4,7 @@ export * from './reservations';
 export * from './spaces';
 export * from './LocationCard';
 export * from './LocationSearch';
+export * from './ReviewsLabel';
+export * from './ReviewStars';
+export * from './UserProfileLabel';
+export * from './StaticMap';
