@@ -4,7 +4,7 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {useSearchAvailabilities, useSpace} from '@/state';
 
 import {getAvailabilityCost} from '@/api';
-import {AvailabilityData, LoadingSpinner} from '@/view/shared';
+import {AvailabilityData, LoadingSpinner, Text} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar, SearchBarState} from '../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -168,6 +168,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     topBar: {
+      height: '10%',
       paddingVertical: 4,
       paddingHorizontal: 8,
       backgroundColor: theme.colors.background,
@@ -175,7 +176,7 @@ const getStyles = (theme: AppTheme) =>
       borderBottomWidth: 1,
     },
     map: {
-      flex: 1,
+      height: '90%',
       zIndex: -1,
     },
   });
