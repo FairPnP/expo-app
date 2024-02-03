@@ -1,6 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {HorizontalGroup} from './common';
+import {HorizontalGroup, Text} from './common';
 import {FontAwesome} from '@expo/vector-icons';
 
 export type ReviewStarsProps = {

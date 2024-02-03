@@ -6,10 +6,12 @@ import {
   SpaceReviewsScreen,
   StripeRefreshScreen,
   StripeReturnScreen,
+  UserReviewsScreen,
 } from '../shared';
 import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
-import {ViewSpotScreen} from './stack/ViewSpotScreen';
+import {ViewSpotScreen} from '../shared/screens/ViewSpotScreen';
 import {AddSpotScreen} from './stack/AddSpotScreen';
+import {ManageSpotScreen} from './stack/ManageSpotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +46,13 @@ export const HostingMain = () => {
           headerTitle: 'Edit Parking Space',
         }}
       />
-
+      <Stack.Screen
+        name="ManageSpot"
+        component={ManageSpotScreen}
+        options={{
+          headerTitle: 'Manage Parking Space',
+        }}
+      />
       <Stack.Screen
         name="StripeReturn"
         component={StripeReturnScreen}
@@ -69,6 +77,13 @@ export const HostingMain = () => {
       <Stack.Screen
         name="SpaceReviews"
         component={SpaceReviewsScreen}
+        options={{
+          headerTitle: '',
+        }}
+      />
+      <Stack.Screen
+        name="UserReviews"
+        component={UserReviewsScreen}
         options={{
           headerTitle: '',
         }}

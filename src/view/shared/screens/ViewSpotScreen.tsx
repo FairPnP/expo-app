@@ -18,10 +18,10 @@ import {
   StaticMap,
   VerticalGroup,
   TextLink,
-} from '@/view/shared';
+} from '../components';
 import {Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useSpaceSummary} from '@/state';
+import {useAppMode, useSpaceSummary} from '@/state';
 import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {openMap} from '@/utils/maps';
@@ -30,7 +30,6 @@ import {FontAwesome} from '@expo/vector-icons';
 export type ViewSpotScreenProps = {
   building: Building;
   space: Space;
-  bottomAreaComponent?: React.ReactNode;
 };
 
 const calcDimensions = (window: ScaledSize) => {
@@ -40,10 +39,10 @@ const calcDimensions = (window: ScaledSize) => {
 };
 
 export const ViewSpotScreen = ({navigation, route}) => {
-  const {building, space, bottomAreaComponent} =
-    route.params as ViewSpotScreenProps;
+  const {building, space} = route.params as ViewSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const {appMode} = useAppMode();
 
   const {data: summary} = useSpaceSummary(space.id);
 
@@ -99,7 +98,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
             </HorizontalGroup>
           </Section>
           <View style={styles.separator} />
-          <UserProfileLabel user_id={space.user_id} name_prefix="Hosted by " />
+          <UserProfileLabel userId={space.user_id} namePrefix="Hosted by " />
           <View style={styles.separator} />
           <Section title="Location">
             <StaticMap
@@ -141,8 +140,22 @@ export const ViewSpotScreen = ({navigation, route}) => {
           </Section>
         </View>
       </ScrollView>
-      {bottomAreaComponent && (
-        <View style={styles.bottomArea}>{bottomAreaComponent}</View>
+      {appMode === 'hosting' && (
+        <View style={styles.bottomArea}>
+          <Button
+            onPress={() =>
+              navigation.navigate('ManageSpot', {building, space})
+            }>
+            <Text>Add Availability</Text>
+          </Button>
+        </View>
+      )}
+      {appMode === 'parking' && (
+        <View style={styles.bottomArea}>
+          <Button onPress={() => {}}>
+            <Text>Reserve</Text>
+          </Button>
+        </View>
       )}
     </View>
   );

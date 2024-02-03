@@ -1,28 +1,33 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {StripeAPI} from '@/api';
 import {useQueryClient} from '@tanstack/react-query';
-import {useAppMode, useAuth} from '@/state';
-import {IconButton, Section, UserProfileLabel} from '@/view/shared';
+import {useAppMode, useAuth, useUserSummary} from '@/state';
+import {
+  IconButton,
+  Section,
+  UserProfileLabel,
+  Text,
+  HorizontalGroup,
+  ReviewStars,
+  ReviewsLabel,
+} from '../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
   const {tokens} = useAuth();
   const email = tokens?.idToken?.payload.email?.toString();
   const userId = tokens?.idToken?.payload.sub;
+  const {data: summary} = useUserSummary(userId);
 
   const {signOut} = useAuthenticator(context => [context.user]);
   const queryClient = useQueryClient();
 
   const {theme, toggleTheme} = useTheme();
   const styles = getStyles(theme.appTheme);
-  const {setAppMode} = useAppMode();
-
-  const onSwitchToParking = () => {
-    setAppMode('parking');
-  };
+  const {appMode, setAppMode} = useAppMode();
 
   const [stripeAccountId, setStripeAccountId] = useState<String>(null);
 
@@ -49,40 +54,68 @@ export const ProfileScreen = () => {
     signOut();
   };
 
+  const onReviewsPressed = () => {
+    navigation.navigate('UserReviews', {userId});
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Section title="Profile">
-        <UserProfileLabel user_id={userId} />
+        <UserProfileLabel userId={userId} />
+        <HorizontalGroup
+          style={{
+            marginVertical: 6,
+            justifyContent: 'flex-start',
+          }}>
+          <ReviewStars stars={summary?.average_stars} />
+          <Text>{' • '}</Text>
+          <ReviewsLabel
+            totalReviews={summary?.total_reviews}
+            onPress={onReviewsPressed}
+          />
+        </HorizontalGroup>
+        <View style={styles.section}>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.email}>{email}</Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.label}>User ID:</Text>
+          <Text style={styles.userid}>{userId}</Text>
+        </View>
+        {appMode === 'hosting' && (
+          <View style={styles.section}>
+            <Text style={styles.label}>Stripe ID:</Text>
+            <Text style={styles.userid}>{stripeAccountId}</Text>
+          </View>
+        )}
       </Section>
-      <View style={styles.section}>
-        <Text style={styles.label}>Email:</Text>
-        <Text style={styles.email}>{email}</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.label}>User ID:</Text>
-        <Text style={styles.userid}>{userId}</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.label}>Stripe ID:</Text>
-        <Text style={styles.userid}>{stripeAccountId}</Text>
-      </View>
-
       <View style={styles.separator} />
 
       <IconButton icon="tv" text="Toggle Theme" onPress={toggleTheme} />
       <IconButton icon="cog" text="Settings" onPress={() => {}} />
-      <IconButton
-        icon="cc-stripe"
-        text="Stripe Account"
-        onPress={stripeAccountPressed}
-      />
-      <IconButton
-        icon="directions"
-        text="Switch to Parking"
-        onPress={onSwitchToParking}
-      />
+      {appMode === 'hosting' && (
+        <>
+          <IconButton
+            icon="cc-stripe"
+            text="Stripe Account"
+            onPress={stripeAccountPressed}
+          />
+          <IconButton
+            icon="directions"
+            text="Switch to Parking"
+            onPress={() => setAppMode('parking')}
+          />
+        </>
+      )}
+      {appMode === 'parking' && (
+        <IconButton
+          icon="directions"
+          text="Switch to Hosting"
+          onPress={() => setAppMode('hosting')}
+        />
+      )}
+
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
     </SafeAreaView>
   );

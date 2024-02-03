@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import {AvailabilityDatePicker, LocationSearch, Title} from '@/view/shared';
+import {
+  AvailabilityDatePicker,
+  LocationSearch,
+  Title,
+  Text,
+} from '@/view/shared';
 import {useTheme, AppTheme} from '@/view/theme';
 import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 import {useSearchBarState} from '@/state';
@@ -49,7 +54,7 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
         </View>
         <View style={styles.infoArea}>
           <Title>Find Parking</Title>
-          <Text> Enter location</Text>
+          <Text>Enter location</Text>
         </View>
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>

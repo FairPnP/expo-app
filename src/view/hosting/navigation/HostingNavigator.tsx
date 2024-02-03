@@ -1,9 +1,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RouteProp} from '@react-navigation/native';
-import {InboxScreen} from '@/view/shared';
+import {InboxScreen, ProfileScreen} from '@/view/shared';
 import {FontAwesome5} from '@expo/vector-icons';
-import {ProfileScreen} from './ProfileScreen';
 import {HostingHomeScreen} from './HostingHome';
 import {ReservationsScreen} from './ReservationsScreen';
 import {ListingsScreen} from './ListingsScreen';

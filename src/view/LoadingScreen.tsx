@@ -1,7 +1,7 @@
-import {Text, View, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {useAppMode} from '@/state';
-import {LoadingSpinner} from './shared';
+import {LoadingSpinner, Text} from './shared';
 
 export const LoadingScreen = () => {
   const {appMode} = useAppMode();

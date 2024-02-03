@@ -20,13 +20,13 @@ import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
 // OLD FOR REFERENCING
 // ====================================================
 
-export type SpotScreenProps = {
+export type ManageSpotScreenProps = {
   building: Building;
   space: Space;
 };
 
-export const SpotScreen = ({navigation, route}) => {
-  const {building, space} = route.params as SpotScreenProps;
+export const ManageSpotScreen = ({navigation, route}) => {
+  const {building, space} = route.params as ManageSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
@@ -79,7 +79,7 @@ export const SpotScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageSwiper urls={space.img_urls} />
+        <SpaceCard building={building} space={space} style={styles.spaceCard} />
       </View>
       <View style={styles.separator} />
       <Title>Add Availability</Title>

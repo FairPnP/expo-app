@@ -1,10 +1,10 @@
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 import {friendlyDateRange, toDateTimeString} from '@/utils';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space, StripeAPI, getAvailabilityCost} from '@/api';
-import {Button, LocationCard, SpaceCard, Title} from '@/view/shared';
+import {Button, LocationCard, SpaceCard, Title, Text} from '@/view/shared';
 import {useCreateReservation} from '@/state';
 
 export type ConfirmReservationScreenProps = {
@@ -26,6 +26,8 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
 
   const startDate = new Date(startTimestamp);
   const endDate = new Date(endTimestamp);
+
+  console.log('space', space);
 
   const handleReservation = useCallback(async () => {
     await createReservation({

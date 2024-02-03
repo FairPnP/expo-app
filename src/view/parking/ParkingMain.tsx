@@ -3,8 +3,10 @@ import {ParkingNavigator} from './navigation/ParkingNavigator';
 import {ReservationDetailsScreen} from './stack/ReservationDetailsScreen';
 import {
   ReservationChatScreen,
+  SpaceReviewsScreen,
   StripeRefreshScreen,
   StripeReturnScreen,
+  UserReviewsScreen,
 } from '../shared';
 import {ConfirmReservationScreen} from './stack/ConfirmReservationScreen';
 
@@ -53,6 +55,20 @@ export const ParkingMain = () => {
         component={ReservationChatScreen}
         options={{
           headerTitle: 'Chat',
+        }}
+      />
+      <Stack.Screen
+        name="SpaceReviews"
+        component={SpaceReviewsScreen}
+        options={{
+          headerTitle: '',
+        }}
+      />
+      <Stack.Screen
+        name="UserReviews"
+        component={UserReviewsScreen}
+        options={{
+          headerTitle: '',
         }}
       />
     </Stack.Navigator>

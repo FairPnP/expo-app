@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useForm, FormProvider} from 'react-hook-form';
 import {AppTheme, useTheme} from '@/view/theme';
-import {DateTimePicker, NumberInput} from '../common';
+import {DateTimePicker, NumberInput, Text} from '../common';
 
 export type MonthsViewProps = {
   onDateRangeSelected?: (startDate: Date, endDate: Date) => void;

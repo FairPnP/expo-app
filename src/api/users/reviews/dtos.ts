@@ -24,6 +24,7 @@ export interface CreateUserReviewResponse {
 }
 
 export interface ListUserReviewsParams {
+  user_id: string;
   offset_id?: number;
   limit?: number;
 }

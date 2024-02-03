@@ -2,7 +2,7 @@ import {useInfiniteQuery} from '@tanstack/react-query';
 import {UserReviewAPI} from '@/api';
 import {USER_QUERY_KEY} from './consts';
 
-export const useUserReviews = (limit = 10) => {
+export const useUserReviews = (userId, limit = 10) => {
   const {
     data,
     isLoading,
@@ -17,6 +17,7 @@ export const useUserReviews = (limit = 10) => {
     queryKey: [USER_QUERY_KEY],
     queryFn: async ({pageParam = undefined}) => {
       const response = await UserReviewAPI.list({
+        user_id: userId,
         offset_id: pageParam,
         limit: limit,
       });
@@ -27,10 +28,10 @@ export const useUserReviews = (limit = 10) => {
   });
 
   // Flatten the paginated data
-  const users = data?.pages.flatMap(page => page.user_reviews) ?? [];
+  const userReviews = data?.pages.flatMap(page => page.user_reviews) ?? [];
 
   return {
-    users,
+    userReviews,
     isLoading,
     isError,
     fetchNextPage,

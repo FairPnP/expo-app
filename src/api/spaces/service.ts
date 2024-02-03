@@ -12,42 +12,31 @@ import {
 
 const basePath = '/spaces/v1';
 
-const toSpace = (data: any): Space => {
-  return {
-    ...data,
-    description: 'left side of the driveway',
-  };
-};
-
 const createSpace = async (
   data: CreateSpaceRequest,
   onError?: ErrorHandler,
 ): Promise<CreateSpaceResponse> => {
-  let space = await api({
+  let res = await api({
     endpoint: `${basePath}`,
     method: 'POST',
     data,
     onError,
   });
 
-  return {
-    space: toSpace(space),
-  };
+  return res;
 };
 
 const readSpace = async (
   id: number,
   onError?: ErrorHandler,
 ): Promise<ReadSpaceResponse> => {
-  let space = await api({
+  let res = await api({
     endpoint: `${basePath}/${id}`,
     method: 'GET',
     onError,
   });
 
-  return {
-    space: toSpace(space),
-  };
+  return res;
 };
 
 const updateSpace = async (
@@ -55,16 +44,14 @@ const updateSpace = async (
   data: UpdateSpaceRequest,
   onError?: ErrorHandler,
 ): Promise<UpdateSpaceResponse> => {
-  let space = await api({
+  let res = await api({
     endpoint: `${basePath}/${id}`,
     method: 'PUT',
     data,
     onError,
   });
 
-  return {
-    space: toSpace(space),
-  };
+  return res;
 };
 
 const deleteSpace = async (
@@ -93,11 +80,7 @@ const listSpaces = async (
     onError,
   });
 
-  return {
-    spaces: res.spaces.map(toSpace),
-    next_offset_id: res.next_offset_id,
-    limit: res.limit,
-  };
+  return res;
 };
 
 export const SpaceAPI = {

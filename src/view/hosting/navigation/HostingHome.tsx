@@ -8,7 +8,7 @@ import {
   InfiniteListView,
   Button,
 } from '@/view/shared';
-import {ViewSpotScreenProps} from '../stack/ViewSpotScreen';
+import {ViewSpotScreenProps} from '../../shared/screens/ViewSpotScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
