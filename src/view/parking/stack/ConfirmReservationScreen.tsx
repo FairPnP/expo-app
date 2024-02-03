@@ -82,8 +82,8 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
         <LocationCard
           mainText={building.name}
           secondaryText={space.name}
-          lat={building.latitude.toString()}
-          lng={building.longitude.toString()}
+          lat={building.latitude}
+          lng={building.longitude}
         />
       </View>
 

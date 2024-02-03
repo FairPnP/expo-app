@@ -25,7 +25,7 @@ export const UserProfileLabel = ({
       <FontAwesome5 name="user" size={36} color="black" style={styles.icon} />
       <VerticalGroup style={styles.textArea}>
         <Text style={{fontWeight: 'bold'}}>
-          {name_prefix}User {user_id.substring(0, 8)}
+          {name_prefix}User {user_id?.substring(0, 8)}
         </Text>
         <Text style={{color: 'grey'}}>New to FairPnP</Text>
       </VerticalGroup>

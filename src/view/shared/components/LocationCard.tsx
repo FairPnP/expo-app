@@ -4,8 +4,8 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {StaticMap} from './StaticMap';
 
 export type LocationCardProps = {
-  lat: string;
-  lng: string;
+  lat: number;
+  lng: number;
   mainText: string;
   secondaryText: string;
   zoom?: number;

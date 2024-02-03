@@ -28,5 +28,6 @@ const getStyles = (theme: AppTheme) =>
       fontSize: 28,
       fontWeight: 'bold',
       color: theme.colors.text,
+      marginBottom: 16,
     },
   });

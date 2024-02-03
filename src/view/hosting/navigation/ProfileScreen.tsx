@@ -5,7 +5,7 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {StripeAPI} from '@/api';
 import {useQueryClient} from '@tanstack/react-query';
 import {useAppMode, useAuth} from '@/state';
-import {IconButton} from '@/view/shared';
+import {IconButton, Section, UserProfileLabel} from '@/view/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const ProfileScreen = () => {
@@ -51,6 +51,9 @@ export const ProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Section title="Profile">
+        <UserProfileLabel user_id={userId} />
+      </Section>
       <View style={styles.section}>
         <Text style={styles.label}>Email:</Text>
         <Text style={styles.email}>{email}</Text>
