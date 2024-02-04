@@ -1,6 +1,6 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {UserReviewAPI} from '@/api';
-import {USER_QUERY_KEY} from './consts';
+import {REVIEWS_QUERY_KEY, USER_QUERY_KEY} from './consts';
 
 export const useUserReviews = (userId, limit = 10) => {
   const {
@@ -14,7 +14,7 @@ export const useUserReviews = (userId, limit = 10) => {
     isFetchingNextPage,
     isFetchingPreviousPage,
   } = useInfiniteQuery({
-    queryKey: [USER_QUERY_KEY],
+    queryKey: [USER_QUERY_KEY, REVIEWS_QUERY_KEY, userId],
     queryFn: async ({pageParam = undefined}) => {
       const response = await UserReviewAPI.list({
         user_id: userId,
