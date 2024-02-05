@@ -1,7 +1,7 @@
 // useUpdateSpace.js
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {SpaceImageAPI, uploadToS3} from '@/api';
-import {MY_SPACES_QUERY_KEY} from './consts';
+import {SPACE_QUERY_KEY} from './consts';
 
 export const useUpdateSpaceImages = () => {
   const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ export const useUpdateSpaceImages = () => {
     },
     onSuccess: spaceId => {
       // Invalidate and refetch spaces query to update the list
-      queryClient.invalidateQueries({queryKey: [MY_SPACES_QUERY_KEY]});
+      queryClient.invalidateQueries({queryKey: [SPACE_QUERY_KEY, spaceId]});
     },
   });
 };

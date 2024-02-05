@@ -6,7 +6,11 @@ import {ParkingMain} from './parking/ParkingMain';
 import {HostingMain} from './hosting/HostingMain';
 
 export const MainScreen = () => {
-  const {appMode} = useAppMode();
+  const {appMode, isLoading} = useAppMode();
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View style={{flex: 1}}>

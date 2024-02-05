@@ -7,27 +7,39 @@ type AppMode = 'parking' | 'hosting';
 const AppModeContext = createContext({
   appMode: 'parking' as AppMode,
   setAppMode: (mode: AppMode) => {},
+  isLoading: true,
 });
 
 export const useAppMode = () => useContext(AppModeContext);
 
 export const AppModeProvider = ({children}) => {
   const {userId} = useAuth();
+  const [appMode, setAppMode] = useState<AppMode>('parking');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Default mode is 'parking', but check MMKV for any previously saved mode
-  const [appMode, setAppMode] = useState<AppMode>(() => {
-    const mmkv = getMmkv(userId);
-    return (mmkv.getString('appMode') as AppMode) || 'parking';
-  });
+  useEffect(() => {
+    // Ensure userId is not undefined/null before attempting to get or set MMKV data
+    if (userId) {
+      const mmkv = getMmkv(userId);
+      const savedMode = mmkv.getString('appMode') as AppMode;
+      if (savedMode) {
+        setAppMode(savedMode);
+      }
+    }
+
+    setIsLoading(userId === undefined);
+  }, [userId]);
 
   // Update MMKV whenever appMode changes
   useEffect(() => {
-    const mmkv = getMmkv('appMode');
-    mmkv.set('appMode', appMode);
-  }, [appMode]);
+    if (userId && appMode) {
+      const mmkv = getMmkv(userId);
+      mmkv.set('appMode', appMode);
+    }
+  }, [appMode, userId]);
 
   return (
-    <AppModeContext.Provider value={{appMode, setAppMode}}>
+    <AppModeContext.Provider value={{appMode, setAppMode, isLoading}}>
       {children}
     </AppModeContext.Provider>
   );
