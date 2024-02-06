@@ -18,7 +18,7 @@ export const useCreateSpaceReview = () => {
 
       // Optionally, update the spaces cache directly if you want to append the new space
       // without needing a refetch. This depends on your application's behavior.
-      // queryClient.setQueryData<Space[]>([MY_SPACES_QUERY_KEY], old => [
+      // queryClient.setQueryData<Space[]>([SPACE_QUERY_KEY], old => [
       //   ...old,
       //   newSpace,
       // ]);

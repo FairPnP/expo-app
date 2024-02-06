@@ -126,7 +126,12 @@ export const AvailabilityMap = ({
         {isLoaded &&
           markers.map(marker => (
             <Marker
-              key={marker.availability.id}
+              key={
+                marker.availability.id +
+                (marker.availability.id === selectedMarker.availability.id
+                  ? 's'
+                  : '')
+              }
               tracksInfoWindowChanges={false}
               tracksViewChanges={false}
               focusable={true}
@@ -137,7 +142,10 @@ export const AvailabilityMap = ({
                 longitude: marker.building.longitude,
               }}
               identifier={marker.availability.id.toString()}>
-              {renderMarker?.(marker, marker === selectedMarker)}
+              {renderMarker?.(
+                marker,
+                marker.availability.id === selectedMarker.availability.id,
+              )}
             </Marker>
           ))}
       </MapView>

@@ -85,7 +85,7 @@ const getStyles = (theme: AppTheme) =>
       justifyContent: 'center',
     },
     button: {
-      width: 80,
+      width: 100,
       height: 40,
     },
     image: {

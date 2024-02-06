@@ -3,7 +3,7 @@ import React from 'react';
 import {friendlyDateRange} from '@/utils';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useAppMode, useBuilding, useReservation, useSpace} from '@/state';
-import {Title, Text, Button, LoadingSpinner, SpaceCard} from '@/view/shared';
+import {Title, Text, Button, LoadingSpinner, SpaceCard} from '../components';
 
 export type ReservationDetailsScreenProps = {
   reservation_id: number;

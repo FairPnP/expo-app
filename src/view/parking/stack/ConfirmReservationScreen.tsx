@@ -106,11 +106,11 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
       </View>
 
       <View style={styles.bottomArea}>
-        <Button onPress={handleReservation}>
-          <Text>Test Reserve</Text>
-        </Button>
-        <Button onPress={openPaymentSheet}>
+        <Button style={{marginRight: 8}} onPress={openPaymentSheet}>
           <Text>Confirm Reservation</Text>
+        </Button>
+        <Button onPress={handleReservation}>
+          <Text>*Bypass Purchase*</Text>
         </Button>
       </View>
     </ScrollView>
