@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HostingNavigator} from './navigation/HostingNavigator';
 import {
   ReservationChatScreen,
+  ReservationDetailsScreen,
   SpaceReviewsScreen,
   StripeRefreshScreen,
   StripeReturnScreen,
@@ -65,6 +66,13 @@ export const HostingMain = () => {
         component={StripeRefreshScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ReservationDetails"
+        component={ReservationDetailsScreen}
+        options={{
+          headerTitle: 'Reservation Details',
         }}
       />
       <Stack.Screen

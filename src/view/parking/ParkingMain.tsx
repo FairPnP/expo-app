@@ -1,12 +1,12 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ParkingNavigator} from './navigation/ParkingNavigator';
-import {ReservationDetailsScreen} from './stack/ReservationDetailsScreen';
 import {
   ReservationChatScreen,
   SpaceReviewsScreen,
   StripeRefreshScreen,
   StripeReturnScreen,
   UserReviewsScreen,
+  ReservationDetailsScreen,
 } from '../shared';
 import {ConfirmReservationScreen} from './stack/ConfirmReservationScreen';
 

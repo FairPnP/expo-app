@@ -6,3 +6,4 @@ export * from './StripeReturnScreen';
 export * from './SpaceReviewsScreen';
 export * from './UserReviewsScreen';
 export * from './ViewSpotScreen';
+export * from './ReservationDetailsScreen';

@@ -85,7 +85,7 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     handleCreateSpace(data).then(() => {
-      navigation.goBack();
+      navigation.navigate('Listings');
     });
   };
 

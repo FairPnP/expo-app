@@ -37,7 +37,7 @@ export const MapScreen = ({navigation}) => {
   const inset = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
   const mapHeight =
-    Dimensions.get('window').height - inset.bottom - tabBarHeight - 72;
+    Dimensions.get('window').height - inset.bottom - tabBarHeight - 76;
 
   const [location, setLocation] = useState(initialRegion);
   const today = new Date();
@@ -178,7 +178,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     topBar: {
-      height: 72,
+      height: 76,
       paddingVertical: 4,
       paddingHorizontal: 8,
       backgroundColor: theme.colors.background,

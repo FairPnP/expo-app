@@ -1,27 +1,13 @@
-import React, {useCallback} from 'react';
-import {StyleSheet, ScrollView, View} from 'react-native';
-import {
-  Title,
-  LoadingSpinner,
-  Section,
-  IconButton,
-  InfiniteListView,
-  Button,
-} from '@/view/shared';
-import {ViewSpotScreenProps} from '../../shared/screens/ViewSpotScreen';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Title, Section, IconButton, Text} from '@/view/shared';
 import {useTheme, AppTheme} from '@/view/theme';
-import {Building, Space} from '@/api';
-import {useAppMode, useBuildings, useMySpaces} from '@/state';
-import {MySpot} from '../components';
+import {useAppMode} from '@/state';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const favorites: Space[] = [];
+type HostingHomeScreenProps = {};
 
-type HomeScreenProps = {};
-
-export const HostingHomeScreen = ({}: HomeScreenProps) => {
-  const navigation = useNavigation<any>();
+export const HostingHomeScreen = ({}: HostingHomeScreenProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const {setAppMode} = useAppMode();
@@ -30,65 +16,13 @@ export const HostingHomeScreen = ({}: HomeScreenProps) => {
     setAppMode('parking');
   };
 
-  const {spaces, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading} =
-    useMySpaces(5);
-  const {data: buildings} = useBuildings(spaces?.map(s => s.building_id));
-
-  const handleSpotPress = useCallback(
-    (space: Space, building: Building) => {
-      const props: ViewSpotScreenProps = {
-        building: building,
-        space: space,
-      };
-      navigation.navigate('ViewSpot', props);
-    },
-    [navigation],
-  );
-
-  const renderSpot = useCallback(
-    ({item}: {item: Space}) => {
-      return (
-        <MySpot
-          building={buildings?.find(b => b.id === item.building_id)}
-          mySpot={item}
-          onPress={handleSpotPress}
-        />
-      );
-    },
-    [buildings, handleSpotPress],
-  );
-
-  const onSearchBarSubmit = () => {
-    navigation.navigate('Search');
-  };
-
-  const onAddSpot = () => {
-    navigation.navigate('AddSpot');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.topArea}>
-        <Button onPress={onAddSpot}>
-          <Title>Add Spot</Title>
-        </Button>
-        <Section title="My Spots">
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <InfiniteListView
-              data={spaces}
-              fetchNextPage={fetchNextPage}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              renderItem={renderSpot}
-              keyExtractor={item => item.id.toString()}
-              emptyMessage="You have no registered parking spots"
-              itemsPerPage={5}
-            />
-          )}
+      <View>
+        <Section title="Home">
+          <Text>TODO: Hosting home screen</Text>
         </Section>
-      </ScrollView>
+      </View>
       <View style={styles.bottomArea}>
         <Section>
           <Title style={{marginVertical: 4}}>Looking for parking?</Title>

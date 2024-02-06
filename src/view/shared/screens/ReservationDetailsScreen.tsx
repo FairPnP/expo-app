@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {friendlyDateRange} from '@/utils';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useBuilding, useReservation, useSpace} from '@/state';
+import {useAppMode, useBuilding, useReservation, useSpace} from '@/state';
 import {Title, Text, Button, LoadingSpinner, SpaceCard} from '@/view/shared';
 
 export type ReservationDetailsScreenProps = {
@@ -12,6 +12,7 @@ export type ReservationDetailsScreenProps = {
 export const ReservationDetailsScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const {appMode} = useAppMode();
 
   const {reservation_id} = route.params as ReservationDetailsScreenProps;
   const {data: reservation} = useReservation(reservation_id);
@@ -40,7 +41,7 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
       </View>
       <View style={styles.bottomArea}>
         <Button onPress={onChatButtonPressed}>
-          <Text>Message Host</Text>
+          <Text>Message {appMode === 'hosting' ? 'Guest' : 'Host'}</Text>
         </Button>
       </View>
     </ScrollView>

@@ -1,134 +1,82 @@
-import React, {useCallback, useState} from 'react';
-import {View, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, ScrollView} from 'react-native';
 import {
-  ListView,
-  Text,
+  Title,
   LoadingSpinner,
-  ReservationItem,
-  AvailabilityItem,
+  Section,
+  InfiniteListView,
+  Button,
+  ViewSpotScreenProps,
 } from '@/view/shared';
+import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {
-  useHostReservations,
-  useMyAvailabilities,
-  useMyReservations,
-} from '@/state';
+import {Building, Space} from '@/api';
+import {useBuildings, useMySpaces} from '@/state';
+import {MySpot} from '../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-export const ListingsScreen = () => {
-  const [activeTab, setActiveTab] = useState('Bookings');
-  const [activeSubTab, setActiveSubTab] = useState('Upcoming');
-  const {theme} = useTheme();
-  const styles = getStyles(theme.appTheme);
+type ListingsScreenProps = {};
 
-  const {data: hostReservations, isLoading: isHostReservationsLoading} =
-    useHostReservations();
-  const {data: reservations, isLoading: isReservationsLoading} =
-    useMyReservations();
+export const ListingsScreen = ({}: ListingsScreenProps) => {
+  const navigation = useNavigation<any>();
+  const theme = useTheme().theme.appTheme;
+  const styles = getStyles(theme);
 
-  const {data: availabilities, isLoading: isAvailabiltyLoading} =
-    useMyAvailabilities();
+  const {spaces, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading} =
+    useMySpaces(5);
+  const {data: buildings} = useBuildings(spaces?.map(s => s.building_id));
 
-  const renderContent = useCallback(() => {
-    const date = new Date();
-    const isLoading =
-      activeTab === 'Bookings'
-        ? isReservationsLoading && isHostReservationsLoading
-        : isAvailabiltyLoading;
-
-    const combinedReservations =
-      (reservations?.reservations ?? []).concat(
-        hostReservations?.reservations ?? [],
-      ) || [];
-
-    const uniqueReservations = combinedReservations.reduce((acc, current) => {
-      if (!acc.find(reservation => reservation.id === current.id)) {
-        acc.push(current);
-      }
-      return acc;
-    }, []);
-
-    const data =
-      activeTab === 'Bookings'
-        ? uniqueReservations
-        : availabilities?.availability;
-    const filteredData = data?.filter(item => {
-      switch (activeSubTab) {
-        case 'Upcoming':
-          return item.start_date > date;
-        case 'Ongoing':
-          return item.start_date <= date && item.end_date > date;
-        case 'History':
-          return item.end_date < date;
-        default:
-          return false;
-      }
-    });
-
-    const renderItem =
-      activeTab === 'Bookings' ? renderReservationItem : renderAvailabilityItem;
-
-    return isLoading ? (
-      <LoadingSpinner />
-    ) : (
-      <ListView
-        data={filteredData}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        emptyMessage="You have no registered parking spots"
-        style={styles.content}
-      />
-    );
-  }, [
-    activeSubTab,
-    activeTab,
-    isReservationsLoading,
-    isAvailabiltyLoading,
-    reservations,
-    availabilities,
-    styles.content,
-    theme.appTheme.colors.primary,
-    hostReservations,
-    isHostReservationsLoading,
-  ]);
-
-  const renderReservationItem = ({item}) => (
-    <ReservationItem reservation={item} />
+  const handleSpotPress = useCallback(
+    (space: Space, building: Building) => {
+      const props: ViewSpotScreenProps = {
+        building: building,
+        space: space,
+      };
+      navigation.navigate('ViewSpot', props);
+    },
+    [navigation],
   );
-  const renderAvailabilityItem = ({item}) => (
-    <AvailabilityItem availability={item} />
+
+  const renderSpot = useCallback(
+    ({item}: {item: Space}) => {
+      return (
+        <MySpot
+          building={buildings?.find(b => b.id === item.building_id)}
+          mySpot={item}
+          onPress={handleSpotPress}
+        />
+      );
+    },
+    [buildings, handleSpotPress],
   );
+
+  const onAddSpot = () => {
+    navigation.navigate('AddSpot');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.tabsContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Bookings' && styles.activeTab]}
-          onPress={() => setActiveTab('Bookings')}>
-          <Text>Bookings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Availability' && styles.activeTab]}
-          onPress={() => setActiveTab('Availability')}>
-          <Text>Availability</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.subTabsContainer}>
-        {['Upcoming', 'Ongoing', 'History'].map(subTab => (
-          <TouchableOpacity
-            key={subTab}
-            style={[
-              styles.subTab,
-              activeSubTab === subTab && styles.activeSubTab,
-            ]}
-            onPress={() => setActiveSubTab(subTab)}>
-            <Text>{subTab}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      <ScrollView>{renderContent()}</ScrollView>
+      <ScrollView>
+        <Button style={{marginHorizontal: 16}} onPress={onAddSpot}>
+          <Title>Add Listing</Title>
+        </Button>
+        <Section title="My Listings">
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <InfiniteListView
+              data={spaces}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              renderItem={renderSpot}
+              keyExtractor={item => item.id.toString()}
+              emptyMessage="You have no registered parking spots"
+              itemsPerPage={5}
+            />
+          )}
+        </Section>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -138,46 +86,5 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-    },
-    tabsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      backgroundColor: theme.colors.card,
-      paddingVertical: 4,
-    },
-    tab: {
-      padding: 10,
-    },
-    activeTab: {
-      borderBottomWidth: 3,
-      borderBottomColor: theme.colors.primary,
-    },
-    tabText: {
-      color: theme.colors.text,
-      fontSize: 18,
-    },
-    subTabsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      backgroundColor: theme.colors.card,
-      paddingVertical: 5,
-    },
-    subTab: {
-      padding: 5,
-    },
-    activeSubTab: {
-      borderBottomWidth: 2,
-      borderBottomColor: theme.colors.primary,
-    },
-    subTabText: {
-      color: theme.colors.text,
-      fontSize: 16,
-    },
-    content: {
-      padding: 10,
-    },
-    contentText: {
-      color: theme.colors.text,
-      fontSize: 16,
     },
   });
