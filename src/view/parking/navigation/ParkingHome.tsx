@@ -17,8 +17,8 @@ export const ParkingHome = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.topArea}>
-        <Section title="Parking">
-          <Text>Parking</Text>
+        <Section title="Parking Home">
+          <Text>TODO: Parking home</Text>
         </Section>
         <Section title="Upcoming">
           <Text>Parking</Text>

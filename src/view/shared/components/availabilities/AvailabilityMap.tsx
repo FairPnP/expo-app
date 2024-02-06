@@ -128,7 +128,7 @@ export const AvailabilityMap = ({
             <Marker
               key={
                 marker.availability.id +
-                (marker.availability.id === selectedMarker.availability.id
+                (marker.availability.id === selectedMarker?.availability.id
                   ? 's'
                   : '')
               }
@@ -144,7 +144,7 @@ export const AvailabilityMap = ({
               identifier={marker.availability.id.toString()}>
               {renderMarker?.(
                 marker,
-                marker.availability.id === selectedMarker.availability.id,
+                marker.availability.id === selectedMarker?.availability.id,
               )}
             </Marker>
           ))}

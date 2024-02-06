@@ -19,7 +19,7 @@ export const HostingHomeScreen = ({}: HostingHomeScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Section title="Home">
+        <Section title="Hosting Home">
           <Text>TODO: Hosting home screen</Text>
         </Section>
       </View>

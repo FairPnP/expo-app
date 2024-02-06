@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScaledSize} from 'react-native';
+import {View, Text} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import {ImageDownload} from './ImageDownload';
 
@@ -10,6 +10,15 @@ type ImageSwiperProps = {
 };
 
 export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
+  const [page, setPage] = React.useState(1);
+
+  const onChange = React.useCallback(
+    ({viewableItems}) => {
+      setPage(viewableItems[0].index + 1);
+    },
+    [setPage],
+  );
+
   const renderItem = ({item}) => {
     return (
       <ImageDownload
@@ -36,7 +45,30 @@ export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
         estimatedItemSize={width}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={true}
+        onViewableItemsChanged={onChange}
       />
+      {urls.length > 1 && (
+        <View style={styles.pageInfo}>
+          <Text style={styles.pageInfoText}>{`${page}/${urls.length}`}</Text>
+        </View>
+      )}
     </View>
   );
+};
+
+const styles = {
+  pageInfo: {
+    position: 'absolute',
+    bottom: 10,
+    height: 32,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 16,
+    paddingHorizontal: 10,
+  },
+  pageInfoText: {
+    color: 'white',
+  },
 };
