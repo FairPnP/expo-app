@@ -29,17 +29,18 @@ export const MapCard = ({
 }: Props) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleBooking = useCallback(async () => {
-    const props: ConfirmReservationScreenProps = {
-      building,
-      space,
-      startTimestamp: startDate.getTime(),
-      endTimestamp: endDate.getTime(),
-      hourly_rate: availability.hourly_rate,
-    };
-    (navigation as any).navigate('ConfirmReservation', props);
+    // const props: ConfirmReservationScreenProps = {
+    //   building,
+    //   space,
+    //   startTimestamp: startDate.getTime(),
+    //   endTimestamp: endDate.getTime(),
+    //   hourly_rate: availability.hourly_rate,
+    // };
+    // (navigation as any).navigate('ConfirmReservation', props);
+    navigation.navigate('ViewSpot', {building, space});
   }, [building, space, availability, startDate, endDate]);
 
   return (
@@ -63,7 +64,7 @@ export const MapCard = ({
           </VerticalGroup>
           <View style={styles.buttonContainer}>
             <Button style={styles.button} onPress={handleBooking}>
-              <Text>Claim Spot</Text>
+              <Text>View</Text>
             </Button>
           </View>
         </View>
@@ -85,7 +86,7 @@ const getStyles = (theme: AppTheme) =>
       justifyContent: 'center',
     },
     button: {
-      width: 100,
+      width: 80,
       height: 40,
     },
     image: {

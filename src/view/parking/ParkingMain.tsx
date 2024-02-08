@@ -7,6 +7,7 @@ import {
   StripeReturnScreen,
   UserReviewsScreen,
   ReservationDetailsScreen,
+  ViewSpotScreen,
 } from '../shared';
 import {ConfirmReservationScreen} from './stack/ConfirmReservationScreen';
 
@@ -18,6 +19,13 @@ export const ParkingMain = () => {
       <Stack.Screen
         name="Navigator"
         component={ParkingNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ViewSpot"
+        component={ViewSpotScreen}
         options={{
           headerShown: false,
         }}

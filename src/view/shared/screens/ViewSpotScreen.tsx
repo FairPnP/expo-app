@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -19,13 +19,14 @@ import {
   VerticalGroup,
   TextLink,
 } from '../components';
-import {Building, Space} from '@/api';
+import {Building, Space, getAvailabilityCost} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useAppMode, useSpaceSummary} from '@/state';
+import {useAppMode, useSearchState, useSpaceSummary} from '@/state';
 import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {openMap} from '@/utils/maps';
 import {FontAwesome} from '@expo/vector-icons';
+import {toMinimalDateRange} from '@/utils';
 
 export type ViewSpotScreenProps = {
   building: Building;
@@ -43,6 +44,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const {appMode} = useAppMode();
+  const {startDate, endDate} = useSearchState();
 
   const {data: summary} = useSpaceSummary(space.id);
 
@@ -66,6 +68,45 @@ export const ViewSpotScreen = ({navigation, route}) => {
     const listener = Dimensions.addEventListener('change', onChange);
     return () => listener.remove();
   }, []);
+
+  const onReservePressed = () => {
+    navigation.navigate('ConfirmReservation', {building, space});
+  };
+
+  const onDateRangeSelected = () => {
+    navigation.navigate('SearchParking');
+  };
+
+  const renderParkingBottomArea = () => {
+    return (
+      <View style={styles.bottomArea}>
+        <HorizontalGroup>
+          <VerticalGroup>
+            <TextLink onPress={onDateRangeSelected}>
+              {toMinimalDateRange(startDate, endDate)}
+            </TextLink>
+            <Text>
+              Total: ${getAvailabilityCost(1, startDate, endDate).toFixed(2)}
+            </Text>
+          </VerticalGroup>
+          <Button onPress={onReservePressed}>
+            <Text>Reserve</Text>
+          </Button>
+        </HorizontalGroup>
+      </View>
+    );
+  };
+
+  const renderHostingBottomArea = () => {
+    return (
+      <View style={styles.bottomArea}>
+        <Button
+          onPress={() => navigation.navigate('ManageSpot', {building, space})}>
+          <Text>Manage Availability</Text>
+        </Button>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -140,23 +181,8 @@ export const ViewSpotScreen = ({navigation, route}) => {
           </Section>
         </View>
       </ScrollView>
-      {appMode === 'hosting' && (
-        <View style={styles.bottomArea}>
-          <Button
-            onPress={() =>
-              navigation.navigate('ManageSpot', {building, space})
-            }>
-            <Text>Add Availability</Text>
-          </Button>
-        </View>
-      )}
-      {appMode === 'parking' && (
-        <View style={styles.bottomArea}>
-          <Button onPress={() => {}}>
-            <Text>Reserve</Text>
-          </Button>
-        </View>
-      )}
+      {appMode === 'hosting' && renderHostingBottomArea()}
+      {appMode === 'parking' && renderParkingBottomArea()}
     </View>
   );
 };

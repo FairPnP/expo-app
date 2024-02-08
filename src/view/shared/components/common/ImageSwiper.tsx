@@ -48,7 +48,7 @@ export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
         onViewableItemsChanged={onChange}
       />
       {urls.length > 1 && (
-        <View style={styles.pageInfo}>
+        <View style={styles.pageInfo as any}>
           <Text style={styles.pageInfoText}>{`${page}/${urls.length}`}</Text>
         </View>
       )}
@@ -63,7 +63,6 @@ const styles = {
     height: 32,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
-    alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 16,
     paddingHorizontal: 10,

@@ -24,14 +24,12 @@ export const HostingHomeScreen = ({}: HostingHomeScreenProps) => {
         </Section>
       </View>
       <View style={styles.bottomArea}>
-        <Section>
-          <Title style={{marginVertical: 4}}>Looking for parking?</Title>
-          <IconButton
-            icon="directions"
-            text="Switch to Parking"
-            onPress={onSwitchToParking}
-          />
-        </Section>
+        <Title style={{marginVertical: 4}}>Looking for parking?</Title>
+        <IconButton
+          icon="directions"
+          text="Switch to Parking Mode"
+          onPress={onSwitchToParking}
+        />
       </View>
     </SafeAreaView>
   );
@@ -51,6 +49,7 @@ const getStyles = (theme: AppTheme) =>
       bottom: 0,
       width: '100%',
       height: 100,
+      paddingHorizontal: 8,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
     },

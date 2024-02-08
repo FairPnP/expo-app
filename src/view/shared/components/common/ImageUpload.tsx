@@ -5,13 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 type ImageUploadProps = {
   onImagesSelected: (uris: string[]) => void;
   maxImages?: number;
+  defaultImages?: string[];
 };
 
 export const ImageUpload = ({
   onImagesSelected,
   maxImages,
+  defaultImages,
 }: ImageUploadProps) => {
-  const [imgUris, setImgUris] = useState(null);
+  const [imgUris, setImgUris] = useState(defaultImages);
 
   const onButtonPress = useCallback(async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -55,7 +57,8 @@ export const ImageUpload = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: 200,
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
   },

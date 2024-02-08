@@ -8,11 +8,13 @@ import {
 } from 'react-native';
 import {useController, UseControllerProps} from 'react-hook-form';
 import {AppTheme, useTheme} from '@/view/theme';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 
 interface TextInputProps extends RNTextInputProps, UseControllerProps {
   label: string;
   name: string;
   defaultValue?: string;
+  bottomSheet?: boolean;
 }
 
 export const TextInput = forwardRef<RNTextInput, TextInputProps>(
@@ -20,7 +22,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     const theme = useTheme().theme.appTheme;
     const styles = getStyles(theme);
 
-    const {name, label, rules, ...inputProps} = props;
+    const {name, label, rules, bottomSheet, ...inputProps} = props;
 
     const {field, fieldState} = useController({name, rules});
 
@@ -33,16 +35,29 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             {label}
           </Text>
         )}
-        <RNTextInput
-          autoCapitalize="none"
-          textAlign="left"
-          style={[styles.input, hasError && styles.errorInput]}
-          onChangeText={field.onChange}
-          onBlur={field.onBlur}
-          ref={field.ref}
-          placeholderTextColor={theme.colors.disabled}
-          {...inputProps}
-        />
+        {bottomSheet ? (
+          <BottomSheetTextInput
+            autoCapitalize="none"
+            textAlign="left"
+            style={[styles.input, hasError && styles.errorInput]}
+            onChangeText={field.onChange}
+            onBlur={field.onBlur}
+            ref={field.ref}
+            placeholderTextColor={theme.colors.disabled}
+            {...inputProps}
+          />
+        ) : (
+          <RNTextInput
+            autoCapitalize="none"
+            textAlign="left"
+            style={[styles.input, hasError && styles.errorInput]}
+            onChangeText={field.onChange}
+            onBlur={field.onBlur}
+            ref={field.ref}
+            placeholderTextColor={theme.colors.disabled}
+            {...inputProps}
+          />
+        )}
 
         {hasError && (
           <View style={styles.errorContainer}>
@@ -63,7 +78,7 @@ const getStyles = (theme: AppTheme) =>
       marginBottom: 8,
     },
     container: {
-      flex: -1,
+      height: 100,
       justifyContent: 'center',
       padding: 8,
       backgroundColor: theme.colors.background,

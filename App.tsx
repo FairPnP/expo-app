@@ -25,6 +25,7 @@ import Toast from 'react-native-toast-message';
 import {AppModeProvider} from '@/state';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 // sentry
 Sentry.init({
@@ -107,31 +108,33 @@ function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <BottomSheetModalProvider>
+        <QueryClientProvider client={queryClient}>
           <AmplifyThemeProvider
             theme={theme.amplifyTheme}
             colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
             <Authenticator.Provider>
               <Authenticator>
-                <QueryClientProvider client={queryClient}>
-                  <StripeProvider
-                    publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
-                    // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-                    merchantIdentifier="merchant.com.fairpnp.fairpnp">
-                    <NavigationContainer
-                      theme={theme.appTheme}
-                      linking={linking}>
-                      <AppModeProvider>
-                        <MainScreen />
-                      </AppModeProvider>
-                    </NavigationContainer>
-                    <Toast />
-                  </StripeProvider>
-                </QueryClientProvider>
+                <GestureHandlerRootView style={{flex: 1}}>
+                  <BottomSheetModalProvider>
+                    <StripeProvider
+                      publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"
+                      // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+                      merchantIdentifier="merchant.com.fairpnp.fairpnp">
+                      <NavigationContainer
+                        theme={theme.appTheme}
+                        linking={linking}>
+                        <AppModeProvider>
+                          <MainScreen />
+                        </AppModeProvider>
+                      </NavigationContainer>
+                      <Toast />
+                    </StripeProvider>
+                  </BottomSheetModalProvider>
+                </GestureHandlerRootView>
               </Authenticator>
             </Authenticator.Provider>
           </AmplifyThemeProvider>
-        </BottomSheetModalProvider>
+        </QueryClientProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

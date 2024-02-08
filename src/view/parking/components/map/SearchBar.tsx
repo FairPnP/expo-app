@@ -9,7 +9,7 @@ import {
 } from '@/view/shared';
 import {useTheme, AppTheme} from '@/view/theme';
 import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
-import {useSearchBarState} from '@/state';
+import {useSearchState} from '@/state';
 
 export type SearchBarState = {
   startDate: Date;
@@ -28,7 +28,7 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const sb = useSearchBarState();
+  const sb = useSearchState();
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);

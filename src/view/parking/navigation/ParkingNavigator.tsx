@@ -23,7 +23,7 @@ const TabBarIcon: React.FC<TabBarIconProps> = ({route, color, size}) => {
     return <FontAwesome5 name="home" size={size} color={color} />;
   } else if (route.name === 'Map') {
     return <FontAwesome5 name="map" size={size} color={color} />;
-  } else if (route.name === 'Spots') {
+  } else if (route.name === 'Trips') {
     return <FontAwesome5 name="parking" size={size} color={color} />;
   } else if (route.name === 'Inbox') {
     return <FontAwesome5 name="comments" size={size} color={color} />;
@@ -62,7 +62,7 @@ export const ParkingNavigator = () => {
       })}>
       <Tab.Screen name="Home" component={ParkingHome} />
       <Tab.Screen name="Map" component={MapScreen} />
-      <Tab.Screen name="Spots" component={SpotsScreen} />
+      <Tab.Screen name="Trips" component={SpotsScreen} />
       <Tab.Screen name="Inbox" component={InboxScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>

@@ -29,3 +29,31 @@ export const toMonthYearString = (date: Date) => {
     date.toLocaleString('default', {month: 'long'}) + ' ' + date.getFullYear()
   );
 };
+
+export const toMinimalTimeString = (date: Date) => {
+  if (date.getMinutes() === 0) {
+    return date.toLocaleString('en-US', {hour: 'numeric', hour12: true});
+  }
+
+  return date.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+};
+
+export const toMinimalDateString = (date: Date) => {
+  return date.toLocaleString('en-US', {month: 'short', day: 'numeric'});
+};
+
+export const toMinimalDateRange = (start: Date, end: Date) => {
+  const isSameDay = start.toDateString() === end.toDateString();
+
+  // Jan 5, 2 PM - 4 PM
+  if (isSameDay) {
+    return `${toMinimalDateString(start)}, ${toMinimalTimeString(start)} - ${toMinimalTimeString(end)}`;
+  }
+
+  // Jan 5, 2 PM - Jan 6, 4:30 PM
+  return `${toMinimalDateString(start)}, ${toMinimalTimeString(start)} - ${toMinimalDateString(end)}, ${toMinimalTimeString(end)}`;
+};

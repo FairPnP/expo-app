@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useAuthenticator} from '@aws-amplify/ui-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
@@ -13,8 +13,11 @@ import {
   HorizontalGroup,
   ReviewStars,
   ReviewsLabel,
+  EditUserProfileBottomSheet,
+  TextLink,
 } from '../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 export const ProfileScreen = ({navigation}) => {
   const {tokens} = useAuth();
@@ -58,9 +61,19 @@ export const ProfileScreen = ({navigation}) => {
     navigation.navigate('UserReviews', {userId});
   };
 
+  const editProfilePressed = () => {
+    editModalRef.current?.present();
+  };
+
+  const editModalRef = useRef<BottomSheetModal>(null);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Section title="Profile">
+      <Section
+        title="Profile"
+        titleComponent={() => (
+          <TextLink onPress={editProfilePressed}>Edit Profile</TextLink>
+        )}>
         <UserProfileLabel userId={userId} />
         <HorizontalGroup
           style={{
@@ -103,7 +116,7 @@ export const ProfileScreen = ({navigation}) => {
           />
           <IconButton
             icon="directions"
-            text="Switch to Parking"
+            text="Switch to Parking Mode"
             onPress={() => setAppMode('parking')}
           />
         </>
@@ -111,12 +124,13 @@ export const ProfileScreen = ({navigation}) => {
       {appMode === 'parking' && (
         <IconButton
           icon="directions"
-          text="Switch to Hosting"
+          text="Switch to Hosting Mode"
           onPress={() => setAppMode('hosting')}
         />
       )}
 
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
+      <EditUserProfileBottomSheet ref={editModalRef} />
     </SafeAreaView>
   );
 };

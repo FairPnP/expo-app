@@ -5,5 +5,5 @@ export * from './spaces';
 export * from './users';
 
 export * from './useAuth';
-export * from './useSearchBarState';
+export * from './useSearchState';
 export * from './useAppMode';

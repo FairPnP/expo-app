@@ -1,16 +1,26 @@
 import {calendarDate} from '@/utils';
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useMemo, useCallback} from 'react';
 import {Dimensions} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';
+import {create} from 'zustand';
 
 export type DayViewProps = {
   onDateRangeSelected?: (startDate: Date, endDate: Date) => void;
 };
 
-type State = {
+type DaysViewState = {
   startDate?: Date;
   endDate?: Date;
+  setStartDate: (startDate: Date) => void;
+  setEndDate: (endDate: Date) => void;
 };
+
+const useDaysViewState = create<DaysViewState>(set => ({
+  startDate: undefined,
+  endDate: undefined,
+  setStartDate: (startDate: Date) => set({startDate}),
+  setEndDate: (endDate: Date) => set({endDate}),
+}));
 
 export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
   const initialDate = useMemo(() => {
@@ -21,7 +31,7 @@ export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
     return calendarDate(date);
   }, []);
 
-  const [state, setState] = useState<State>({});
+  const state = useDaysViewState();
 
   const marked = useMemo(() => {
     if (!state.startDate || !state.endDate) {
@@ -52,13 +62,13 @@ export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
       const date = new Date(day.dateString);
       if (state.startDate && !state.endDate) {
         if (date.getTime() < state.startDate.getTime()) {
-          setState({startDate: date});
+          state.setStartDate(date);
         } else {
-          setState({startDate: state.startDate, endDate: date});
+          state.setEndDate(date);
           onDateRangeSelected?.(state.startDate, date);
         }
       } else {
-        setState({startDate: date});
+        state.setStartDate(date);
       }
     },
     [state.startDate, state.endDate],

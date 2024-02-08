@@ -94,7 +94,9 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
       <Text>{building.name}</Text>
       <View style={styles.separator} />
 
-      <ImageUpload maxImages={5} onImagesSelected={onImagesSelected} />
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <ImageUpload maxImages={5} onImagesSelected={onImagesSelected} />
+      </View>
 
       <FormProvider {...formMethods}>
         <TextInput

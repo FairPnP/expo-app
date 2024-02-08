@@ -34,7 +34,10 @@ export const UserProfileLabel = ({
           style={{
             width: 64,
             height: 64,
-            borderRadius: 18,
+            borderRadius: 32,
+          }}
+          imageStyle={{
+            borderRadius: 32,
           }}
         />
       ) : (
@@ -71,6 +74,7 @@ const getStyes = (theme: AppTheme) =>
       marginTop: 6,
     },
     textArea: {
+      marginLeft: 8,
       paddingHorizontal: 4,
     },
   });
