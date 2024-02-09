@@ -6,36 +6,37 @@ import {
   LocationSearch,
   Title,
   Text,
+  HorizontalGroup,
 } from '@/view/shared';
 import {useTheme, AppTheme} from '@/view/theme';
 import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 import {useSearchState} from '@/state';
+import {toMinimalDateRange} from '@/utils';
 
 export type SearchBarState = {
   startDate: Date;
   endDate: Date;
   location: {
+    name: string;
     latitude: number;
     longitude: number;
   };
 };
 
-export type SearchBarProps = {
-  onSubmit?: (state: SearchBarState) => void;
-};
+export type SearchBarProps = {};
 
-export const SearchBar = ({onSubmit}: SearchBarProps) => {
+export const SearchBar = ({}: SearchBarProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const sb = useSearchState();
 
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+    sb.setCollapse(!sb.isCollapsed);
   };
 
   const onLocationSelected = (data: any, details: any) => {
     sb.setLocation({
+      name: data.description,
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
     });
@@ -46,6 +47,15 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
     sb.setEndDate(endDate);
   };
 
+  let locationName = null;
+  if (sb.location?.name) {
+    locationName = sb.location.name;
+    const parts = sb.location.name.split(',');
+    if (parts.length > 1) {
+      locationName = parts[0] + ', ' + parts[1];
+    }
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleCollapse} style={styles.card}>
@@ -53,31 +63,35 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
           <Icon name="magnify" size={32} color="#000" />
         </View>
         <View style={styles.infoArea}>
-          <Title>Find Parking</Title>
-          <Text>Enter location</Text>
+          {locationName && sb.startDate && sb.endDate ? (
+            <>
+              <Text style={{fontWeight: 'bold'}}>{locationName}</Text>
+              <Text>{toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+            </>
+          ) : (
+            <>
+              <Title>Find Parking</Title>
+              <Text>Enter location</Text>
+            </>
+          )}
         </View>
       </TouchableOpacity>
-      <Collapsible collapsed={isCollapsed}>
-        <Title style={{marginVertical: 12}}>Where?</Title>
+      <Collapsible
+        key={'collapse_' + sb.isCollapsed}
+        collapsed={sb.isCollapsed}>
+        <HorizontalGroup>
+          <Title style={{marginVertical: 12}}>Where?</Title>
+        </HorizontalGroup>
         <LocationSearch onLocationSelected={onLocationSelected} />
-        <Title style={{marginVertical: 12}}>When?</Title>
+        <HorizontalGroup style={{justifyContent: 'flex-start'}}>
+          <Title style={{marginVertical: 12, marginRight: 16}}>When?</Title>
+          <Text>
+            {sb.startDate &&
+              sb.endDate &&
+              toMinimalDateRange(sb.startDate, sb.endDate)}
+          </Text>
+        </HorizontalGroup>
         <AvailabilityDatePicker onDateRangeSelected={onDateRangeSelected} />
-        <View style={styles.bottomArea}>
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={() => {
-              toggleCollapse();
-              if (onSubmit) {
-                onSubmit({
-                  location: sb.location,
-                  startDate: sb.startDate,
-                  endDate: sb.endDate,
-                });
-              }
-            }}>
-            <Text>Search</Text>
-          </TouchableOpacity>
-        </View>
       </Collapsible>
     </View>
   );
@@ -86,8 +100,8 @@ export const SearchBar = ({onSubmit}: SearchBarProps) => {
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      padding: 4,
-      borderRadius: 16,
+      padding: 2,
+      borderRadius: 32,
       borderWidth: 1,
       borderColor: theme.colors.border,
       backgroundColor: theme.colors.card,
@@ -97,7 +111,7 @@ const getStyles = (theme: AppTheme) =>
       borderRadius: 32,
       borderWidth: 1,
       borderColor: theme.colors.border,
-      backgroundColor: theme.colors.card,
+      backgroundColor: theme.colors.background,
     },
     searchIcon: {
       position: 'absolute',
@@ -106,17 +120,5 @@ const getStyles = (theme: AppTheme) =>
     },
     infoArea: {
       paddingLeft: 48,
-    },
-    bottomArea: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      paddingVertical: 4,
-      paddingHorizontal: 8,
-    },
-    searchButton: {
-      backgroundColor: theme.colors.primary,
-      borderRadius: 8,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
     },
   });

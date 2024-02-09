@@ -1,10 +1,15 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useUserReviews} from '@/state';
-import {ListView, LoadingSpinner, Section, UserReviewItem} from '../components';
+import {
+  ListView,
+  LoadingSpinner,
+  Section,
+  UserProfileLabel,
+  UserReviewItem,
+} from '../components';
 import {UserReview} from '@/api';
 import {AppTheme, useTheme} from '@/view/theme';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 export type UserReviewsScreenProps = {
   userId: string;
@@ -29,7 +34,8 @@ export const UserReviewsScreen = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <UserProfileLabel userId={userId} style={{padding: 8}} />
       <ScrollView>
         <Section title="Reviews">
           <ListView
@@ -41,7 +47,7 @@ export const UserReviewsScreen = ({navigation, route}) => {
           />
         </Section>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

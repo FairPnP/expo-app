@@ -21,8 +21,10 @@ export const ParkingHome = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.topArea}>
-        <SearchBar onSubmit={onSearchBarSubmit} />
+      <View style={styles.topArea}>
+        <SearchBar />
+      </View>
+      <ScrollView style={styles.content}>
         <Section title="Parking Home">
           <Text>TODO: Parking home</Text>
         </Section>
@@ -49,8 +51,15 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     topArea: {
-      marginBottom: 100,
+      zIndex: 1,
+      height: 76,
+      paddingVertical: 4,
+      paddingHorizontal: 8,
+      backgroundColor: theme.colors.background,
+      borderColor: theme.colors.border,
+      borderBottomWidth: 1,
     },
+    content: {},
     bottomArea: {
       position: 'absolute',
       bottom: 0,

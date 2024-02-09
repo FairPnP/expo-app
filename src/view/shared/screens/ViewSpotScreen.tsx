@@ -27,6 +27,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {openMap} from '@/utils/maps';
 import {FontAwesome} from '@expo/vector-icons';
 import {toMinimalDateRange} from '@/utils';
+import {ConfirmReservationScreenProps} from '@/view/parking/stack/ConfirmReservationScreen';
 
 export type ViewSpotScreenProps = {
   building: Building;
@@ -70,7 +71,13 @@ export const ViewSpotScreen = ({navigation, route}) => {
   }, []);
 
   const onReservePressed = () => {
-    navigation.navigate('ConfirmReservation', {building, space});
+    navigation.navigate('ConfirmReservation', {
+      building,
+      space,
+      startTimestamp: startDate.getTime(),
+      endTimestamp: endDate.getTime(),
+      hourly_rate: 1,
+    } as ConfirmReservationScreenProps);
   };
 
   const onDateRangeSelected = () => {

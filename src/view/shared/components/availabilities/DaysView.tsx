@@ -59,7 +59,8 @@ export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
 
   const onDayPress = useCallback(
     (day: DateData) => {
-      const date = new Date(day.dateString);
+      const utc = new Date(day.dateString);
+      const date = new Date(utc.getTime() + utc.getTimezoneOffset() * 60000);
       if (state.startDate && !state.endDate) {
         if (date.getTime() < state.startDate.getTime()) {
           state.setStartDate(date);

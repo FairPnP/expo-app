@@ -3,6 +3,7 @@ import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {useForm, FormProvider} from 'react-hook-form';
 import {DateTimePicker, NumberInput, Text} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
+import {toMinimalDateRange} from '@/utils';
 
 export type HoursViewProps = {
   onDateRangeSelected?: (startDate: Date, endDate: Date) => void;
@@ -40,35 +41,11 @@ export const HoursView = ({onDateRangeSelected}: HoursViewProps) => {
     setValue('hours', hours);
   };
 
-  const infoMessage = useCallback(() => {
-    if (date && hours) {
-      // if date is today, just say today
-      const today = new Date();
-      const dateStr =
-        today.toDateString() === date.toDateString()
-          ? 'today'
-          : `${date.toDateString()}`;
-
-      const timeStr = date.toLocaleString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      });
-
-      return (
-        <Text style={styles.messageText}>
-          Starting {dateStr} at {timeStr} for {hours} hours
-        </Text>
-      );
-    }
-    return null;
-  }, [date, hours]);
-
   return (
     <FormProvider {...formMethods}>
       <View style={styles.container}>
         <View style={styles.dateArea}>
-          <Text>Start Date</Text>
+          <Text style={{marginRight: 16}}>Start Date</Text>
           <DateTimePicker name="date" />
         </View>
         <NumberInput name="hours" label="Hours" />
@@ -83,7 +60,6 @@ export const HoursView = ({onDateRangeSelected}: HoursViewProps) => {
             </TouchableOpacity>
           ))}
         </View>
-        <View style={styles.messageArea}>{infoMessage()}</View>
       </View>
     </FormProvider>
   );
@@ -97,7 +73,7 @@ const getStyles = (theme: AppTheme) =>
     },
     dateArea: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       alignItems: 'center',
     },
     quickSelectContainer: {
@@ -125,13 +101,5 @@ const getStyles = (theme: AppTheme) =>
     submitButtonText: {
       color: theme.colors.text,
       fontSize: 16,
-    },
-    messageArea: {
-      flex: 1,
-      justifyContent: 'flex-end',
-    },
-    messageText: {
-      textAlign: 'center',
-      fontSize: 18,
     },
   });

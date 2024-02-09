@@ -38,6 +38,8 @@ export const UserProfileLabel = ({
           }}
           imageStyle={{
             borderRadius: 32,
+            borderWidth: 1,
+            borderColor: theme.colors.border,
           }}
         />
       ) : (
@@ -67,7 +69,6 @@ const getStyes = (theme: AppTheme) =>
       width: 64,
       height: 64,
       borderRadius: 32,
-      backgroundColor: theme.colors.card,
     },
     icon: {
       alignSelf: 'center',

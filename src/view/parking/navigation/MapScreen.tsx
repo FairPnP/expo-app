@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useSearchAvailabilities, useSpace} from '@/state';
+import {useSearchAvailabilities, useSearchState, useSpace} from '@/state';
 import {getAvailabilityCost} from '@/api';
 import {AvailabilityData, LoadingSpinner} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar, SearchBarState} from '../components';
@@ -56,6 +56,7 @@ export const MapScreen = ({navigation}) => {
     long_delta: location.longitudeDelta / 2,
   });
   const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
+  const sb = useSearchState();
 
   const markers = useMemo(() => {
     const list: AvailabilityData[] = [];
@@ -152,7 +153,7 @@ export const MapScreen = ({navigation}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.topBar}>
-          <SearchBar onSubmit={onSearchBarSubmit} />
+          <SearchBar />
         </View>
         <View style={[styles.map, {height: mapHeight}]}>
           <Suspense fallback={<LoadingSpinner />}>
@@ -178,6 +179,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     topBar: {
+      zIndex: 1,
       height: 76,
       paddingVertical: 4,
       paddingHorizontal: 8,

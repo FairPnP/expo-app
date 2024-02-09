@@ -36,24 +36,6 @@ export const MonthsView = ({onDateRangeSelected}: MonthsViewProps) => {
     }
   }, [startDate, durationMonths]);
 
-  const renderInfoMessage = useCallback(() => {
-    if (startDate && durationMonths) {
-      const startDateStr = startDate.toLocaleString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      });
-
-      return (
-        <Text style={styles.messageText}>
-          Starting {startDateStr} for {durationMonths}{' '}
-          {durationMonths > 1 ? 'months' : 'month'}
-        </Text>
-      );
-    }
-    return null;
-  }, [startDate, durationMonths]);
-
   return (
     <FormProvider {...formMethods}>
       <View style={styles.container}>
@@ -62,7 +44,6 @@ export const MonthsView = ({onDateRangeSelected}: MonthsViewProps) => {
           <DateTimePicker name="startDate" />
         </View>
         <NumberInput name="durationMonths" label="Duration (Months)" />
-        <View style={styles.messageArea}>{renderInfoMessage()}</View>
       </View>
     </FormProvider>
   );
@@ -89,13 +70,5 @@ const getStyles = (theme: AppTheme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-    },
-    messageArea: {
-      flex: 1,
-      justifyContent: 'flex-end',
-    },
-    messageText: {
-      textAlign: 'center',
-      fontSize: 18,
     },
   });
