@@ -27,8 +27,6 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const startDate = new Date(startTimestamp);
   const endDate = new Date(endTimestamp);
 
-  console.log('space', space);
-
   const handleReservation = useCallback(async () => {
     await createReservation({
       space_id: space.id,

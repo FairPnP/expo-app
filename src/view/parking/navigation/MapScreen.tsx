@@ -1,4 +1,10 @@
-import React, {Suspense, useCallback, useMemo, useState} from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   View,
@@ -13,6 +19,7 @@ import {AvailabilityData, LoadingSpinner} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar, SearchBarState} from '../components';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import {Region} from 'react-native-maps';
 
 const AvailabilityMap = React.lazy(() =>
   import('@/view/shared/components/availabilities/AvailabilityMap').then(
@@ -57,6 +64,23 @@ export const MapScreen = ({navigation}) => {
   });
   const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
   const sb = useSearchState();
+
+  useEffect(() => {
+    if (sb) {
+      if (sb.location?.data) {
+        const regionDelta =
+          sb.location.data.description.split(',').length > 3 ? 0.02 : 0.3;
+        setLocation({
+          latitude: sb.location.latitude,
+          longitude: sb.location.longitude,
+          latitudeDelta: regionDelta,
+          longitudeDelta: regionDelta,
+        });
+      }
+      setStartDate(sb.startDate);
+      setEndDate(sb.endDate);
+    }
+  }, [sb]);
 
   const markers = useMemo(() => {
     const list: AvailabilityData[] = [];
@@ -126,26 +150,17 @@ export const MapScreen = ({navigation}) => {
     [startDate, endDate, selectedSpace],
   );
 
-  const onSearchBarSubmit = useCallback(
-    (state: SearchBarState) => {
-      if (state.location) {
-        setLocation({
-          latitude: state.location.latitude,
-          longitude: state.location.longitude,
-          latitudeDelta: REGION_DELTA,
-          longitudeDelta: REGION_DELTA,
-        });
-      }
-      setStartDate(state.startDate);
-      setEndDate(state.endDate);
+  const onSearchRegion = useCallback(
+    (region: Region) => {
+      setLocation(region);
+      sb.setLocation({
+        latitude: region.latitude,
+        longitude: region.longitude,
+        data: null,
+        detail: null,
+      });
     },
-    [
-      setLocation,
-      setStartDate,
-      setEndDate,
-      location.latitudeDelta,
-      location.longitudeDelta,
-    ],
+    [sb],
   );
 
   return (
@@ -160,7 +175,7 @@ export const MapScreen = ({navigation}) => {
             <AvailabilityMap
               location={location}
               markers={markers}
-              onSearchRegion={setLocation}
+              onSearchRegion={onSearchRegion}
               renderMarker={renderMarker}
               renderMarkerCard={renderMarkerCard}
               onMarkerSelected={setSelectedMarker}

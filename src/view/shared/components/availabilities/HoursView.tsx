@@ -1,9 +1,8 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {useForm, FormProvider} from 'react-hook-form';
 import {DateTimePicker, NumberInput, Text} from '../common';
 import {useTheme, AppTheme} from '@/view/theme';
-import {toMinimalDateRange} from '@/utils';
 
 export type HoursViewProps = {
   onDateRangeSelected?: (startDate: Date, endDate: Date) => void;

@@ -1,5 +1,8 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {
+  AutocompleteRequestType,
+  GooglePlacesAutocomplete,
+} from 'react-native-google-places-autocomplete';
 import {TouchableOpacity, StyleSheet, View} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Text} from '../components/common';
@@ -7,9 +10,13 @@ import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 
 export type LocationSearchProps = {
   onLocationSelected: (data: any, details: any) => void;
+  locationTypes?: AutocompleteRequestType;
 };
 
-export const LocationSearch = ({onLocationSelected}: LocationSearchProps) => {
+export const LocationSearch = ({
+  onLocationSelected,
+  locationTypes,
+}: LocationSearchProps) => {
   const theme = useTheme().theme.appTheme;
   const googlePlacesRef = useRef(null);
   const [searchText, setSearchText] = useState('');
@@ -36,7 +43,7 @@ export const LocationSearch = ({onLocationSelected}: LocationSearchProps) => {
           key: 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8',
           language: 'en',
           components: 'country:can',
-          types: 'address',
+          types: locationTypes,
         }}
         fetchDetails={true}
         onPress={onLocationSelected}

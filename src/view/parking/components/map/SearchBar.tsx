@@ -12,6 +12,10 @@ import {useTheme, AppTheme} from '@/view/theme';
 import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 import {useSearchState} from '@/state';
 import {toMinimalDateRange} from '@/utils';
+import {
+  GooglePlaceData,
+  GooglePlaceDetail,
+} from 'react-native-google-places-autocomplete';
 
 export type SearchBarState = {
   startDate: Date;
@@ -34,26 +38,34 @@ export const SearchBar = ({}: SearchBarProps) => {
     sb.setCollapse(!sb.isCollapsed);
   };
 
-  const onLocationSelected = (data: any, details: any) => {
+  const onLocationSelected = (
+    data: GooglePlaceData,
+    detail: GooglePlaceDetail,
+  ) => {
     sb.setLocation({
-      name: data.description,
-      latitude: details.geometry.location.lat,
-      longitude: details.geometry.location.lng,
+      latitude: detail.geometry.location.lat,
+      longitude: detail.geometry.location.lng,
+      data,
+      detail,
     });
   };
 
   const onDateRangeSelected = (startDate: Date, endDate: Date) => {
-    sb.setStartDate(startDate);
-    sb.setEndDate(endDate);
+    if (!sb.isCollapsed) {
+      sb.setStartDate(startDate);
+      sb.setEndDate(endDate);
+    }
   };
 
   let locationName = null;
-  if (sb.location?.name) {
-    locationName = sb.location.name;
-    const parts = sb.location.name.split(',');
+  if (sb.location?.data?.description) {
+    locationName = sb.location.data.description;
+    const parts = sb.location.data.description.split(',');
     if (parts.length > 1) {
       locationName = parts[0] + ', ' + parts[1];
     }
+  } else if (sb.location && sb.location.latitude && sb.location.longitude) {
+    locationName = 'Map Area';
   }
 
   return (

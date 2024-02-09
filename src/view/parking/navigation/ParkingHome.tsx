@@ -21,9 +21,9 @@ export const ParkingHome = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topArea}>
+      {/* <View style={styles.topArea}>
         <SearchBar />
-      </View>
+      </View> */}
       <ScrollView style={styles.content}>
         <Section title="Parking Home">
           <Text>TODO: Parking home</Text>

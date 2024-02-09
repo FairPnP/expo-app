@@ -35,7 +35,10 @@ export const AddSpotScreen = () => {
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <View style={loc ? styles.topBar : styles.topBarNoContent}>
-        <LocationSearch onLocationSelected={onLocationSelected} />
+        <LocationSearch
+          onLocationSelected={onLocationSelected}
+          locationTypes="address"
+        />
       </View>
       {loc && (
         <View style={styles.contentView}>
