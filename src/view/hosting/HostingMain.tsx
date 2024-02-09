@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HostingNavigator} from './navigation/HostingNavigator';
 import {addSharedStackScreens} from '../shared';
 import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
-import {ViewSpotScreen} from '../shared/screens/ViewSpotScreen';
 import {AddSpotScreen} from './stack/AddSpotScreen';
 import {ManageSpotScreen} from './stack/ManageSpotScreen';
 
@@ -24,13 +23,6 @@ export const HostingMain = () => {
         component={AddSpotScreen}
         options={{
           headerTitle: 'Add Parking Space',
-        }}
-      />
-      <Stack.Screen
-        name="ViewSpot"
-        component={ViewSpotScreen}
-        options={{
-          headerShown: false,
         }}
       />
       <Stack.Screen

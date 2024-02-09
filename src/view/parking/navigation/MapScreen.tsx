@@ -36,8 +36,6 @@ const initialRegion = {
   longitudeDelta: 0.4,
 };
 
-const REGION_DELTA = 0.02;
-
 export const MapScreen = ({navigation}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
