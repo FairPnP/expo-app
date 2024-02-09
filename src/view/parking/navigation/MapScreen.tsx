@@ -46,24 +46,18 @@ export const MapScreen = ({navigation}) => {
   const mapHeight =
     Dimensions.get('window').height - inset.bottom - tabBarHeight - 76;
 
+  const sb = useSearchState();
   const [location, setLocation] = useState(initialRegion);
-  const today = new Date();
-  today.setHours(today.getHours() + 1, 0, 0, 0);
-  const later = new Date(today);
-  later.setHours(later.getHours() + 4);
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(later);
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
   const {data: searchResults} = useSearchAvailabilities({
-    start_date: startDate.toISOString().slice(0, 19),
-    end_date: endDate.toISOString().slice(0, 19),
+    start_date: sb.startDate.toISOString().slice(0, 19),
+    end_date: sb.endDate.toISOString().slice(0, 19),
     latitude: location.latitude,
     longitude: location.longitude,
     lat_delta: location.latitudeDelta / 2,
     long_delta: location.longitudeDelta / 2,
   });
   const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
-  const sb = useSearchState();
 
   useEffect(() => {
     if (sb) {
@@ -77,8 +71,6 @@ export const MapScreen = ({navigation}) => {
           longitudeDelta: regionDelta,
         });
       }
-      setStartDate(sb.startDate);
-      setEndDate(sb.endDate);
     }
   }, [sb]);
 
@@ -117,7 +109,7 @@ export const MapScreen = ({navigation}) => {
     }
 
     return filteredList;
-  }, [startDate, endDate, location, searchResults]);
+  }, [location, searchResults]);
 
   const renderMarker = useCallback(
     (marker: AvailabilityData, isSelected: boolean) => {
@@ -125,14 +117,14 @@ export const MapScreen = ({navigation}) => {
         <MapMarker
           text={`$${getAvailabilityCost(
             marker.availability.hourly_rate,
-            startDate,
-            endDate,
+            sb.startDate,
+            sb.endDate,
           )}`}
           isSelected={isSelected}
         />
       );
     },
-    [startDate, endDate],
+    [sb.startDate, sb.endDate],
   );
 
   const renderMarkerCard = useCallback(
@@ -142,12 +134,12 @@ export const MapScreen = ({navigation}) => {
           building={marker.building}
           space={selectedSpace}
           availability={marker.availability}
-          startDate={startDate}
-          endDate={endDate}
+          startDate={sb.startDate}
+          endDate={sb.endDate}
         />
       );
     },
-    [startDate, endDate, selectedSpace],
+    [sb.startDate, sb.endDate, selectedSpace],
   );
 
   const onSearchRegion = useCallback(

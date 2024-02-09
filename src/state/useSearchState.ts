@@ -5,9 +5,9 @@ import {
 import {create} from 'zustand';
 
 const today = new Date();
-today.setHours(0, 0, 0, 0);
-today.setHours(today.getHours() + 1);
-const later = new Date(today.getHours() + 4);
+today.setHours(today.getHours() + 1, 0, 0, 0);
+const later = new Date(today);
+later.setHours(today.getHours() + 4);
 
 export type SearchState = {
   startDate: Date;

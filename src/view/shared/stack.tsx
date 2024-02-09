@@ -6,7 +6,7 @@ import {
   UserReviewsScreen,
   ReservationDetailsScreen,
   ViewSpotScreen,
-} from '../shared';
+} from '../shared/screens';
 
 export const addSharedStackScreens = (Stack: any) => {
   return (
