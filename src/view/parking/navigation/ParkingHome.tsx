@@ -1,22 +1,17 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import { useAppMode } from '@/state';
+import { IconButton, Section, Text, Title } from '@/view/shared';
+import { AppTheme, useTheme } from '@/view/theme';
 import React from 'react';
-import {IconButton, Section, Text, Title} from '@/view/shared';
-import {AppTheme, useTheme} from '@/view/theme';
-import {useAppMode} from '@/state';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {SearchBar, SearchBarState} from '../components';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const ParkingHome = ({navigation}) => {
+export const ParkingHome = ({ }) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {setAppMode} = useAppMode();
+  const { setAppMode } = useAppMode();
 
   const onSwitchToHosting = () => {
     setAppMode('hosting');
-  };
-
-  const onSearchBarSubmit = (state: SearchBarState) => {
-    navigation.navigate('Map');
   };
 
   return (
@@ -33,7 +28,7 @@ export const ParkingHome = ({navigation}) => {
         </Section>
       </ScrollView>
       <View style={styles.bottomArea}>
-        <Title style={{marginVertical: 4}}>Manage your listings</Title>
+        <Title style={{ marginVertical: 4 }}>Manage your listings</Title>
         <IconButton
           icon="directions"
           text="Switch to Hosting Mode"

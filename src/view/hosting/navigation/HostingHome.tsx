@@ -1,16 +1,16 @@
+import { useAppMode } from '@/state';
+import { IconButton, Section, Text, Title } from '@/view/shared';
+import { AppTheme, useTheme } from '@/view/theme';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Title, Section, IconButton, Text} from '@/view/shared';
-import {useTheme, AppTheme} from '@/view/theme';
-import {useAppMode} from '@/state';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HostingHomeScreenProps = {};
 
-export const HostingHomeScreen = ({}: HostingHomeScreenProps) => {
+export const HostingHomeScreen = ({ }: HostingHomeScreenProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {setAppMode} = useAppMode();
+  const { setAppMode } = useAppMode();
 
   const onSwitchToParking = () => {
     setAppMode('parking');
@@ -24,7 +24,7 @@ export const HostingHomeScreen = ({}: HostingHomeScreenProps) => {
         </Section>
       </View>
       <View style={styles.bottomArea}>
-        <Title style={{marginVertical: 4}}>Looking for parking?</Title>
+        <Title style={{ marginVertical: 4 }}>Looking for parking?</Title>
         <IconButton
           icon="directions"
           text="Switch to Parking Mode"

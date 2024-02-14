@@ -1,17 +1,17 @@
-import {useState, useEffect, useCallback} from 'react';
-import {useAuthenticator} from '@aws-amplify/ui-react-native';
-import {AuthTokens, fetchAuthSession} from '@aws-amplify/auth';
-import {useQueryClient} from '@tanstack/react-query';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { AuthTokens, fetchAuthSession } from '@aws-amplify/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const useAuth = () => {
   const [tokens, setTokens] = useState<AuthTokens | undefined>(undefined);
-  const {signOut: signOutAmplify} = useAuthenticator(context => [context.user]);
+  const { signOut: signOutAmplify } = useAuthenticator(context => [context.user]);
   const queryClient = useQueryClient();
 
   const fetchAccessToken = useCallback(async () => {
     try {
-      const tokens: AuthTokens | undefined = (await fetchAuthSession()).tokens;
-      setTokens(tokens);
+      const authTokens: AuthTokens | undefined = (await fetchAuthSession()).tokens;
+      setTokens(authTokens);
     } catch (error) {
       console.error('Error fetching access token:', error);
       setTokens(undefined);

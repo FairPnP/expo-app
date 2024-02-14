@@ -1,6 +1,6 @@
-import {AvailabilityAPI, SearchAvailabilityRequest} from '@/api';
-import {useQuery} from '@tanstack/react-query';
-import {AVAILABILITY_QUERY_KEY} from './consts';
+import { AvailabilityAPI, SearchAvailabilityRequest } from '@/api';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { AVAILABILITY_QUERY_KEY } from './consts';
 
 export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
   return useQuery({
@@ -17,5 +17,6 @@ export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
       const response = await AvailabilityAPI.search(params);
       return response;
     },
+    placeholderData: keepPreviousData,
   });
 };

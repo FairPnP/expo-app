@@ -1,15 +1,15 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MapView, {
   Marker,
   MarkerPressEvent,
   PROVIDER_GOOGLE,
   Region,
 } from 'react-native-maps';
-import {Text} from '../common';
-import {useTheme, AppTheme} from '@/view/theme';
-import {Availability, Building, SpaceResult} from '@/api';
-import {useLocation} from '@/state/useLocation';
+import { Text } from '../common';
+import { useTheme, AppTheme } from '@/view/theme';
+import { Availability, Building, SpaceResult } from '@/api';
+import { useLocation } from '@/state/useLocation';
 
 export type AvailabilityData = {
   availability: Availability;
@@ -135,7 +135,7 @@ export const AvailabilityMap = ({
               tracksInfoWindowChanges={false}
               tracksViewChanges={false}
               focusable={true}
-              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               stopPropagation={true}
               coordinate={{
                 latitude: marker.building.latitude,
