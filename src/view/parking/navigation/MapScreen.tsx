@@ -16,7 +16,7 @@ import { useTheme, AppTheme } from '@/view/theme';
 import { useSearchAvailabilities, useSearchState, useSpace } from '@/state';
 import { getAvailabilityCost } from '@/api';
 import { AvailabilityData, LoadingSpinner } from '@/view/shared';
-import { MapCard, MapMarker, SearchBar, SearchBarState } from '../components';
+import { MapCard, MapMarker, SearchBar } from '../components';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Region } from 'react-native-maps';
@@ -42,7 +42,7 @@ export const MapScreen = ({ }) => {
   const inset = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
   const mapHeight =
-    Dimensions.get('window').height - inset.bottom - tabBarHeight - 76;
+    Dimensions.get('window').height - inset.bottom - tabBarHeight - 72;
 
   const sb = useSearchState();
   const [location, setLocation] = useState(initialRegion);
@@ -155,24 +155,21 @@ export const MapScreen = ({ }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.topBar}>
-          <SearchBar />
-        </View>
-        <View style={[styles.map, { height: mapHeight }]}>
-          <Suspense fallback={<LoadingSpinner />}>
-            <AvailabilityMap
-              location={location}
-              markers={markers}
-              onSearchRegion={onSearchRegion}
-              renderMarker={renderMarker}
-              renderMarkerCard={renderMarkerCard}
-              onMarkerSelected={setSelectedMarker}
-            />
-          </Suspense>
-        </View>
-      </KeyboardAvoidingView>
+      <View style={styles.topBar}>
+        <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500, }} />
+      </View>
+      <View style={[styles.map, { height: mapHeight }]}>
+        <Suspense fallback={<LoadingSpinner />}>
+          <AvailabilityMap
+            location={location}
+            markers={markers}
+            onSearchRegion={onSearchRegion}
+            renderMarker={renderMarker}
+            renderMarkerCard={renderMarkerCard}
+            onMarkerSelected={setSelectedMarker}
+          />
+        </Suspense>
+      </View>
     </SafeAreaView>
   );
 };
@@ -185,9 +182,8 @@ const getStyles = (theme: AppTheme) =>
     },
     topBar: {
       zIndex: 1,
-      height: 76,
+      height: 72,
       paddingVertical: 4,
-      paddingHorizontal: 8,
       backgroundColor: theme.colors.background,
       borderColor: theme.colors.border,
       borderBottomWidth: 1,

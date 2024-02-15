@@ -51,7 +51,7 @@ export const AvailabilityMap = ({
   useEffect(() => {
     if (isLoaded && location) {
       console.log('location', location, searchedState);
-      mapRef.current?.animateToRegion(location, 1000);
+      mapRef.current?.animateToRegion(location, 1100);
       if (!searchedState) {
         setSearchedState(location);
       }
@@ -107,11 +107,12 @@ export const AvailabilityMap = ({
       <MapView
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
+        initialRegion={location}
+        onRegionChangeComplete={handleRegionChange}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
         loadingEnabled={true}
         onMapReady={() => setLoaded(true)}
-        onRegionChange={handleRegionChange}
         onMarkerPress={onMarkerPress}
         loadingIndicatorColor={theme.colors.primary}
         moveOnMarkerPress={false}
@@ -196,9 +197,5 @@ const getStyles = (theme: AppTheme) =>
       bottom: 24,
       left: 10,
       right: 10,
-      backgroundColor: theme.colors.card,
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
     },
   });

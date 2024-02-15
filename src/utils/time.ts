@@ -26,13 +26,13 @@ export const toDateTimeString = (date: Date) => {
 
 export const toMonthYearString = (date: Date) => {
   return (
-    date.toLocaleString('default', {month: 'long'}) + ' ' + date.getFullYear()
+    date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear()
   );
 };
 
 export const toMinimalTimeString = (date: Date) => {
   if (date.getMinutes() === 0) {
-    return date.toLocaleString('en-US', {hour: 'numeric', hour12: true});
+    return date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
   }
 
   return date.toLocaleString('en-US', {
@@ -43,7 +43,7 @@ export const toMinimalTimeString = (date: Date) => {
 };
 
 export const toMinimalDateString = (date: Date) => {
-  return date.toLocaleString('en-US', {month: 'short', day: 'numeric'});
+  return date.toLocaleString('en-US', { month: 'short', day: 'numeric' });
 };
 
 export const toMinimalDateRange = (start: Date, end: Date) => {

@@ -1,5 +1,5 @@
-import {StyleSheet, View} from 'react-native';
-import React, {useCallback} from 'react';
+import { StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
 import {
   Button,
   Text,
@@ -7,10 +7,9 @@ import {
   HorizontalGroup,
   VerticalGroup,
 } from '@/view/shared';
-import {useNavigation} from '@react-navigation/native';
-import {Availability, Building, Space, getAvailabilityCost} from '@/api';
-import {useTheme, AppTheme} from '@/view/theme';
-import {ConfirmReservationScreenProps} from '../../stack/ConfirmReservationScreen';
+import { useNavigation } from '@react-navigation/native';
+import { Availability, Building, Space, getAvailabilityCost } from '@/api';
+import { useTheme, AppTheme } from '@/view/theme';
 
 type Props = {
   building: Building;
@@ -40,11 +39,11 @@ export const MapCard = ({
     //   hourly_rate: availability.hourly_rate,
     // };
     // (navigation as any).navigate('ConfirmReservation', props);
-    navigation.navigate('ViewSpot', {building, space});
+    navigation.navigate('ViewSpot', { building, space });
   }, [building, space, availability, startDate, endDate]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <HorizontalGroup>
         <ImageDownload
           url={space?.img_urls?.[0]}
@@ -75,6 +74,20 @@ export const MapCard = ({
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
+    container: {
+      borderRadius: 8,
+      backgroundColor: theme.colors.background,
+
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 6,
+      },
+      shadowOpacity: 0.37,
+      shadowRadius: 7.49,
+
+      elevation: 12,
+    },
     infoContainer: {
       padding: 10,
       flexDirection: 'row',

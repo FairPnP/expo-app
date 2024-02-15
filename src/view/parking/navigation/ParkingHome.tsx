@@ -4,6 +4,7 @@ import { AppTheme, useTheme } from '@/view/theme';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SearchBar } from '../components';
 
 export const ParkingHome = ({ }) => {
   const theme = useTheme().theme.appTheme;
@@ -16,9 +17,11 @@ export const ParkingHome = ({ }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.topArea}>
-        <SearchBar />
-      </View> */}
+      <View style={{ overflow: 'hidden', paddingBottom: 8 }}>
+        <View style={styles.topArea}>
+          <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500 }} />
+        </View>
+      </View>
       <ScrollView style={styles.content}>
         <Section title="Parking Home">
           <Text>TODO: Parking home</Text>
@@ -47,12 +50,18 @@ const getStyles = (theme: AppTheme) =>
     },
     topArea: {
       zIndex: 1,
-      height: 76,
+      height: 72,
       paddingVertical: 4,
-      paddingHorizontal: 8,
       backgroundColor: theme.colors.background,
-      borderColor: theme.colors.border,
-      borderBottomWidth: 1,
+
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.20,
+      shadowRadius: 1.41,
+      elevation: 2,
     },
     content: {},
     bottomArea: {

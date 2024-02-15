@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,16 +18,18 @@ import {
   StaticMap,
   VerticalGroup,
   TextLink,
+  CircleButton,
 } from '../components';
-import {Building, Space, getAvailabilityCost} from '@/api';
-import {useTheme, AppTheme} from '@/view/theme';
-import {useAppMode, useSearchState, useSpaceSummary} from '@/state';
-import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {openMap} from '@/utils/maps';
-import {FontAwesome} from '@expo/vector-icons';
-import {toMinimalDateRange} from '@/utils';
-import {ConfirmReservationScreenProps} from '@/view/parking/stack/ConfirmReservationScreen';
+import { Building, Space, getAvailabilityCost } from '@/api';
+import { useTheme, AppTheme } from '@/view/theme';
+import { useAppMode, useSearchState, useSpaceSummary } from '@/state';
+import { ImageSwiper } from '@/view/shared/components/common/ImageSwiper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { openMap } from '@/utils/maps';
+import { FontAwesome } from '@expo/vector-icons';
+import { toMinimalDateRange } from '@/utils';
+import { ConfirmReservationScreenProps } from '@/view/parking/stack/ConfirmReservationScreen';
+import { Ionicons } from '@expo/vector-icons';
 
 export type ViewSpotScreenProps = {
   building: Building;
@@ -37,20 +39,20 @@ export type ViewSpotScreenProps = {
 const calcDimensions = (window: ScaledSize) => {
   const width = window.width;
   const height = Math.min(window.width * 0.75, window.height * 0.4);
-  return {width, height};
+  return { width, height };
 };
 
-export const ViewSpotScreen = ({navigation, route}) => {
-  const {building, space} = route.params as ViewSpotScreenProps;
+export const ViewSpotScreen = ({ navigation, route }) => {
+  const { building, space } = route.params as ViewSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {appMode} = useAppMode();
-  const {startDate, endDate} = useSearchState();
+  const { appMode } = useAppMode();
+  const { startDate, endDate } = useSearchState();
 
-  const {data: summary} = useSpaceSummary(space.id);
+  const { data: summary } = useSpaceSummary(space.id);
 
   const onReviewPressed = () => {
-    navigation.navigate('SpaceReviews', {space});
+    navigation.navigate('SpaceReviews', { space });
   };
 
   const onGetDirectionsPressed = () => {
@@ -62,7 +64,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    const onChange = ({window}: {window: ScaledSize}) => {
+    const onChange = ({ window }: { window: ScaledSize }) => {
       setDimensions(calcDimensions(window));
     };
 
@@ -108,7 +110,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
     return (
       <View style={styles.bottomArea}>
         <Button
-          onPress={() => navigation.navigate('ManageSpot', {building, space})}>
+          onPress={() => navigation.navigate('ManageSpot', { building, space })}>
           <Text>Manage Availability</Text>
         </Button>
       </View>
@@ -119,9 +121,9 @@ export const ViewSpotScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <ScrollView style={styles.container}>
         <SafeAreaView style={styles.headerArea}>
-          <Button onPress={() => navigation.goBack()}>
-            <Text>{'<'}</Text>
-          </Button>
+          <CircleButton size={34} onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={20} color={theme.colors.text} />
+          </CircleButton>
         </SafeAreaView>
         <ImageSwiper
           urls={space.img_urls}
@@ -151,7 +153,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
           <Section title="Location">
             <StaticMap
               key={dimensions.width}
-              style={{marginVertical: 16}}
+              style={{ marginVertical: 16 }}
               lat={building.latitude}
               lng={building.longitude}
               width={Math.round(dimensions.width - 54)}
@@ -180,10 +182,10 @@ export const ViewSpotScreen = ({navigation, route}) => {
             <Text>TODO: Cancellation policy</Text>
           </Section>
           <View style={styles.separator} />
-          <Section style={{marginBottom: 16}}>
-            <HorizontalGroup style={{justifyContent: 'flex-start'}}>
-              <FontAwesome style={{paddingRight: 12}} name="flag" size={16} />
-              <TextLink onPress={() => {}}>Report this listing</TextLink>
+          <Section style={{ marginBottom: 16 }}>
+            <HorizontalGroup style={{ justifyContent: 'flex-start' }}>
+              <FontAwesome style={{ paddingRight: 12 }} name="flag" size={16} />
+              <TextLink onPress={() => { }}>Report this listing</TextLink>
             </HorizontalGroup>
           </Section>
         </View>
@@ -207,7 +209,7 @@ const getStyles = (theme: AppTheme) =>
       top: 0,
       left: 0,
       right: 0,
-      padding: 8,
+      padding: 16,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignContent: 'center',
