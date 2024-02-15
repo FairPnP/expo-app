@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MapView, {
   Marker,
   MarkerPressEvent,
@@ -15,13 +15,6 @@ export type AvailabilityData = {
   availability: Availability;
   space: SpaceResult;
   building: Building;
-};
-
-const initialRegion = {
-  latitude: 43.442384,
-  longitude: -80.51516,
-  latitudeDelta: 0.4,
-  longitudeDelta: 0.4,
 };
 
 type AvailabilityMapProps = {
@@ -48,7 +41,7 @@ export const AvailabilityMap = ({
   const styles = getStyles(theme);
 
   const mapRef = useRef<MapView>(null);
-  const [region, setRegion] = useState<Region>(initialRegion);
+  const [region, setRegion] = useState<Region>(null);
   const [isLoaded, setLoaded] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
   const [showRefresh, setShowRefresh] = useState(false);
@@ -56,13 +49,14 @@ export const AvailabilityMap = ({
   useLocation();
 
   useEffect(() => {
-    if (location) {
+    if (isLoaded && location) {
+      console.log('location', location, searchedState);
       mapRef.current?.animateToRegion(location, 1000);
       if (!searchedState) {
         setSearchedState(location);
       }
     }
-  }, [location]);
+  }, [location, isLoaded]);
 
   useEffect(() => {
     // deselect marker if its not longer in the list
@@ -114,7 +108,6 @@ export const AvailabilityMap = ({
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
         provider={PROVIDER_GOOGLE}
-        initialRegion={region}
         showsUserLocation={true}
         loadingEnabled={true}
         onMapReady={() => setLoaded(true)}
