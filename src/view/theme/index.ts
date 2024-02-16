@@ -1,7 +1,8 @@
 export * from './themeContext';
 
 // src/themes/themeTypes.ts
-import {Theme as AmplifyTheme} from '@aws-amplify/ui-react-native';
+import { Theme as AmplifyTheme } from '@aws-amplify/ui-react-native';
+import { StatusBar } from 'react-native';
 
 export interface AppTheme {
   dark: boolean;
@@ -21,4 +22,8 @@ export interface AppTheme {
 export interface Theme {
   appTheme: AppTheme;
   amplifyTheme: AmplifyTheme;
+}
+
+export function setStatusBar(theme: AppTheme) {
+  StatusBar.setBarStyle(theme.dark ? 'light-content' : 'dark-content');
 }

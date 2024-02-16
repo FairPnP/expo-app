@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   ScaledSize,
+  StatusBar,
 } from 'react-native';
 import {
   Title,
@@ -21,7 +22,7 @@ import {
   CircleButton,
 } from '../components';
 import { Building, Space, getAvailabilityCost } from '@/api';
-import { useTheme, AppTheme } from '@/view/theme';
+import { useTheme, AppTheme, setStatusBar } from '@/view/theme';
 import { useAppMode, useSearchState, useSpaceSummary } from '@/state';
 import { ImageSwiper } from '@/view/shared/components/common/ImageSwiper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -67,9 +68,13 @@ export const ViewSpotScreen = ({ navigation, route }) => {
     const onChange = ({ window }: { window: ScaledSize }) => {
       setDimensions(calcDimensions(window));
     };
+    StatusBar.setBarStyle('light-content');
 
     const listener = Dimensions.addEventListener('change', onChange);
-    return () => listener.remove();
+    return () => {
+      setStatusBar(theme);
+      listener.remove();
+    }
   }, []);
 
   const onReservePressed = () => {
@@ -209,7 +214,7 @@ const getStyles = (theme: AppTheme) =>
       top: 0,
       left: 0,
       right: 0,
-      padding: 16,
+      paddingHorizontal: 16,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignContent: 'center',

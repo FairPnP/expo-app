@@ -1,8 +1,9 @@
 // src/themes/ThemeContext.tsx
-import React, {createContext, useContext, useState, ReactNode} from 'react';
-import {darkTheme, darkAmplifyTheme} from './darkTheme';
-import {lightTheme, lightAmplifyTheme} from './lightTheme';
-import {Theme, AppTheme} from '.';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { darkTheme, darkAmplifyTheme } from './darkTheme';
+import { lightTheme, lightAmplifyTheme } from './lightTheme';
+import { Theme, AppTheme } from '.';
+import { StatusBar } from 'react-native';
 
 interface ThemeContextType {
   theme: Theme;
@@ -10,19 +11,21 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: {appTheme: lightTheme, amplifyTheme: lightAmplifyTheme},
-  toggleTheme: () => {},
+  theme: { appTheme: lightTheme, amplifyTheme: lightAmplifyTheme },
+  toggleTheme: () => { },
 });
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({children}) => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState<AppTheme>(lightTheme);
 
   const toggleTheme = () => {
-    setCurrentTheme(currentTheme.dark ? lightTheme : darkTheme);
+    const newTheme = currentTheme.dark ? lightTheme : darkTheme;
+    setCurrentTheme(newTheme)
+    StatusBar.setBarStyle(newTheme.dark ? 'light-content' : 'dark-content');
   };
 
   const theme: Theme = {
@@ -31,7 +34,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({children}) => {
   };
 
   return (
-    <ThemeContext.Provider value={{theme, toggleTheme}}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

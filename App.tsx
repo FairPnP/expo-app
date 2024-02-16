@@ -1,31 +1,31 @@
 import 'react-native-url-polyfill/auto';
-import {polyfillWebCrypto} from 'expo-standard-web-crypto';
+import { polyfillWebCrypto } from 'expo-standard-web-crypto';
 polyfillWebCrypto();
-import {enableLatestRenderer} from 'react-native-maps';
+import { enableLatestRenderer } from 'react-native-maps';
 enableLatestRenderer();
 
 import * as React from 'react';
-import {StripeProvider} from '@stripe/stripe-react-native';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import {
   Authenticator,
   ThemeProvider as AmplifyThemeProvider,
 } from '@aws-amplify/ui-react-native';
-import {Amplify} from 'aws-amplify';
-import {MainScreen} from '@/view/MainScreen';
-import {ThemeProvider, useTheme} from '@/view/theme';
-import {NavigationContainer} from '@react-navigation/native';
+import { Amplify } from 'aws-amplify';
+import { MainScreen } from '@/view/MainScreen';
+import { ThemeProvider, useTheme } from '@/view/theme';
+import { NavigationContainer } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import * as Sentry from 'sentry-expo';
-import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
-import {useEffect} from 'react';
-import {AppState, Platform} from 'react-native';
-import type {AppStateStatus} from 'react-native';
-import {focusManager} from '@tanstack/react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { AppState, Platform } from 'react-native';
+import type { AppStateStatus } from 'react-native';
+import { focusManager } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
-import {AppModeProvider} from '@/state';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { AppModeProvider } from '@/state';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // sentry
 Sentry.init({
@@ -114,7 +114,7 @@ function App() {
             colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
             <Authenticator.Provider>
               <Authenticator>
-                <GestureHandlerRootView style={{flex: 1}}>
+                <GestureHandlerRootView style={{ flex: 1 }}>
                   <BottomSheetModalProvider>
                     <StripeProvider
                       publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"

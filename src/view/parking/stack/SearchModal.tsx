@@ -1,4 +1,4 @@
-import { Modal, StyleSheet, View, SafeAreaView } from 'react-native'
+import { Modal, StyleSheet, View, SafeAreaView, StatusBar } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { AppTheme, useTheme } from '@/view/theme';
 import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
@@ -7,7 +7,6 @@ import { toMinimalDateRange } from '@/utils';
 import { useSearchState } from '@/state';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 
 export const SearchModal = forwardRef((_, ref) => {
   const theme = useTheme().theme.appTheme;
@@ -20,6 +19,7 @@ export const SearchModal = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({
     show() {
       setVisible(true);
+      StatusBar.setBarStyle(theme.dark ? 'light-content' : 'dark-content');
     },
     hide() {
       setVisible(false);

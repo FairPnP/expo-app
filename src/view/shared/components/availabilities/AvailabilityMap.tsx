@@ -155,11 +155,12 @@ export const AvailabilityMap = ({
         </View>
       )}
       {showRefresh && (
-        <TouchableOpacity
-          onPress={handleSearchAreaPress}
+        <View
           style={styles.search_area_button}>
-          <Text>Search this area</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleSearchAreaPress}>
+            <Text>Search this area</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -186,11 +187,20 @@ const getStyles = (theme: AppTheme) =>
       alignSelf: 'center',
       alignItems: 'center',
       top: 24,
-      padding: 6,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
       backgroundColor: theme.colors.card,
       borderRadius: 16,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
+
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.27,
+      shadowRadius: 4.65,
+
+      elevation: 6,
     },
     bottomCard: {
       position: 'absolute',
