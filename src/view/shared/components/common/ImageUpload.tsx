@@ -1,6 +1,7 @@
-import React, {useState, useCallback} from 'react';
-import {StyleSheet, Image, TouchableOpacity, View, Text} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import FastImage from 'react-native-fast-image'
 
 type ImageUploadProps = {
   onImagesSelected: (uris: string[]) => void;
@@ -37,10 +38,12 @@ export const ImageUpload = ({
     <View style={styles.container}>
       <TouchableOpacity style={styles.imageContainer} onPress={onButtonPress}>
         {imgUris ? (
-          <Image
-            resizeMode="cover"
+          <FastImage
             style={styles.image}
-            source={{uri: imgUris[0]}}
+            source={{
+              uri: imgUris[0],
+            }}
+            resizeMode={FastImage.resizeMode.cover}
           />
         ) : (
           <View style={styles.placeholderContainer}>

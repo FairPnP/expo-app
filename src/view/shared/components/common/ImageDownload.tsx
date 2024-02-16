@@ -1,24 +1,28 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/view/theme';
+import { View, StyleSheet } from 'react-native';
+import { AppTheme, useTheme } from '@/view/theme';
+import FastImage, { ResizeMode } from 'react-native-fast-image'
 
 type ImageDownloadProps = {
   url: string;
   style?: any;
   imageStyle?: any;
+  resizeMode?: ResizeMode;
 };
 
-export const ImageDownload = ({url, style, imageStyle}: ImageDownloadProps) => {
+export const ImageDownload = ({ url, style, imageStyle, resizeMode }: ImageDownloadProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
   return (
     <View style={[styles.imageContainer, style]}>
       {url && (
-        <Image
-          resizeMode="cover"
+        <FastImage
           style={[styles.image, imageStyle]}
-          source={{uri: url}}
+          source={{
+            uri: url,
+          }}
+          resizeMode={resizeMode ?? FastImage.resizeMode.cover}
         />
       )}
     </View>

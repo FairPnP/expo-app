@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {FlashList} from '@shopify/flash-list';
-import {ImageDownload} from './ImageDownload';
+import { View, Text } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { ImageDownload } from './ImageDownload';
 
 type ImageSwiperProps = {
   urls: string[];
@@ -9,17 +9,17 @@ type ImageSwiperProps = {
   height: number;
 };
 
-export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
+export const ImageSwiper = ({ width, height, urls }: ImageSwiperProps) => {
   const [page, setPage] = React.useState(1);
 
   const onChange = React.useCallback(
-    ({viewableItems}) => {
+    ({ viewableItems }) => {
       setPage(viewableItems[0].index + 1);
     },
     [setPage],
   );
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
       <ImageDownload
         url={item}
@@ -34,7 +34,7 @@ export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
   const key = `${width}x${height}`;
 
   return (
-    <View style={{width: width, height: height}}>
+    <View style={{ width: width, height: height }}>
       <FlashList
         key={key}
         scrollEnabled={true}
@@ -44,7 +44,7 @@ export const ImageSwiper = ({width, height, urls}: ImageSwiperProps) => {
         horizontal={true}
         estimatedItemSize={width}
         pagingEnabled={true}
-        showsHorizontalScrollIndicator={true}
+        showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onChange}
       />
       {urls.length > 1 && (
@@ -61,9 +61,9 @@ const styles = {
     position: 'absolute',
     bottom: 10,
     height: 32,
+    right: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
-    alignSelf: 'center',
     borderRadius: 16,
     paddingHorizontal: 10,
   },

@@ -1,29 +1,24 @@
-import React, {useCallback, useState} from 'react';
-import {StyleSheet, ScrollView, View} from 'react-native';
-import {Button, LocationCard, LocationSearch, Text} from '@/view/shared';
-import {EditParkingSpaceScreenProps} from './EditParkingSpaceScreen';
-import {useNavigation} from '@react-navigation/native';
-import {useTheme, AppTheme} from '@/view/theme';
-import {CreateBuildingRequest} from '@/api';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, ScrollView, View } from 'react-native';
+import { Button, LocationCard, LocationSearch, Text } from '@/view/shared';
+import { EditParkingSpaceScreenProps } from './EditParkingSpaceScreen';
+import { useNavigation } from '@react-navigation/native';
+import { useTheme, AppTheme } from '@/view/theme';
+import { CreateBuildingRequest, toBuildingData } from '@/api';
 
 export const AddSpotScreen = () => {
   const navigation = useNavigation<any>();
   const [loc, setSelectedLocation] = useState<any>(null);
 
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const styles = getStyles(theme.appTheme);
 
   const onLocationSelected = (data: any, details: any) => {
-    setSelectedLocation({data, details});
+    setSelectedLocation({ data, details });
   };
 
   const handleAddToMySpots = useCallback(() => {
-    const buildingReq: CreateBuildingRequest = {
-      name: loc.data.structured_formatting.main_text,
-      place_id: loc.data.place_id,
-      latitude: loc.details.geometry.location.lat,
-      longitude: loc.details.geometry.location.lng,
-    };
+    const buildingReq: CreateBuildingRequest = toBuildingData(loc.data, loc.details);
 
     const props: EditParkingSpaceScreenProps = {
       building: buildingReq,

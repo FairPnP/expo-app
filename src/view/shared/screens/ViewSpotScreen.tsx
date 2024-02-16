@@ -39,7 +39,7 @@ export type ViewSpotScreenProps = {
 
 const calcDimensions = (window: ScaledSize) => {
   const width = window.width;
-  const height = Math.min(window.width * 0.75, window.height * 0.4);
+  const height = Math.round(Math.min(window.width * 0.75, window.height * 0.4));
   return { width, height };
 };
 
