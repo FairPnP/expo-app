@@ -1,15 +1,18 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useCallback } from 'react';
 import {
-  Button,
   Text,
   ImageDownload,
   HorizontalGroup,
   VerticalGroup,
+  ReviewStars,
 } from '@/view/shared';
 import { useNavigation } from '@react-navigation/native';
 import { Availability, Building, Space, getAvailabilityCost } from '@/api';
 import { useTheme, AppTheme } from '@/view/theme';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { useSearchState, useSpaceSummary } from '@/state';
+import { toMinimalDateRange } from '@/utils';
 
 type Props = {
   building: Building;
@@ -17,6 +20,7 @@ type Props = {
   availability: Availability;
   startDate: Date;
   endDate: Date;
+  style?: any;
 };
 
 export const MapCard = ({
@@ -25,49 +29,47 @@ export const MapCard = ({
   availability,
   startDate,
   endDate,
+  style,
 }: Props) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const navigation = useNavigation<any>();
 
+  const { data: summary } = useSpaceSummary(space?.id);
+  const sb = useSearchState();
+
   const handleBooking = useCallback(async () => {
-    // const props: ConfirmReservationScreenProps = {
-    //   building,
-    //   space,
-    //   startTimestamp: startDate.getTime(),
-    //   endTimestamp: endDate.getTime(),
-    //   hourly_rate: availability.hourly_rate,
-    // };
-    // (navigation as any).navigate('ConfirmReservation', props);
     navigation.navigate('ViewSpot', { building, space });
   }, [building, space, availability, startDate, endDate]);
 
   return (
-    <View style={styles.container}>
-      <HorizontalGroup>
-        <ImageDownload
-          url={space?.img_urls?.[0]}
-          style={styles.image}
-          imageStyle={styles.image}
-        />
-        <View style={styles.infoContainer}>
-          <VerticalGroup>
-            <Text>{building.name}</Text>
-            <Text>{space?.name}</Text>
-            <Text>{space?.coverage}</Text>
-            <Text>{`$${getAvailabilityCost(
-              availability.hourly_rate,
-              startDate,
-              endDate,
-            ).toFixed(2)}`}</Text>
-          </VerticalGroup>
-          <View style={styles.buttonContainer}>
-            <Button style={styles.button} onPress={handleBooking}>
-              <Text>View</Text>
-            </Button>
+    <View style={[styles.container, style]}>
+      <TouchableOpacity onPress={handleBooking}>
+        <HorizontalGroup>
+          <ImageDownload
+            url={space?.img_urls?.[0]}
+            style={styles.image}
+            imageStyle={styles.image}
+          />
+          <View style={styles.infoContainer}>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>{building.name}</Text>
+              <Text>{space?.name}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>{`$${getAvailabilityCost(
+                availability.hourly_rate,
+                startDate,
+                endDate,
+              ).toFixed(2)}`} </Text>
+              <Text style={{ fontSize: 14 }}>{toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+            </View>
           </View>
-        </View>
-      </HorizontalGroup>
+          <View style={styles.rightInfo}>
+            <ReviewStars stars={summary?.average_stars} />
+          </View>
+        </HorizontalGroup>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -75,9 +77,9 @@ export const MapCard = ({
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
+      height: 120,
       borderRadius: 8,
       backgroundColor: theme.colors.background,
-
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
@@ -85,26 +87,23 @@ const getStyles = (theme: AppTheme) =>
       },
       shadowOpacity: 0.37,
       shadowRadius: 7.49,
-
       elevation: 12,
     },
     infoContainer: {
+      flex: 1,
+      height: 120,
       padding: 10,
-      flexDirection: 'row',
       alignContent: 'space-between',
       justifyContent: 'space-between',
-      flex: 1,
     },
-    buttonContainer: {
-      justifyContent: 'center',
-    },
-    button: {
-      width: 80,
-      height: 40,
+    rightInfo: {
+      padding: 10,
+      height: '100%',
+      alignContent: 'flex-end',
     },
     image: {
-      width: 110,
-      height: 110,
+      width: 120,
+      height: 120,
       borderTopLeftRadius: 8,
       borderBottomLeftRadius: 8,
     },

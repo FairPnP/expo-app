@@ -5,7 +5,7 @@ import {
   Text,
 } from '@/view/shared';
 import { useTheme, AppTheme } from '@/view/theme';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSearchState } from '@/state';
 import { toMinimalDateRange } from '@/utils';
 import { SearchModal } from '../../stack/SearchModal';
@@ -39,7 +39,7 @@ export const SearchBar = ({ style }: SearchBarProps) => {
     <View style={[styles.card, style]}>
       <TouchableOpacity onPress={onPress} >
         <View style={styles.searchIcon}>
-          <Icon name="magnify" size={32} color="#000" />
+          <MaterialCommunityIcons name="magnify" size={32} color="#000" />
         </View>
         <View style={styles.infoArea}>
           {locationName && sb.startDate && sb.endDate ? (

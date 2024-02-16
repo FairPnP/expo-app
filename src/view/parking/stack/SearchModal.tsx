@@ -2,10 +2,11 @@ import { Modal, StyleSheet, View, SafeAreaView } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { AppTheme, useTheme } from '@/view/theme';
 import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
-import { Text, LocationSearch, HorizontalGroup, VerticalGroup, Title, Button, CloseButton, Card } from '@/view/shared';
+import { Text, LocationSearch, HorizontalGroup, VerticalGroup, Title, Button, CloseButton, Card, AvailabilityDatePicker } from '@/view/shared';
 import { toMinimalDateRange } from '@/utils';
 import { useSearchState } from '@/state';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 export const SearchModal = forwardRef((_, ref) => {
@@ -46,12 +47,9 @@ export const SearchModal = forwardRef((_, ref) => {
     setVisible(false);
   };
 
-  const handleStartDateConfirm = (date: Date) => {
-    sb.setStartDate(date);
-  }
-
-  const handleEndDateConfirm = (date: Date) => {
-    sb.setEndDate(date);
+  const onDateRangeSelected = (startDate: Date, endDate: Date) => {
+    sb.setStartDate(startDate);
+    sb.setEndDate(endDate);
   }
 
   return (
@@ -75,28 +73,22 @@ export const SearchModal = forwardRef((_, ref) => {
           </Card>
           <Card>
             <Title>When?</Title>
-            <HorizontalGroup>
-              <View style={{ flex: 1, borderRightColor: theme.colors.border, borderRightWidth: 1 }}>
-                <Title style={{ alignSelf: 'center' }}>Parking From</Title>
-                <Text>Date: </Text>
-                <Text>Time: </Text>
-              </View>
-              <View style={{ flex: 1, paddingHorizontal: 8 }}>
-                <Title style={{ alignSelf: 'center' }}>Parking Until</Title>
-                <Text>Date: </Text>
-                <Text>Time: </Text>
-              </View>
-            </HorizontalGroup>
+            <AvailabilityDatePicker onDateRangeSelected={onDateRangeSelected} />
           </Card>
         </View>
       </SafeAreaView>
       <View style={styles.bottomArea}>
         <HorizontalGroup>
           <VerticalGroup>
-            <Text>{sb.location?.data?.description}</Text>
-            <Text>{sb.startDate && sb.endDate && toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+            <Title style={{ fontSize: 16 }}>{sb.location?.detail?.name}</Title>
+            <Text style={{ fontSize: 14 }}>{sb.startDate && sb.endDate && toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
           </VerticalGroup>
-          <Button onPress={onSearchPressed}><Text>Search</Text></Button>
+          <Button onPress={onSearchPressed}>
+            <HorizontalGroup>
+              <MaterialCommunityIcons name="magnify" size={24} color="#000" />
+              <Text> Search</Text>
+            </HorizontalGroup>
+          </Button>
         </HorizontalGroup>
       </View>
     </Modal >
@@ -114,10 +106,12 @@ const getStyles = (theme: AppTheme) => StyleSheet.create({
     paddingHorizontal: 24,
   },
   bottomArea: {
+    padding: 16,
     postion: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 100,
+    height: 84,
+    backgroundColor: theme.colors.background,
     borderTopColor: theme.colors.border,
     borderTopWidth: 1,
   },

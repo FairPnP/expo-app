@@ -134,6 +134,7 @@ export const MapScreen = ({ }) => {
           availability={marker.availability}
           startDate={sb.startDate}
           endDate={sb.endDate}
+          style={{ width: "100%", maxWidth: 420, alignSelf: 'center' }}
         />
       );
     },
