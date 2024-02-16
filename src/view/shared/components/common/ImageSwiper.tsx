@@ -24,7 +24,12 @@ export const ImageSwiper = ({ width, height, urls }: ImageSwiperProps) => {
       <ImageDownload
         url={item}
         style={{
+          overflow: 'hidden',
           width: width,
+          height: height,
+        }}
+        imageStyle={{
+          width: width + 4,
           height: height,
         }}
       />
@@ -46,6 +51,7 @@ export const ImageSwiper = ({ width, height, urls }: ImageSwiperProps) => {
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onChange}
+        bounces={false}
       />
       {urls.length > 1 && (
         <View style={styles.pageInfo as any}>

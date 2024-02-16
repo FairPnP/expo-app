@@ -124,7 +124,7 @@ export const ViewSpotScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.container}>
+      <ScrollView bounces={false} style={styles.container}>
         <SafeAreaView style={styles.headerArea}>
           <CircleButton size={34} onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={20} color={theme.colors.text} />
