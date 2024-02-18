@@ -31,6 +31,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { toMinimalDateRange } from '@/utils';
 import { ConfirmReservationScreenProps } from '@/view/parking/stack/ConfirmReservationScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 export type ViewSpotScreenProps = {
   building: Building;
@@ -68,14 +69,16 @@ export const ViewSpotScreen = ({ navigation, route }) => {
     const onChange = ({ window }: { window: ScaledSize }) => {
       setDimensions(calcDimensions(window));
     };
-    StatusBar.setBarStyle('light-content');
 
     const listener = Dimensions.addEventListener('change', onChange);
-    return () => {
-      setStatusBar(theme);
-      listener.remove();
-    }
+    return () => listener.remove();
   }, []);
+
+  useFocusEffect(() => {
+    StatusBar.setBarStyle('light-content');
+
+    return () => setStatusBar(theme);
+  })
 
   const onReservePressed = () => {
     navigation.navigate('ConfirmReservation', {

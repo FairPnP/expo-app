@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import {
   Title,
@@ -9,12 +9,13 @@ import {
   AvailabilityOptionsPicker,
   AvailabilityDatePicker,
   SpaceCard,
+  LoadingOverlay,
 } from '@/view/shared';
-import {toDateTimeString, toDollarString} from '@/utils';
-import {Building, Space} from '@/api';
-import {useTheme, AppTheme} from '@/view/theme';
-import {useCreateAvailability} from '@/state';
-import {ImageSwiper} from '@/view/shared/components/common/ImageSwiper';
+import { toDateTimeString, toDollarString } from '@/utils';
+import { Building, Space } from '@/api';
+import { useTheme, AppTheme } from '@/view/theme';
+import { useCreateAvailability } from '@/state';
+import { ImageSwiper } from '@/view/shared/components/common/ImageSwiper';
 
 // ====================================================
 // OLD FOR REFERENCING
@@ -25,14 +26,14 @@ export type ManageSpotScreenProps = {
   space: Space;
 };
 
-export const ManageSpotScreen = ({navigation, route}) => {
-  const {building, space} = route.params as ManageSpotScreenProps;
+export const ManageSpotScreen = ({ navigation, route }) => {
+  const { building, space } = route.params as ManageSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
   const [isWhenSectionOpen, setIsWhenSectionOpen] = useState(true);
   const [isOptionsSectionOpen, setIsOptionsSectionOpen] = useState(false);
-  const {mutateAsync: createAvailability} = useCreateAvailability();
+  const { mutateAsync: createAvailability, isPending } = useCreateAvailability();
 
   // State for date range and options
   const today = new Date();
@@ -61,7 +62,7 @@ export const ManageSpotScreen = ({navigation, route}) => {
   };
 
   const onDateRangeSelected = (startDate, endDate) => {
-    setSelectedDateRange({startDate, endDate});
+    setSelectedDateRange({ startDate, endDate });
   };
 
   const onSubmit = useCallback(async () => {
@@ -78,6 +79,7 @@ export const ManageSpotScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+      <LoadingOverlay visible={isPending} />
       <View style={styles.imageContainer}>
         <SpaceCard building={building} space={space} style={styles.spaceCard} />
       </View>

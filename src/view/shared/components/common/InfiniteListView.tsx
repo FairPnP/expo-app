@@ -1,20 +1,20 @@
-import React, {useCallback} from 'react';
-import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/view/theme';
-import {FlashList} from '@shopify/flash-list';
+import React, { useCallback, useMemo } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
+import { AppTheme, useTheme } from '@/view/theme';
+import { FlashList } from '@shopify/flash-list';
 
 export type InfiniteListViewProps<T> = {
   data: T[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-  renderItem: ({item}: {item: T}) => JSX.Element;
+  renderItem: ({ item }: { item: T }) => JSX.Element;
   keyExtractor: (item: T) => string;
   emptyMessage: string;
   itemsPerPage?: number;
 };
 
-const chunkData = (data, chunkSize) => {
+function chunkData<T>(data: T[], chunkSize: number) {
   return data.reduce((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / chunkSize);
     if (!resultArray[chunkIndex]) {
@@ -50,54 +50,46 @@ export const InfiniteListView = <T extends unknown>({
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const chunkedData = useCallback(chunkData(data, itemsPerPage ?? 3), [data]);
+  const chunkedData = useMemo(() => chunkData(data, itemsPerPage ?? 3), [data, itemsPerPage]);
 
-  const renderPage = ({item, index}) => (
-    <View style={styles.pageContainer}>
-      {item.map((dataItem, idx) => (
+  const renderPage = ({ item }: { item: T[] }) => (
+    <View key={`page-${item.length}`} style={styles.pageContainer}>
+      {item.map((dataItem: T) => (
         <View key={keyExtractor(dataItem)} style={styles.itemContainer}>
-          {renderItem({item: dataItem})}
+          {renderItem({ item: dataItem })}
         </View>
       ))}
     </View>
   );
 
+  if (chunkedData.length === 0) {
+    return (
+      <Text style={styles.message}>{emptyMessage}</Text>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      {chunkedData.length === 0 ? (
-        <Text style={styles.message}>{emptyMessage}</Text>
-      ) : (
-        <FlashList
-          data={chunkedData}
-          renderItem={renderPage}
-          keyExtractor={(item, index) => index.toString()}
-          ListFooterComponent={renderFooter}
-          onEndReached={handleEndReached}
-          onEndReachedThreshold={0.5}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          estimatedItemSize={300}
-        />
-      )}
-    </View>
+    <FlatList
+      data={chunkedData}
+      renderItem={renderPage}
+      keyExtractor={(_, index) => index.toString()}
+      ListFooterComponent={renderFooter}
+      onEndReached={handleEndReached}
+      onEndReachedThreshold={0.5}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    />
   );
 };
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      minHeight: 100,
-    },
     message: {
       color: theme.colors.text,
       fontSize: 16,
       textAlign: 'center',
     },
     pageContainer: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
     },
     itemContainer: {
       width: 300,

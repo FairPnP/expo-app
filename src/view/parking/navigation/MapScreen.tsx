@@ -8,8 +8,6 @@ import React, {
 import {
   StyleSheet,
   View,
-  Platform,
-  KeyboardAvoidingView,
   Dimensions,
 } from 'react-native';
 import { useTheme, AppTheme } from '@/view/theme';

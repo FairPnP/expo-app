@@ -40,23 +40,27 @@ export const ImageSwiper = ({ width, height, urls }: ImageSwiperProps) => {
 
   return (
     <View style={{ width: width, height: height }}>
-      <FlashList
-        key={key}
-        scrollEnabled={true}
-        data={urls}
-        renderItem={renderItem}
-        keyExtractor={item => item}
-        horizontal={true}
-        estimatedItemSize={width}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        onViewableItemsChanged={onChange}
-        bounces={false}
-      />
-      {urls.length > 1 && (
-        <View style={styles.pageInfo as any}>
-          <Text style={styles.pageInfoText}>{`${page}/${urls.length}`}</Text>
-        </View>
+      {urls && urls.length > 0 && (
+        <>
+          <FlashList
+            key={key}
+            scrollEnabled={true}
+            data={urls}
+            renderItem={renderItem}
+            keyExtractor={item => item}
+            horizontal={true}
+            estimatedItemSize={width}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={onChange}
+            bounces={false}
+          />
+          {urls.length > 1 && (
+            <View style={styles.pageInfo as any}>
+              <Text style={styles.pageInfoText}>{`${page}/${urls.length}`}</Text>
+            </View>
+          )}
+        </>
       )}
     </View>
   );

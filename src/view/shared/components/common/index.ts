@@ -16,3 +16,4 @@ export * from './InfiniteListView';
 export * from './CircleButton';
 export * from './CloseButton';
 export * from './Card';
+export * from './LoadingOverlay';

@@ -1,10 +1,10 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
-import {Button, SelectInput, Text, TextInput, ImageUpload} from '@/view/shared';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {Building, BuildingAPI, CreateBuildingRequest, Space} from '@/api';
-import {useTheme, AppTheme} from '@/view/theme';
-import {useAuth, useCreateSpace, useUpdateSpaceImages} from '@/state';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Button, SelectInput, Text, TextInput, ImageUpload, LoadingOverlay } from '@/view/shared';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { Building, BuildingAPI, CreateBuildingRequest, Space } from '@/api';
+import { useTheme, AppTheme } from '@/view/theme';
+import { useAuth, useCreateSpace, useUpdateSpaceImages } from '@/state';
 
 export type EditParkingSpaceScreenProps = {
   building: Building | CreateBuildingRequest;
@@ -29,13 +29,14 @@ function isBuilding(
   return (building as Building).id !== undefined;
 }
 
-export const EditParkingSpaceScreen = ({navigation, route}) => {
-  const {building} = route.params as EditParkingSpaceScreenProps;
+export const EditParkingSpaceScreen = ({ navigation, route }) => {
+  const { building } = route.params as EditParkingSpaceScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {userId} = useAuth();
-  const {mutateAsync: createSpace} = useCreateSpace();
-  const {mutateAsync: uploadSpaceImages} = useUpdateSpaceImages();
+  const { userId } = useAuth();
+  const { mutateAsync: createSpace, invalidateMySpaces } = useCreateSpace({ skipInvalidate: true });
+  const { mutateAsync: uploadSpaceImages } = useUpdateSpaceImages();
+  const [isPending, setIsPending] = useState(false);
 
   const [selectedImages, setSelectedImages] = useState<string[]>(null);
   const onImagesSelected = useCallback(
@@ -51,7 +52,7 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
     if (isBuilding(building)) {
       return building;
     } else {
-      const res = await BuildingAPI.list({place_id: building.place_id});
+      const res = await BuildingAPI.list({ place_id: building.place_id });
       if (res?.buildings.length > 0) {
         return res.buildings[0];
       } else {
@@ -64,6 +65,7 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
 
   const handleCreateSpace = useCallback(
     async (data: FormValues) => {
+      setIsPending(true);
       const building = await getBuilding();
       const space = await createSpace({
         name: data.space_name,
@@ -77,8 +79,10 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
       });
 
       if (selectedImages) {
-        await uploadSpaceImages({spaceId: space.id, imageUris: selectedImages});
+        await uploadSpaceImages({ spaceId: space.id, imageUris: selectedImages });
       }
+      invalidateMySpaces();
+      setIsPending(false);
     },
     [getBuilding, selectedImages, userId, createSpace],
   );
@@ -91,10 +95,11 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
 
   return (
     <ScrollView style={styles.container}>
+      <LoadingOverlay visible={isPending} />
       <Text>{building.name}</Text>
       <View style={styles.separator} />
 
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <ImageUpload maxImages={5} onImagesSelected={onImagesSelected} />
       </View>
 
@@ -103,30 +108,30 @@ export const EditParkingSpaceScreen = ({navigation, route}) => {
           name="space_name"
           label="Name"
           placeholder="ex. Driveway/Unit #"
-          rules={{required: 'Name is required!'}}
+          rules={{ required: 'Name is required!' }}
         />
         <SelectInput
           name="max_vehicle_size"
           label="Max Vehicle Size"
           items={[
-            {label: 'Bike', value: 'bike'},
-            {label: 'Car', value: 'car'},
-            {label: 'Truck/SUV', value: 'suv'},
-            {label: 'RV/Trailer', value: 'rv'},
+            { label: 'Bike', value: 'bike' },
+            { label: 'Car', value: 'car' },
+            { label: 'Truck/SUV', value: 'suv' },
+            { label: 'RV/Trailer', value: 'rv' },
           ]}
           defaultValue={'suv'}
-          rules={{required: 'Size category is required'}}
+          rules={{ required: 'Size category is required' }}
         />
         <SelectInput
           name="coverage"
           label="Coverage"
           items={[
-            {label: 'Indoor', value: 'indoor'},
-            {label: 'Outdoor: Covered', value: 'outdoor-covered'},
-            {label: 'Outdoor: Open', value: 'outdoor'},
+            { label: 'Indoor', value: 'indoor' },
+            { label: 'Outdoor: Covered', value: 'outdoor-covered' },
+            { label: 'Outdoor: Open', value: 'outdoor' },
           ]}
           defaultValue={'outdoor'}
-          rules={{required: 'Coverage is required'}}
+          rules={{ required: 'Coverage is required' }}
         />
         {/* <TextAreaInput
           name="description"
