@@ -1,18 +1,25 @@
-import {Alert} from 'react-native';
-import React, {useEffect} from 'react';
-import {StripeAPI} from '@/api';
-import {LoadingSpinner} from '../components';
+import { Alert, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { LoadingOverlay } from '../components';
+import { useMerchantAccount, useValidateMerchant } from '@/state';
 
-export const StripeReturnScreen = ({navigation}) => {
-  const validateStripeAccount = async () => {
-    await StripeAPI.validateAccount();
-    Alert.alert('Success', 'Stripe account created.');
-    navigation.navigate('Profile');
-  };
+export const StripeReturnScreen = ({ navigation }) => {
+  const { data, isPending } = useValidateMerchant();
+  const { invalidateCache } = useMerchantAccount();
 
   useEffect(() => {
-    validateStripeAccount();
-  }, []);
+    if (data && !isPending) {
+      if (data.isValid) {
+        Alert.alert('Success', 'Stripe account created.');
+        invalidateCache();
+      }
+      navigation.navigate('Profile');
+    }
+  }, [data, isPending]);
 
-  return <LoadingSpinner />;
+  return (
+    <View style={{ flex: 1 }}>
+      <LoadingOverlay visible={isPending} />
+    </View>
+  );
 };

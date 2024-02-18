@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useAuthenticator} from '@aws-amplify/ui-react-native';
-import {useTheme, AppTheme} from '@/view/theme';
-import {StripeAPI} from '@/api';
-import {useQueryClient} from '@tanstack/react-query';
-import {useAppMode, useAuth, useUserSummary} from '@/state';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { useTheme, AppTheme } from '@/view/theme';
+import { StripeAPI } from '@/api';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAppMode, useAuth, useMerchantAccount, useUserSummary } from '@/state';
 import {
   IconButton,
   Section,
@@ -16,37 +16,22 @@ import {
   EditUserProfileBottomSheet,
   TextLink,
 } from '../components';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-export const ProfileScreen = ({navigation}) => {
-  const {tokens} = useAuth();
+export const ProfileScreen = ({ navigation }) => {
+  const { tokens } = useAuth();
   const email = tokens?.idToken?.payload.email?.toString();
   const userId = tokens?.idToken?.payload.sub;
-  const {data: summary} = useUserSummary(userId);
+  const { data: summary } = useUserSummary(userId);
 
-  const {signOut} = useAuthenticator(context => [context.user]);
+  const { signOut } = useAuthenticator(context => [context.user]);
   const queryClient = useQueryClient();
 
-  const {theme, toggleTheme} = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const styles = getStyles(theme.appTheme);
-  const {appMode, setAppMode} = useAppMode();
-
-  const [stripeAccountId, setStripeAccountId] = useState<String>(null);
-
-  const getStripeAccount = async () => {
-    let res = await StripeAPI.getAccount({
-      404: () => null,
-    });
-
-    if (res) {
-      setStripeAccountId(res.account_id);
-    }
-  };
-
-  useEffect(() => {
-    getStripeAccount();
-  }, []);
+  const { appMode, setAppMode } = useAppMode();
+  const { data: stripeAccount } = useMerchantAccount();
 
   const stripeAccountPressed = async () => {
     await StripeAPI.showDashboard();
@@ -58,7 +43,7 @@ export const ProfileScreen = ({navigation}) => {
   };
 
   const onReviewsPressed = () => {
-    navigation.navigate('UserReviews', {userId});
+    navigation.navigate('UserReviews', { userId });
   };
 
   const editProfilePressed = () => {
@@ -99,14 +84,14 @@ export const ProfileScreen = ({navigation}) => {
         {appMode === 'hosting' && (
           <View style={styles.section}>
             <Text style={styles.label}>Stripe ID:</Text>
-            <Text style={styles.userid}>{stripeAccountId}</Text>
+            <Text style={styles.userid}>{stripeAccount?.account_id}</Text>
           </View>
         )}
       </Section>
       <View style={styles.separator} />
 
       <IconButton icon="tv" text="Toggle Theme" onPress={toggleTheme} />
-      <IconButton icon="cog" text="Settings" onPress={() => {}} />
+      <IconButton icon="cog" text="Settings" onPress={() => { }} />
       {appMode === 'hosting' && (
         <>
           <IconButton

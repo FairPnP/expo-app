@@ -3,11 +3,11 @@ import { fetchAuthSession } from '@aws-amplify/auth';
 import axiosRetry from 'axios-retry';
 import Toast from 'react-native-toast-message';
 
-// const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
+const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 // const apiBaseUrl: string = 'http://10.0.2.2:3000';
 // const apiBaseUrl: string = 'http://192.168.86.40:3000';
 // const apiBaseUrl: string = 'http://localhost:3000';
-const apiBaseUrl: string = 'http://192.168.0.114:3000';
+// const apiBaseUrl: string = 'http://192.168.0.114:3000';
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
