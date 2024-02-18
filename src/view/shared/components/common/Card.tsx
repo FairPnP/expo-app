@@ -24,8 +24,6 @@ const getStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.background,
       padding: 10,
       borderRadius: 16,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
       shadowColor: "#000",
       shadowOffset: {
         width: 0,

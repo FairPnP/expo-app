@@ -1,7 +1,7 @@
 // TextComponent.js
 import React from 'react';
-import {Text as ReactText, StyleSheet, TouchableOpacity} from 'react-native';
-import {AppTheme, useTheme} from '@/view/theme';
+import { Text as ReactText, StyleSheet, TouchableOpacity } from 'react-native';
+import { AppTheme, useTheme } from '@/view/theme';
 
 export type TextLinkProps = {
   children: React.ReactNode;
@@ -9,12 +9,14 @@ export type TextLinkProps = {
   onPress: () => void;
 };
 
-export const TextLink = ({children, style, onPress}: TextLinkProps) => {
+export const TextLink = ({ children, style, onPress }: TextLinkProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   return (
     <TouchableOpacity onPress={onPress}>
-      <ReactText style={[styles.text, style]}>{children}</ReactText>
+      <ReactText style={[styles.text, style]} numberOfLines={1} ellipsizeMode="tail">
+        {children}
+      </ReactText>
     </TouchableOpacity>
   );
 };

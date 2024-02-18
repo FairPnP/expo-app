@@ -1,55 +1,77 @@
-import React, {useCallback, useMemo} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useTheme, AppTheme} from '@/view/theme';
-import {Reservation} from '@/api';
-import {useBuilding, useSpace} from '@/state';
-import {Text} from '../common';
+import React, { useCallback, useMemo } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useTheme, AppTheme } from '@/view/theme';
+import { Reservation } from '@/api';
+import { useBuilding, useSpace } from '@/state';
+import { Card, HorizontalGroup, ImageDownload, Text, Title, VerticalGroup } from '../common';
+import { toMinimalDateRange } from '@/utils';
 
 export type ReservationItemProps = {
   reservation: Reservation;
 };
 
-export const ReservationItem = ({reservation}: ReservationItemProps) => {
+export const ReservationItem = ({ reservation }: ReservationItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const navigation = useNavigation() as any;
-  const {data: space} = useSpace(reservation.space_id);
-  const {data: building} = useBuilding(space?.building_id);
+  const { data: space } = useSpace(reservation.space_id);
+  const { data: building } = useBuilding(space?.building_id);
 
   const onPress = useCallback(() => {
     if (!reservation) {
       return;
     }
-    navigation.navigate('ReservationDetails', {reservation_id: reservation.id});
+    navigation.navigate('ReservationDetails', { reservation_id: reservation.id });
   }, [reservation, navigation]);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
-        <Text>{building?.name}</Text>
-        <Text>{space?.name}</Text>
-        <Text>
-          {`Start: ${reservation.start_date.toDateString()} - ${reservation.start_date
-            .toTimeString()
-            .substring(0, 5)}`}
-        </Text>
-
-        <Text>
-          {`End:  ${reservation.end_date.toDateString()} - ${reservation.end_date
-            .toTimeString()
-            .substring(0, 5)}`}
-        </Text>
-      </TouchableOpacity>
+      <Card style={styles.card}>
+        <TouchableOpacity onPress={onPress}>
+          <HorizontalGroup>
+            <ImageDownload
+              url={space?.img_urls?.[0]}
+              style={styles.image}
+              imageStyle={styles.image}
+            />
+            <VerticalGroup style={styles.textContainer}>
+              <View>
+                <Title>{building?.name}</Title>
+                <Text>{building?.city}, {building?.state}, {building?.country}</Text>
+                <Text>{space?.name}</Text>
+              </View>
+              <View>
+                <Text>{toMinimalDateRange(reservation.start_date, reservation.end_date)}</Text>
+              </View>
+            </VerticalGroup>
+          </HorizontalGroup>
+        </TouchableOpacity>
+      </Card>
     </View>
   );
 };
 
+
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      padding: 10,
-      backgroundColor: theme.colors.card,
-      borderRadius: 8,
+      padding: 8,
+    },
+    card: {
+      backgroundColor: theme.colors.background,
+      height: 140,
+      padding: 0,
+    },
+    image: {
+      borderTopLeftRadius: 8,
+      borderBottomLeftRadius: 8,
+      width: 140,
+      height: 140,
+    },
+    textContainer: {
+      flex: 1,
+      padding: 8,
+      height: 140,
     },
   });
