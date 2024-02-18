@@ -1,14 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {AppTheme, useTheme} from '@/view/theme';
-import {FlashList} from '@shopify/flash-list';
+import { View, Text, StyleSheet } from 'react-native';
+import { AppTheme, useTheme } from '@/view/theme';
+import { FlashList } from '@shopify/flash-list';
 
 export type ListViewProps<T> = {
   data: T[];
-  renderItem: ({item}: {item: T}) => JSX.Element;
+  renderItem: ({ item }: { item: T }) => JSX.Element;
   emptyMessage: string;
   keyExtractor?: (item: T, index: number) => string;
   style?: any;
+  scrollEnabled?: boolean;
 };
 
 export const ListView = <T extends unknown>({
@@ -17,6 +18,7 @@ export const ListView = <T extends unknown>({
   emptyMessage,
   keyExtractor,
   style,
+  scrollEnabled,
 }: ListViewProps<T>) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -29,7 +31,8 @@ export const ListView = <T extends unknown>({
         <Text style={styles.message}>{emptyMessage}</Text>
       ) : (
         <FlashList
-          scrollEnabled={false}
+          scrollEnabled={scrollEnabled ?? false}
+          showsVerticalScrollIndicator={false}
           data={data}
           renderItem={renderItem}
           ItemSeparatorComponent={renderSeparator}

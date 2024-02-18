@@ -33,6 +33,8 @@ export const SearchModal = forwardRef((_, ref) => {
     sb.setLocation({
       latitude: detail.geometry.location.lat,
       longitude: detail.geometry.location.lng,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02,
       data,
       detail,
     });

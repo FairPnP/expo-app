@@ -6,6 +6,7 @@ export * from './TextLink';
 export * from './DateTimePicker';
 export * from './ImageUpload';
 export * from './ImageDownload';
+export * from './ImageSwiper';
 export * from './LoadingSpinner';
 export * from './forms';
 export * from './HorizontalGroup';

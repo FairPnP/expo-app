@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MapView, {
   Marker,
@@ -71,12 +71,13 @@ export const AvailabilityMap = ({
     (r: Region) => {
       setRegion(r);
 
-      if (!showRefresh && searchedState) {
+      if (!showRefresh && searchedState && region) {
         const latDiff = Math.abs(r.latitude - searchedState.latitude);
         const longDiff = Math.abs(r.longitude - searchedState.longitude);
-        const latRange = searchedState.latitudeDelta / 4;
-        const longRange = searchedState.longitudeDelta / 4;
-        if (latDiff > latRange || longDiff > longRange) {
+        const threshold = region.latitudeDelta / 5;
+        const latDeltaDiff = Math.abs(r.latitudeDelta - searchedState.latitudeDelta);
+        const latThreshold = 0.01;
+        if (latDiff > threshold || longDiff > threshold || latDeltaDiff > latThreshold) {
           setShowRefresh(true);
         }
       }

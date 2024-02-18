@@ -18,5 +18,7 @@ export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
       return response;
     },
     placeholderData: keepPreviousData,
+    staleTime: 60 * 1000,
+    gcTime: 60 * 1000,
   });
 };

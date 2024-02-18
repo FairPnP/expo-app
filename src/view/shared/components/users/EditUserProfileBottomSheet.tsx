@@ -4,7 +4,6 @@ import {
   HorizontalGroup,
   ImageUpload,
   LoadingOverlay,
-  LoadingSpinner,
   TextInput,
   TextLink,
   Title,
@@ -26,7 +25,7 @@ type FormValues = {
 };
 
 export const EditUserProfileBottomSheet = forwardRef<BottomSheetModal>(
-  (props, ref) => {
+  (_, ref) => {
     const theme = useTheme().theme.appTheme;
     const styles = getStyes(theme);
     const { userId } = useAuth();

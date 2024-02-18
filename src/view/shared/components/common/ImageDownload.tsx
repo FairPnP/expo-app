@@ -18,6 +18,7 @@ export const ImageDownload = ({ url, style, imageStyle, resizeMode }: ImageDownl
     <View style={[styles.imageContainer, style]}>
       {url && (
         <FastImage
+          key={url}
           style={[styles.image, imageStyle]}
           source={{
             uri: url,

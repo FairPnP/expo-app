@@ -1,6 +1,6 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {CreateBuildingRequest, BuildingAPI, Building} from '@/api';
-import {BUILDINGS_QUERY_KEY} from './consts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateBuildingRequest, BuildingAPI } from '@/api';
+import { BUILDINGS_QUERY_KEY } from './consts';
 
 export const useCreateBuilding = () => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const useCreateBuilding = () => {
     },
     onSuccess: newBuilding => {
       // Invalidate and refetch buildings query to update the list
-      queryClient.invalidateQueries({queryKey: [BUILDINGS_QUERY_KEY]});
+      queryClient.invalidateQueries({ queryKey: [BUILDINGS_QUERY_KEY] });
 
       // Optionally, update the buildings cache directly if you want to append the new building
       // without needing a refetch. This depends on your application's behavior.

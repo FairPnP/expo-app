@@ -1,7 +1,6 @@
 import React, {
   Suspense,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -27,13 +26,6 @@ const AvailabilityMap = React.lazy(() =>
   ),
 );
 
-const initialRegion = {
-  latitude: 43.442384,
-  longitude: -80.51516,
-  latitudeDelta: 0.4,
-  longitudeDelta: 0.4,
-};
-
 export const MapScreen = ({ }) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -43,32 +35,16 @@ export const MapScreen = ({ }) => {
     Dimensions.get('window').height - inset.bottom - tabBarHeight - 72;
 
   const sb = useSearchState();
-  const [location, setLocation] = useState(initialRegion);
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
   const { data: searchResults } = useSearchAvailabilities({
     start_date: sb.startDate.toISOString().slice(0, 19),
     end_date: sb.endDate.toISOString().slice(0, 19),
-    latitude: location.latitude,
-    longitude: location.longitude,
-    lat_delta: location.latitudeDelta / 2,
-    long_delta: location.longitudeDelta / 2,
+    latitude: sb.location.latitude,
+    longitude: sb.location.longitude,
+    lat_delta: sb.location.latitudeDelta / 2,
+    long_delta: sb.location.longitudeDelta / 2,
   });
   const { data: selectedSpace } = useSpace(selectedMarker?.space.id);
-
-  useEffect(() => {
-    if (sb) {
-      if (sb.location?.data) {
-        const regionDelta =
-          sb.location.data.description.split(',').length > 3 ? 0.02 : 0.3;
-        setLocation({
-          latitude: sb.location.latitude,
-          longitude: sb.location.longitude,
-          latitudeDelta: regionDelta,
-          longitudeDelta: regionDelta,
-        });
-      }
-    }
-  }, [sb]);
 
   const markers = useMemo(() => {
     const list: AvailabilityData[] = [];
@@ -105,7 +81,7 @@ export const MapScreen = ({ }) => {
     }
 
     return filteredList;
-  }, [location, searchResults]);
+  }, [searchResults]);
 
   const renderMarker = useCallback(
     (marker: AvailabilityData, isSelected: boolean) => {
@@ -141,10 +117,8 @@ export const MapScreen = ({ }) => {
 
   const onSearchRegion = useCallback(
     (region: Region) => {
-      setLocation(region);
       sb.setLocation({
-        latitude: region.latitude,
-        longitude: region.longitude,
+        ...region,
         data: null,
         detail: null,
       });
@@ -160,7 +134,7 @@ export const MapScreen = ({ }) => {
       <View style={[styles.map, { height: mapHeight }]}>
         <Suspense fallback={<LoadingSpinner />}>
           <AvailabilityMap
-            location={location}
+            location={sb.location}
             markers={markers}
             onSearchRegion={onSearchRegion}
             renderMarker={renderMarker}

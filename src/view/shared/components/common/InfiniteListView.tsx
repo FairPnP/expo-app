@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 import { AppTheme, useTheme } from '@/view/theme';
-import { FlashList } from '@shopify/flash-list';
 
 export type InfiniteListViewProps<T> = {
   data: T[];

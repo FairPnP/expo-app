@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useTheme, AppTheme } from '@/view/theme';

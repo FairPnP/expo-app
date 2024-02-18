@@ -1,35 +1,63 @@
-import { useAppMode } from '@/state';
-import { IconButton, Section, Text, Title } from '@/view/shared';
+import { useAppMode, useSearchAvailabilities, useSearchState } from '@/state';
+import { IconButton, ListView, LoadingSpinner, Title } from '@/view/shared';
 import { AppTheme, useTheme } from '@/view/theme';
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchBar } from '../components';
+import React, { useMemo } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SearchBar, SpaceListing } from '../components';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 export const ParkingHome = ({ }) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const { setAppMode } = useAppMode();
 
+  const sb = useSearchState();
+  const { data: searchResults, isPending } = useSearchAvailabilities({
+    start_date: sb.startDate.toISOString().slice(0, 19),
+    end_date: sb.endDate.toISOString().slice(0, 19),
+    latitude: sb.location.latitude,
+    longitude: sb.location.longitude,
+    lat_delta: sb.location.latitudeDelta / 2,
+    long_delta: sb.location.longitudeDelta / 2,
+  });
+
   const onSwitchToHosting = () => {
     setAppMode('hosting');
   };
 
+  const inset = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+  const listingViewHeight = Dimensions.get('window').height - inset.bottom - tabBarHeight - 72 - 100 - 4;
+
+  const windowWidth = Dimensions.get('window').width;
+  const maxWidth = listingViewHeight * 0.7;
+  const hPadding = Math.max(16, (windowWidth - maxWidth) / 2);
+  const listingWidth = windowWidth - hPadding * 2;
+  const renderSpace = ({ item }: any) => {
+    return <SpaceListing style={{ marginVertical: 16 }} availability={item} width={listingWidth} />
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ overflow: 'hidden', paddingBottom: 8 }}>
-        <View style={styles.topArea}>
-          <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500 }} />
-        </View>
+      <View style={styles.topArea}>
+        <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500 }} />
       </View>
-      <ScrollView style={styles.content}>
-        <Section title="Parking Home">
-          <Text>TODO: Parking home</Text>
-        </Section>
-        <Section title="Upcoming">
-          <Text>Parking</Text>
-        </Section>
-      </ScrollView>
+      <View style={{
+        paddingHorizontal: hPadding,
+        height: listingViewHeight
+      }}>
+        {isPending ? <LoadingSpinner /> :
+          <ListView
+            key={listingWidth}
+            data={searchResults.availabilities}
+            keyExtractor={(item: any) => item.id.toString()}
+            renderItem={renderSpace}
+            emptyMessage='No spaces found'
+            scrollEnabled={true}
+          />
+        }
+      </View>
       <View style={styles.bottomArea}>
         <Title style={{ marginVertical: 4 }}>Manage your listings</Title>
         <IconButton
@@ -53,23 +81,16 @@ const getStyles = (theme: AppTheme) =>
       height: 72,
       paddingVertical: 4,
       backgroundColor: theme.colors.background,
-
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity: 0.20,
-      shadowRadius: 1.41,
-      elevation: 2,
+      borderBottomColor: theme.colors.border,
+      borderBottomWidth: 1,
     },
-    content: {},
     bottomArea: {
       position: 'absolute',
       bottom: 0,
       width: '100%',
       height: 100,
       paddingHorizontal: 8,
+      backgroundColor: theme.colors.background,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
     },

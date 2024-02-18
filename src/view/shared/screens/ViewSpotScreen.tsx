@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -20,11 +20,11 @@ import {
   VerticalGroup,
   TextLink,
   CircleButton,
+  ImageSwiper,
 } from '../components';
 import { Building, Space, getAvailabilityCost } from '@/api';
 import { useTheme, AppTheme, setStatusBar } from '@/view/theme';
 import { useAppMode, useSearchState, useSpaceSummary } from '@/state';
-import { ImageSwiper } from '@/view/shared/components/common/ImageSwiper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { openMap } from '@/utils/maps';
 import { FontAwesome } from '@expo/vector-icons';

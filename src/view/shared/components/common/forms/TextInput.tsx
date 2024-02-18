@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, { forwardRef } from 'react';
 import {
   View,
   TextInput as RNTextInput,
@@ -6,9 +6,9 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import {useController, UseControllerProps} from 'react-hook-form';
-import {AppTheme, useTheme} from '@/view/theme';
-import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import { useController, UseControllerProps } from 'react-hook-form';
+import { AppTheme, useTheme } from '@/view/theme';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 interface TextInputProps extends RNTextInputProps, UseControllerProps {
   label: string;
@@ -18,13 +18,13 @@ interface TextInputProps extends RNTextInputProps, UseControllerProps {
 }
 
 export const TextInput = forwardRef<RNTextInput, TextInputProps>(
-  (props, ref) => {
+  (props, _) => {
     const theme = useTheme().theme.appTheme;
     const styles = getStyles(theme);
 
-    const {name, label, rules, bottomSheet, ...inputProps} = props;
+    const { name, label, rules, bottomSheet, ...inputProps } = props;
 
-    const {field, fieldState} = useController({name, rules});
+    const { field, fieldState } = useController({ name, rules });
 
     const hasError = fieldState.invalid;
 

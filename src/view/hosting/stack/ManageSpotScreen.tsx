@@ -15,7 +15,6 @@ import { toDateTimeString, toDollarString } from '@/utils';
 import { Building, Space } from '@/api';
 import { useTheme, AppTheme } from '@/view/theme';
 import { useCreateAvailability } from '@/state';
-import { ImageSwiper } from '@/view/shared/components/common/ImageSwiper';
 
 // ====================================================
 // OLD FOR REFERENCING

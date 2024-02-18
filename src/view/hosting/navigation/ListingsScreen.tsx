@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Title,
   LoadingSpinner,

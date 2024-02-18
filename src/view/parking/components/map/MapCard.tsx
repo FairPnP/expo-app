@@ -1,16 +1,14 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback } from 'react';
 import {
   Text,
   ImageDownload,
   HorizontalGroup,
-  VerticalGroup,
   ReviewStars,
 } from '@/view/shared';
 import { useNavigation } from '@react-navigation/native';
 import { Availability, Building, Space, getAvailabilityCost } from '@/api';
 import { useTheme, AppTheme } from '@/view/theme';
-import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useSearchState, useSpaceSummary } from '@/state';
 import { toMinimalDateRange } from '@/utils';
 
@@ -43,8 +41,8 @@ export const MapCard = ({
   }, [building, space, availability, startDate, endDate]);
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={handleBooking}>
+    <TouchableWithoutFeedback onPress={handleBooking}>
+      <View style={[styles.container, style]}>
         <HorizontalGroup>
           <ImageDownload
             url={space?.img_urls?.[0]}
@@ -69,8 +67,8 @@ export const MapCard = ({
             <ReviewStars stars={summary?.average_stars} />
           </View>
         </HorizontalGroup>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

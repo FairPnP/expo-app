@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import {
   ListView,
   LoadingSpinner,
   ReservationItem,
   Section,
 } from '@/view/shared';
-import {useTheme, AppTheme} from '@/view/theme';
-import {useMyReservations} from '@/state';
-import {Reservation} from '@/api';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { useTheme, AppTheme } from '@/view/theme';
+import { useMyReservations } from '@/state';
+import { Reservation } from '@/api';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const SpotsScreen = () => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {data: reservations, isLoading} = useMyReservations();
+  const { data: reservations, isLoading } = useMyReservations();
 
   const sortedReservations = useMemo<{
     upcoming: Reservation[];
@@ -54,7 +54,7 @@ export const SpotsScreen = () => {
     };
   }, [reservations]);
 
-  const renderItem = useCallback(({item}) => {
+  const renderItem = useCallback(({ item }) => {
     return <ReservationItem reservation={item} />;
   }, []);
 
