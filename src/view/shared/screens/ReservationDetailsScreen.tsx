@@ -2,7 +2,7 @@ import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTheme, AppTheme } from '@/view/theme';
 import { useAppMode, useBuilding, useReservation, useSpace } from '@/state';
-import { Title, Text, LoadingSpinner, ImageSwiper, HorizontalGroup, VerticalGroup, IconButton, StaticMap, Section } from '../components';
+import { Title, Text, LoadingSpinner, ImageSwiper, HorizontalGroup, VerticalGroup, IconButton, StaticMap, Section, UserProfileLabel } from '../components';
 import { openMap } from '@/utils/maps';
 import { toFullDateString, toTimeString } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
@@ -124,8 +124,15 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
         </Section>
         <View style={styles.horizontalSeparator} />
         <Section style={{ marginVertical: 16 }} title="Reservation">
-          <Title>Cancellation Policy</Title>
-          <Text>TODO: Cancellation policy</Text>
+          <UserProfileLabel style={{ marginBottom: 8 }} userId={space.user_id} namePrefix="Hosted by " />
+          <View style={{ marginVertical: 16 }}>
+            <Title>Confirmation Code</Title>
+            <Text>{reservation.id}</Text>
+          </View>
+          <View style={{ marginVertical: 16 }}>
+            <Title>Cancellation Policy</Title>
+            <Text>TODO: Cancellation policy</Text>
+          </View>
           <IconButton
             text="Change Reservation"
             onPress={onChangeReservationPressed}
