@@ -58,6 +58,8 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
   const width = Math.round(Math.min(window.width - 32, window.height * 0.6));
   const height = Math.round(width * 0.75);
 
+  const isOld = reservation.end_date.getTime() < Date.now();
+
   return (
     <ScrollView>
       <View style={[styles.content, { width: width }]}>
@@ -86,11 +88,12 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
         </View>
         <View style={styles.horizontalSeparator} />
         <View style={styles.buttonArea}>
-          <IconButton
-            text="Get Directions"
-            onPress={onDirectionsPressed}
-            iconComponent={<Ionicons name="location-outline" size={24} />}
-          />
+          {!isOld && appMode === 'parking' &&
+            <IconButton
+              text="Get Directions"
+              onPress={onDirectionsPressed}
+              iconComponent={<Ionicons name="location-outline" size={24} />}
+            />}
           <IconButton
             text={`Message ${otherUser}`}
             onPress={onChatButtonPressed}
@@ -133,11 +136,12 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
             <Title>Cancellation Policy</Title>
             <Text>TODO: Cancellation policy</Text>
           </View>
-          <IconButton
-            text="Change Reservation"
-            onPress={onChangeReservationPressed}
-            iconComponent={<Ionicons name="calendar-outline" size={24} />}
-          />
+          {appMode === 'parking' &&
+            <IconButton
+              text="Change Reservation"
+              onPress={onChangeReservationPressed}
+              iconComponent={<Ionicons name="calendar-outline" size={24} />}
+            />}
           <IconButton
             text="Cancel Reservation"
             onPress={onCancelReservationPressed}
