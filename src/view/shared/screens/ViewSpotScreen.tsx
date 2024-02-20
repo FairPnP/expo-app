@@ -161,16 +161,16 @@ export const ViewSpotScreen = ({ navigation, route }) => {
           <Section title="Location">
             <StaticMap
               key={dimensions.width}
-              style={{ marginVertical: 16 }}
+              style={{ marginBottom: 16, alignSelf: 'center' }}
               lat={building.latitude}
               lng={building.longitude}
-              width={Math.round(dimensions.width - 54)}
-              height={Math.round((dimensions.width - 54) * 0.75)}
+              width={Math.round(dimensions.width - 64)}
+              height={Math.round((dimensions.width - 64) * 0.75)}
             />
             <HorizontalGroup>
               <VerticalGroup>
                 <Text>{building.name}</Text>
-                <Text>City, Province</Text>
+                <Text>{building.city}, {building.state}, {building.country}</Text>
               </VerticalGroup>
               <Button onPress={onGetDirectionsPressed}>
                 <Text>Get Directions</Text>
@@ -225,7 +225,7 @@ const getStyles = (theme: AppTheme) =>
     },
     contentArea: {
       flex: 1,
-      padding: 16,
+      padding: 24,
     },
     separator: {
       height: 1,

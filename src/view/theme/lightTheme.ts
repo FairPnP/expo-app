@@ -8,7 +8,7 @@ export const lightTheme: AppTheme = {
     background: '#FFFFFF',
     card: '#F5F5F5',
     text: '#212121',
-    border: '#BDBDBD',
+    border: '#CDCDCD',
     notification: '#4DB6AC',
     shadow: '#000000',
     error: '#E57373',

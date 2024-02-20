@@ -88,7 +88,7 @@ export const ProfileScreen = ({ navigation }) => {
           </View>
         )}
       </Section>
-      <View style={styles.separator} />
+      <View style={[styles.separator, { marginBottom: 12 }]} />
 
       <IconButton icon="tv" text="Toggle Theme" onPress={toggleTheme} />
       <IconButton icon="cog" text="Settings" onPress={() => { }} />

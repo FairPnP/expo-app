@@ -36,11 +36,15 @@ export const SpaceListing = ({ width, availability, style }: SpaceListingProps) 
         </View>
         <View style={styles.infoContainer}>
           <HorizontalGroup>
-            <VerticalGroup style={{ flex: 1 }}>
-              <Title>{building?.name}</Title>
-              <Text>{building?.city}, {building?.state}</Text>
-              <Text>{space?.name}</Text>
-              <Title style={{ marginTop: 8 }}>${getAvailabilityCost(availability?.hourly_rate, sb.startDate, sb.endDate)}</Title>
+            <VerticalGroup style={{ height: 90 }}>
+              <View>
+                <Title style={{ fontSize: 18 }}>{building?.name}</Title>
+                <Text>{building?.city}, {building?.state}</Text>
+                <Text>{space?.name}</Text>
+              </View>
+              <View>
+                <Title style={{ fontSize: 18 }}>${getAvailabilityCost(availability?.hourly_rate, sb.startDate, sb.endDate)}</Title>
+              </View>
             </VerticalGroup>
             <VerticalGroup style={{ height: 90 }}>
               <ReviewStars style={{ alignSelf: 'flex-end' }} stars={summary?.average_stars} />
@@ -59,6 +63,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   infoContainer: {
-    marginTop: 8,
+    marginTop: 4,
   },
 });

@@ -13,7 +13,9 @@ export const toDollarString = (amount: number | string) => {
 };
 
 export const toTimeString = (date: Date) => {
-  return date.toISOString().split('T')[1].slice(0, 5);
+  // 2:00 p.m.
+  const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  return time.replace('AM', 'a.m.').replace('PM', 'p.m.');
 };
 
 export const toDateString = (date: Date) => {
@@ -56,4 +58,9 @@ export const toMinimalDateRange = (start: Date, end: Date) => {
 
   // Jan 5, 2 PM - Jan 6, 4:30 PM
   return `${toMinimalDateString(start)}, ${toMinimalTimeString(start)} - ${toMinimalDateString(end)}, ${toMinimalTimeString(end)}`;
+};
+
+export const toFullDateString = (date: Date) => {
+  // Sun, Jan 5, 2020
+  return date.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 };

@@ -1,13 +1,17 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ParkingNavigator} from './navigation/ParkingNavigator';
-import {addSharedStackScreens} from '../shared';
-import {ConfirmReservationScreen} from './stack/ConfirmReservationScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ParkingNavigator } from './navigation/ParkingNavigator';
+import { addSharedStackScreens } from '../shared';
+import { ConfirmReservationScreen } from './stack/ConfirmReservationScreen';
 
 const Stack = createNativeStackNavigator();
 
 export const ParkingMain = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: 'black',
+      }}
+    >
       <Stack.Screen
         name="Navigator"
         component={ParkingNavigator}
@@ -23,6 +27,6 @@ export const ParkingMain = () => {
         }}
       />
       {addSharedStackScreens(Stack)}
-    </Stack.Navigator>
+    </Stack.Navigator >
   );
 };

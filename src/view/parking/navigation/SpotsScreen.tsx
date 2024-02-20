@@ -73,7 +73,7 @@ export const SpotsScreen = () => {
             emptyMessage="You have no upcoming reservations"
           />
         </Section>
-        <Section title="Ongoing">
+        <Section style={{ marginTop: 16 }} title="Ongoing">
           <ListView
             data={sortedReservations.ongoing}
             renderItem={renderItem}
@@ -81,7 +81,7 @@ export const SpotsScreen = () => {
             emptyMessage="You have no ongoing reservations"
           />
         </Section>
-        <Section title="History">
+        <Section style={{ marginTop: 16 }} title="History">
           <ListView
             data={sortedReservations.history}
             renderItem={renderItem}
