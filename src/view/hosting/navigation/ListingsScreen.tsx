@@ -56,7 +56,7 @@ export const ListingsScreen = ({ }: ListingsScreenProps) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button style={{ marginHorizontal: 16 }} onPress={onAddSpot}>
+      <Button style={{ margin: 16 }} onPress={onAddSpot}>
         <Title>Add Listing</Title>
       </Button>
       <Section title="My Listings">

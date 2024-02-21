@@ -1,20 +1,20 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
-import {useConversations} from '@/state';
+import { useConversations } from '@/state';
 import {
   ConversationItem,
   ListView,
   LoadingSpinner,
   Section,
 } from '../components';
-import {ChatSummary} from '@/api';
-import {AppTheme, useTheme} from '@/view/theme';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { ChatSummary } from '@/api';
+import { AppTheme, useTheme } from '@/view/theme';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const InboxScreen = ({navigation}) => {
+export const InboxScreen = ({ navigation }) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {data: conversations, isLoading} = useConversations();
+  const { data: conversations, isLoading } = useConversations();
 
   if (isLoading) {
     return (
@@ -30,8 +30,17 @@ export const InboxScreen = ({navigation}) => {
     });
   };
 
-  const renderConversation = ({item}: {item: ChatSummary}) => {
-    return <ConversationItem summary={item} onPress={onPress} />;
+  const renderConversation = ({ item }: { item: ChatSummary }) => {
+    return <ConversationItem
+      style={{
+        paddingBottom: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.border,
+        paddingHorizontal: 20,
+      }}
+      summary={item}
+      onPress={onPress}
+    />;
   };
 
   return (
@@ -44,6 +53,7 @@ export const InboxScreen = ({navigation}) => {
             keyExtractor={item => item.reservation_id.toString()}
             emptyMessage="Inbox is empty."
             style={styles.content}
+            separatorComponent={<View style={styles.spacer} />}
           />
         </Section>
       </ScrollView>
@@ -58,7 +68,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
     },
     spacer: {
-      height: 20,
+      height: 10,
     },
     topBar: {
       paddingVertical: 8,

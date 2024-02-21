@@ -1,24 +1,30 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {HorizontalGroup, ImageDownload, VerticalGroup, Text} from '../common';
-import {FontAwesome5} from '@expo/vector-icons';
-import {useUserProfile} from '@/state';
-import {AppTheme, useTheme} from '@/view/theme';
+import { View, StyleSheet } from 'react-native';
+import { HorizontalGroup, ImageDownload, VerticalGroup, Text } from '../common';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useUserProfile } from '@/state';
+import { AppTheme, useTheme } from '@/view/theme';
 
 export type UserProfileLabelProps = {
   userId: string;
   style?: any;
   namePrefix?: string;
+  title2?: string;
+  subText?: string;
+  subText2?: string;
 };
 
 export const UserProfileLabel = ({
   userId,
   style,
   namePrefix,
+  title2,
+  subText,
+  subText2,
 }: UserProfileLabelProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyes(theme);
-  const {data: profile, isLoading} = useUserProfile(userId);
+  const { data: profile, isLoading } = useUserProfile(userId);
 
   return (
     <HorizontalGroup
@@ -53,11 +59,13 @@ export const UserProfileLabel = ({
         </View>
       )}
       <VerticalGroup style={styles.textArea}>
-        <Text style={{fontWeight: 'bold'}}>
+        <Text style={{ fontWeight: 'bold' }}>
           {namePrefix}
           {isLoading ? '' : profile?.name ?? 'Unnamed User'}
         </Text>
-        <Text style={{color: 'grey'}}>New to FairPnP</Text>
+        {title2 && <Text style={{ fontWeight: 'bold' }}>{title2}</Text>}
+        <Text style={{ color: 'grey' }}>{subText ?? 'New to FairPnP'}</Text>
+        {subText2 && <Text style={{ color: 'grey' }}>{subText2}</Text>}
       </VerticalGroup>
     </HorizontalGroup>
   );

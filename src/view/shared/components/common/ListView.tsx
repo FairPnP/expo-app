@@ -10,6 +10,7 @@ export type ListViewProps<T> = {
   keyExtractor?: (item: T, index: number) => string;
   style?: any;
   scrollEnabled?: boolean;
+  separatorComponent?: React.ReactNode;
 };
 
 export const ListView = <T extends unknown>({
@@ -19,11 +20,18 @@ export const ListView = <T extends unknown>({
   keyExtractor,
   style,
   scrollEnabled,
+  separatorComponent,
 }: ListViewProps<T>) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  const renderSeparator = () => <View style={styles.separator} />;
+  const renderSeparator = () => {
+    if (separatorComponent) {
+      return separatorComponent;
+    }
+
+    return <View style={styles.separator} />;
+  }
 
   return (
     <View style={styles.container}>

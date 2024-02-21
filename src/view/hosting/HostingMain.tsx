@@ -1,16 +1,20 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import {HostingNavigator} from './navigation/HostingNavigator';
-import {addSharedStackScreens} from '../shared';
-import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
-import {AddSpotScreen} from './stack/AddSpotScreen';
-import {ManageSpotScreen} from './stack/ManageSpotScreen';
+import { HostingNavigator } from './navigation/HostingNavigator';
+import { addSharedStackScreens } from '../shared';
+import { EditParkingSpaceScreen } from './stack/EditParkingSpaceScreen';
+import { AddSpotScreen } from './stack/AddSpotScreen';
+import { ManageSpotScreen } from './stack/ManageSpotScreen';
 
 const Stack = createNativeStackNavigator();
 
 export const HostingMain = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: 'black',
+      }}
+    >
       <Stack.Screen
         name="Navigator"
         component={HostingNavigator}

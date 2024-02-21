@@ -39,7 +39,6 @@ export const ReservationItem = ({ reservation }: ReservationItemProps) => {
               <View>
                 <Title>{building?.name}</Title>
                 <Text>{building?.city}, {building?.state}, {building?.country}</Text>
-                <Text>{space?.name}</Text>
               </View>
               <View>
                 <Text>{toMinimalDateRange(reservation.start_date, reservation.end_date)}</Text>
@@ -60,18 +59,18 @@ const getStyles = (theme: AppTheme) =>
     },
     card: {
       backgroundColor: theme.colors.background,
-      height: 140,
+      height: 100,
       padding: 0,
     },
     image: {
       borderTopLeftRadius: 8,
       borderBottomLeftRadius: 8,
-      width: 140,
-      height: 140,
+      width: 100,
+      height: 100,
     },
     textContainer: {
       flex: 1,
       padding: 8,
-      height: 140,
+      height: 100,
     },
   });

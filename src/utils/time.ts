@@ -19,7 +19,7 @@ export const toTimeString = (date: Date) => {
 };
 
 export const toDateString = (date: Date) => {
-  return date.toISOString().split('T')[0];
+  return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
 export const toDateTimeString = (date: Date) => {
