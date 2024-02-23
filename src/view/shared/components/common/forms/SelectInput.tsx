@@ -1,13 +1,13 @@
-import React, {forwardRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
-import {useController, UseControllerProps} from 'react-hook-form';
-import {AppTheme, useTheme} from '@/view/theme';
+import React, { forwardRef } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { useController, UseControllerProps } from 'react-hook-form';
+import { AppTheme, useTheme } from '@/view/theme';
 
 interface SelectInputProps extends UseControllerProps {
   label: string;
   name: string;
-  items: {label: string; value: string | number}[];
+  items: { label: string; value: string | number }[];
   defaultValue?: string | number;
 }
 
@@ -15,9 +15,9 @@ export const SelectInput = forwardRef<any, SelectInputProps>((props, ref) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  const {name, label, items, rules, ...inputProps} = props;
+  const { name, label, items, rules, ...inputProps } = props;
 
-  const {field, fieldState} = useController({
+  const { field, fieldState } = useController({
     name,
     rules,
     defaultValue: props.defaultValue,

@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, TextLink} from './common';
+import { Text, TextLink } from '../common';
 
 export type ReviewsLabelProps = {
   totalReviews: number;
   onPress?: () => void;
 };
 
-export const ReviewsLabel = ({totalReviews, onPress}: ReviewsLabelProps) => {
+export const ReviewsLabel = ({ totalReviews, onPress }: ReviewsLabelProps) => {
   if (onPress) {
     return (
       <TextLink onPress={onPress}>

@@ -12,7 +12,7 @@ export const Text = ({ children, style, numberOfLines }: TextProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   return (
-    <ReactText style={[styles.text, style]} numberOfLines={numberOfLines ?? 1} ellipsizeMode="tail">
+    <ReactText style={[styles.text, style]} numberOfLines={numberOfLines} ellipsizeMode="tail">
       {children}
     </ReactText>
   );

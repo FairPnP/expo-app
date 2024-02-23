@@ -15,6 +15,8 @@ interface TextInputProps extends RNTextInputProps, UseControllerProps {
   name: string;
   defaultValue?: string;
   bottomSheet?: boolean;
+  numberOfLines?: number;
+  inputStyle?: any;
 }
 
 export const TextInput = forwardRef<RNTextInput, TextInputProps>(
@@ -22,7 +24,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     const theme = useTheme().theme.appTheme;
     const styles = getStyles(theme);
 
-    const { name, label, rules, bottomSheet, ...inputProps } = props;
+    const { name, label, rules, bottomSheet, numberOfLines, inputStyle, ...inputProps } = props;
 
     const { field, fieldState } = useController({ name, rules });
 
@@ -39,22 +41,26 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
           <BottomSheetTextInput
             autoCapitalize="none"
             textAlign="left"
-            style={[styles.input, hasError && styles.errorInput]}
+            style={[styles.input, inputStyle, hasError && styles.errorInput]}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
             ref={field.ref}
             placeholderTextColor={theme.colors.disabled}
+            multiline={numberOfLines && numberOfLines > 1}
+            numberOfLines={numberOfLines ?? 1}
             {...inputProps}
           />
         ) : (
           <RNTextInput
             autoCapitalize="none"
             textAlign="left"
-            style={[styles.input, hasError && styles.errorInput]}
+            style={[styles.input, inputStyle, hasError && styles.errorInput]}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
             ref={field.ref}
             placeholderTextColor={theme.colors.disabled}
+            multiline={numberOfLines && numberOfLines > 1}
+            numberOfLines={numberOfLines ?? 1}
             {...inputProps}
           />
         )}
@@ -78,9 +84,8 @@ const getStyles = (theme: AppTheme) =>
       marginBottom: 8,
     },
     container: {
-      height: 100,
+      minHeight: 100,
       justifyContent: 'center',
-      padding: 8,
       backgroundColor: theme.colors.background,
     },
     input: {

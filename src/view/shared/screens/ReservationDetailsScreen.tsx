@@ -2,10 +2,11 @@ import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTheme, AppTheme } from '@/view/theme';
 import { useAppMode, useBuilding, useReservation, useSpace } from '@/state';
-import { Title, Text, LoadingSpinner, ImageSwiper, HorizontalGroup, VerticalGroup, IconButton, StaticMap, Section, UserProfileLabel } from '../components';
+import { Title, Text, LoadingSpinner, ImageSwiper, HorizontalGroup, VerticalGroup, IconButton, StaticMap, Section, UserProfileLabel, ModalRef } from '../components';
 import { openMap } from '@/utils/maps';
 import { toFullDateString, toTimeString } from '@/utils';
 import { Ionicons } from '@expo/vector-icons';
+import { ReservationReviewModal } from './ReservationReviewModal';
 
 export type ReservationDetailsScreenProps = {
   reservation_id: number;
@@ -21,6 +22,7 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
   const { data: reservation } = useReservation(reservation_id);
   const { data: space } = useSpace(reservation?.space_id);
   const { data: building } = useBuilding(space?.building_id);
+  const reviewModalRef = React.createRef<ModalRef>();
 
   if (!reservation || !space || !building) {
     return <LoadingSpinner />;
@@ -42,6 +44,10 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
     navigation.navigate('ViewSpot', { building, space });
   }
 
+  const onReviewPressed = () => {
+    reviewModalRef.current?.show();
+  };
+
   const onViewReceiptPressed = () => {
     console.log('View Receipt Pressed');
   }
@@ -62,6 +68,7 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView>
+      <ReservationReviewModal ref={reviewModalRef} reservation_id={reservation.id} />
       <View style={[styles.content, { width: width }]}>
         <View style={styles.titleArea}>
           <Title>{building.name}</Title>
@@ -94,6 +101,11 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
               onPress={onDirectionsPressed}
               iconComponent={<Ionicons name="location-outline" size={24} />}
             />}
+          <IconButton
+            text="Give Review"
+            onPress={onReviewPressed}
+            iconComponent={<Ionicons name="star-outline" size={24} />}
+          />
           <IconButton
             text={`Message ${otherUser}`}
             onPress={onChatButtonPressed}

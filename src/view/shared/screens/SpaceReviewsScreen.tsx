@@ -1,25 +1,25 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
-import {useSpaceReviews} from '@/state';
+import { useSpaceReviews } from '@/state';
 import {
   ListView,
   LoadingSpinner,
   Section,
   SpaceReviewItem,
 } from '../components';
-import {Space, SpaceReview} from '@/api';
-import {AppTheme, useTheme} from '@/view/theme';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { Space, SpaceReview } from '@/api';
+import { AppTheme, useTheme } from '@/view/theme';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export type SpaceReviewsScreenProps = {
   space: Space;
 };
 
-export const SpaceReviewsScreen = ({navigation, route}) => {
-  const {space} = route.params as SpaceReviewsScreenProps;
+export const SpaceReviewsScreen = ({ route }) => {
+  const { space } = route.params as SpaceReviewsScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {spaceReviews, isLoading} = useSpaceReviews(space.id);
+  const { spaceReviews, isLoading } = useSpaceReviews(space.id);
 
   if (isLoading) {
     return (
@@ -29,14 +29,18 @@ export const SpaceReviewsScreen = ({navigation, route}) => {
     );
   }
 
-  const renderReview = ({item}: {item: SpaceReview}) => {
-    return <SpaceReviewItem review={item} />;
+  const renderReview = ({ item }: { item: SpaceReview }) => {
+    return (
+      <View style={{ padding: 8, borderBottomColor: theme.colors.border, borderBottomWidth: 1 }}>
+        <SpaceReviewItem review={item} />
+      </View>
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Section title="Reviews">
+        <Section style={{ padding: 8 }} title="Reviews">
           <ListView
             data={spaceReviews}
             renderItem={renderReview}

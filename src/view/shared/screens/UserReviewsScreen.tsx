@@ -30,14 +30,18 @@ export const UserReviewsScreen = ({ route }) => {
   }
 
   const renderReview = ({ item }: { item: UserReview }) => {
-    return <UserReviewItem review={item} />;
+    return (
+      <View style={{ padding: 8, borderBottomColor: theme.colors.border, borderBottomWidth: 1 }}>
+        <UserReviewItem review={item} />
+      </View>
+    );
   };
 
   return (
     <View style={styles.container}>
       <UserProfileLabel userId={userId} style={{ padding: 8 }} />
       <ScrollView>
-        <Section title="Reviews">
+        <Section style={{ padding: 8 }} title="Reviews">
           <ListView
             data={userReviews}
             renderItem={renderReview}

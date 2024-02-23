@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useTheme, AppTheme} from '@/view/theme';
-import {HorizontalGroup, Text, VerticalGroup} from '../common';
-import {Space, SpaceReview} from '@/api';
-import {toMonthYearString} from '@/utils';
-import {ReviewStars} from '../ReviewStars';
-import {UserProfileLabel} from '../users/UserProfileLabel';
+import { View, StyleSheet } from 'react-native';
+import { useTheme, AppTheme } from '@/view/theme';
+import { Text, HorizontalGroup, VerticalGroup } from '../common';
+import { SpaceReview } from '@/api';
+import { toMonthYearString } from '@/utils';
+import { ReviewStarsSelect } from '../reviews';
+import { UserProfileLabel } from '../users';
 
 export type SpaceReviewItemProps = {
   review: SpaceReview;
 };
 
-export const SpaceReviewItem = ({review}: SpaceReviewItemProps) => {
+export const SpaceReviewItem = ({ review }: SpaceReviewItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
@@ -20,9 +20,9 @@ export const SpaceReviewItem = ({review}: SpaceReviewItemProps) => {
       <VerticalGroup>
         <UserProfileLabel userId={review.user_id} />
         <HorizontalGroup
-          style={{marginVertical: 6, justifyContent: 'flex-start'}}>
-          <ReviewStars stars={review.stars} />
-          <Text style={{fontWeight: 'bold'}}>
+          style={{ marginVertical: 6, justifyContent: 'flex-start' }}>
+          <ReviewStarsSelect initialStars={review.stars} editable={false} size={20} />
+          <Text style={{ fontWeight: 'bold' }}>
             {' • '}
             {toMonthYearString(review.last_modified)}
           </Text>
@@ -37,7 +37,6 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       padding: 10,
-      backgroundColor: theme.colors.card,
       borderRadius: 8,
     },
     icon: {

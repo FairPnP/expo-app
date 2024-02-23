@@ -4,8 +4,7 @@ import { Card, HorizontalGroup, ImageDownload, Text, VerticalGroup } from '../co
 import { useTheme, AppTheme } from '@/view/theme';
 import { Building, Space } from '@/api';
 import { useSpaceSummary } from '@/state';
-import { ReviewStars } from '../ReviewStars';
-import { ReviewsLabel } from '../ReviewsLabel';
+import { ReviewStars, ReviewsLabel } from '../reviews';
 
 export type SpaceCardProps = {
   building: Building;

@@ -7,3 +7,4 @@ export * from './SpaceReviewsScreen';
 export * from './UserReviewsScreen';
 export * from './ViewSpotScreen';
 export * from './ReservationDetailsScreen';
+export * from './ReservationReviewModal';
