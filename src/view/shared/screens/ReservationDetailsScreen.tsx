@@ -99,32 +99,32 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
             <IconButton
               text="Get Directions"
               onPress={onDirectionsPressed}
-              iconComponent={<Ionicons name="location-outline" size={24} />}
+              iconComponent={<Ionicons name="location-outline" size={24} color={theme.colors.text} />}
             />}
           <IconButton
             text="Give Review"
             onPress={onReviewPressed}
-            iconComponent={<Ionicons name="star-outline" size={24} />}
+            iconComponent={<Ionicons name="star-outline" size={24} color={theme.colors.text} />}
           />
           <IconButton
             text={`Message ${otherUser}`}
             onPress={onChatButtonPressed}
-            iconComponent={<Ionicons name="chatbox-outline" size={24} />}
+            iconComponent={<Ionicons name="chatbox-outline" size={24} color={theme.colors.text} />}
           />
           <IconButton
             text="View Listing"
             onPress={onViewListingPressed}
-            iconComponent={<Ionicons name="eye-outline" size={24} />}
+            iconComponent={<Ionicons name="eye-outline" size={24} color={theme.colors.text} />}
           />
           <IconButton
             text="View Receipt"
             onPress={onViewReceiptPressed}
-            iconComponent={<Ionicons name="receipt-outline" size={24} />}
+            iconComponent={<Ionicons name="receipt-outline" size={24} color={theme.colors.text} />}
           />
           <IconButton
             text="Get Help"
             onPress={onGetHelpPressed}
-            iconComponent={<Ionicons name="help-circle-outline" size={24} />}
+            iconComponent={<Ionicons name="help-circle-outline" size={24} color={theme.colors.text} />}
           />
         </View>
         <View style={styles.horizontalSeparator} />
@@ -152,12 +152,12 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
             <IconButton
               text="Change Reservation"
               onPress={onChangeReservationPressed}
-              iconComponent={<Ionicons name="calendar-outline" size={24} />}
+              iconComponent={<Ionicons name="calendar-outline" size={24} color={theme.colors.text} />}
             />}
           <IconButton
             text="Cancel Reservation"
             onPress={onCancelReservationPressed}
-            iconComponent={<Ionicons name="remove-circle-outline" size={24} />}
+            iconComponent={<Ionicons name="remove-circle-outline" size={24} color={theme.colors.text} />}
           />
         </Section>
       </View>

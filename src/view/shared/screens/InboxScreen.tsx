@@ -65,6 +65,7 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      padding: 8,
       backgroundColor: theme.colors.background,
     },
     spacer: {

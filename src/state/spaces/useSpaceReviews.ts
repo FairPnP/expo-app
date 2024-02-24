@@ -1,8 +1,8 @@
-import {useInfiniteQuery} from '@tanstack/react-query';
-import {SpaceReviewAPI} from '@/api';
-import {REVIEWS_QUERY_KEY, SPACE_QUERY_KEY} from './consts';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { SpaceReviewAPI } from '@/api';
+import { REVIEWS_QUERY_KEY, SPACE_QUERY_KEY } from './consts';
 
-export const useSpaceReviews = (space_id, limit = 10) => {
+export const useSpaceReviews = (space_id: number, limit = 10) => {
   const {
     data,
     isLoading,
@@ -14,8 +14,8 @@ export const useSpaceReviews = (space_id, limit = 10) => {
     isFetchingNextPage,
     isFetchingPreviousPage,
   } = useInfiniteQuery({
-    queryKey: [SPACE_QUERY_KEY, REVIEWS_QUERY_KEY],
-    queryFn: async ({pageParam = undefined}) => {
+    queryKey: [SPACE_QUERY_KEY, space_id, REVIEWS_QUERY_KEY],
+    queryFn: async ({ pageParam = undefined }) => {
       const response = await SpaceReviewAPI.list({
         space_id,
         offset_id: pageParam,

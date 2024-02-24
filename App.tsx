@@ -13,7 +13,7 @@ import {
 import { Amplify } from 'aws-amplify';
 import { MainScreen } from '@/view/MainScreen';
 import { ThemeProvider, useTheme } from '@/view/theme';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import * as Sentry from 'sentry-expo';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -26,6 +26,8 @@ import { AppModeProvider } from '@/state';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { initNotifHandler, registerForPushNotificationsAsync } from '@/view/Notifications';
+import * as Notifications from 'expo-notifications';
 
 // sentry
 Sentry.init({
@@ -84,9 +86,13 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
+// notifications
+initNotifHandler();
+
 // app
 function App() {
   const theme = useTheme().theme;
+  const navigationRef = createNavigationContainerRef();
 
   const linking = {
     prefixes: [prefix],
@@ -105,6 +111,29 @@ function App() {
     return () => subscription.remove();
   }, []);
 
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+
+    const notifListener = Notifications
+      .addNotificationReceivedListener(notif => console.log('notification', notif))
+
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('notif response', response.notification.request.content);
+      let data = response.notification.request.content.data;
+      console.log('screen', data?.screen_name, 'navigationRef', navigationRef.isReady(), navigationRef.current);
+      if (data?.screen_name && navigationRef.isReady()) {
+        // @ts-ignore
+        navigationRef.current?.navigate(data.screen_name, data.screen_params);
+      }
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notifListener)
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
+
+
   return (
     <SafeAreaProvider>
       <ThemeProvider>
@@ -122,6 +151,7 @@ function App() {
                       merchantIdentifier="merchant.com.fairpnp.fairpnp">
                       <NavigationContainer
                         theme={theme.appTheme}
+                        ref={navigationRef}
                         linking={linking}>
                         <AppModeProvider>
                           <MainScreen />

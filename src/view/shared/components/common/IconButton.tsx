@@ -18,7 +18,7 @@ export const IconButton = ({ icon, text, onPress, style, iconComponent }: IconBu
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
       <View style={styles.icon}>
         {iconComponent ? iconComponent :
-          <FontAwesome5 name={icon} size={24} color="#6e6e6e" />
+          <FontAwesome5 name={icon} size={24} color={theme.colors.text} />
         }
       </View>
       <Text style={styles.buttonText}>{text}</Text>

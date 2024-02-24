@@ -1,13 +1,13 @@
-import {ReservationAPI} from '@/api';
-import {useQuery} from '@tanstack/react-query';
-import {CONVERSATIONS_QUERY_KEY} from './consts';
-import {useAppMode} from '../useAppMode';
+import { ReservationAPI } from '@/api';
+import { useQuery } from '@tanstack/react-query';
+import { MESSAGES_QUERY_KEY } from './consts';
+import { useAppMode } from '../useAppMode';
 
 export const useConversations = (offset_id?: number) => {
-  const {appMode} = useAppMode();
+  const { appMode } = useAppMode();
 
   const query = useQuery({
-    queryKey: [CONVERSATIONS_QUERY_KEY, appMode, offset_id],
+    queryKey: [MESSAGES_QUERY_KEY, appMode, { page: offset_id }],
     queryFn: async () => {
       const response = await ReservationAPI.listConversations(
         appMode === 'hosting',
