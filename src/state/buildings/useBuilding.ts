@@ -1,6 +1,6 @@
-import {useQuery} from '@tanstack/react-query';
-import {BUILDINGS_QUERY_KEY} from './consts';
-import {BuildingAPI} from '@/api';
+import { useQuery } from '@tanstack/react-query';
+import { BUILDINGS_QUERY_KEY } from './consts';
+import { BuildingAPI } from '@/api';
 
 export const useBuilding = (id: number) => {
   return useQuery({

@@ -4,7 +4,6 @@ import { Button, LocationCard, LocationSearch, Text } from '@/view/shared';
 import { EditParkingSpaceScreenProps } from './EditParkingSpaceScreen';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme, AppTheme } from '@/view/theme';
-import { CreateBuildingRequest, toBuildingData } from '@/api';
 
 export const AddSpotScreen = () => {
   const navigation = useNavigation<any>();
@@ -18,10 +17,8 @@ export const AddSpotScreen = () => {
   };
 
   const handleAddToMySpots = useCallback(() => {
-    const buildingReq: CreateBuildingRequest = toBuildingData(loc.data, loc.details);
-
     const props: EditParkingSpaceScreenProps = {
-      building: buildingReq,
+      place_id: loc.details.place_id,
     };
 
     navigation.navigate('EditParkingSpace', props);

@@ -2,15 +2,13 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { Button, SelectInput, Text, TextInput, ImageUpload, LoadingOverlay } from '@/view/shared';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Building, BuildingAPI, CreateBuildingRequest, Space } from '@/api';
 import { useTheme, AppTheme } from '@/view/theme';
-import { useAuth, useCreateSpace, useUpdateSpaceImages } from '@/state';
+import { useAuth, useGooglePlace, useCreateSpace, useUpdateSpaceImages } from '@/state';
 
 export type EditParkingSpaceScreenProps = {
-  building: Building | CreateBuildingRequest;
-  // no space for new parking space
-  // provided space means editing existing space
-  space?: Space;
+  place_id?: string;
+  // maybe add to reuse for edit space
+  //space?: Space;
 };
 
 type FormValues = {
@@ -23,17 +21,12 @@ type FormValues = {
   parking_instructions: string;
 };
 
-function isBuilding(
-  building: Building | CreateBuildingRequest,
-): building is Building {
-  return (building as Building).id !== undefined;
-}
-
 export const EditParkingSpaceScreen = ({ navigation, route }) => {
-  const { building } = route.params as EditParkingSpaceScreenProps;
+  const { place_id } = route.params as EditParkingSpaceScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const { userId } = useAuth();
+  const { data: google_place } = useGooglePlace(place_id);
   const { mutateAsync: createSpace, invalidateMySpaces } = useCreateSpace({ skipInvalidate: true });
   const { mutateAsync: uploadSpaceImages } = useUpdateSpaceImages();
   const [isPending, setIsPending] = useState(false);
@@ -48,28 +41,12 @@ export const EditParkingSpaceScreen = ({ navigation, route }) => {
 
   const formMethods = useForm();
 
-  const getBuilding = useCallback(async () => {
-    if (isBuilding(building)) {
-      return building;
-    } else {
-      const res = await BuildingAPI.list({ place_id: building.place_id });
-      if (res?.buildings.length > 0) {
-        return res.buildings[0];
-      } else {
-        return BuildingAPI.create(building).then(
-          create_res => create_res.building,
-        );
-      }
-    }
-  }, [building]);
-
   const handleCreateSpace = useCallback(
     async (data: FormValues) => {
       setIsPending(true);
-      const building = await getBuilding();
       const space = await createSpace({
         name: data.space_name,
-        building_id: building.id,
+        place_id: place_id,
         description: data.description,
         max_vehicle_size: data.max_vehicle_size,
         coverage: data.coverage,
@@ -84,7 +61,7 @@ export const EditParkingSpaceScreen = ({ navigation, route }) => {
       invalidateMySpaces();
       setIsPending(false);
     },
-    [getBuilding, selectedImages, userId, createSpace],
+    [place_id, selectedImages, userId, createSpace],
   );
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
@@ -96,7 +73,7 @@ export const EditParkingSpaceScreen = ({ navigation, route }) => {
   return (
     <ScrollView style={styles.container}>
       <LoadingOverlay visible={isPending} />
-      <Text>{building.name}</Text>
+      <Text>{google_place?.name}</Text>
       <View style={styles.separator} />
 
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>

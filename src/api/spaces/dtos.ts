@@ -19,7 +19,7 @@ export interface Space {
 // Create DTOs
 
 export interface CreateSpaceRequest {
-  building_id: number;
+  place_id: string;
   name: string;
   description?: string;
   max_vehicle_size: string;

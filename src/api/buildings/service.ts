@@ -1,10 +1,6 @@
-import {ErrorHandler, api} from '../api';
+import { ErrorHandler, api } from '../api';
 import {
-  CreateBuildingRequest,
-  CreateBuildingResponse,
   ReadBuildingResponse,
-  UpdateBuildingRequest,
-  UpdateBuildingResponse,
   ListBuildingsParams,
   ListBuildingsResponse,
 } from './dtos';
@@ -16,22 +12,6 @@ export const toBuilding = (buildingResponse: any) => ({
   latitude: Number(buildingResponse.latitude),
   longitude: Number(buildingResponse.longitude),
 });
-
-const createBuilding = async (
-  data: CreateBuildingRequest,
-  onError?: ErrorHandler,
-): Promise<CreateBuildingResponse> => {
-  const res = await api<CreateBuildingResponse>({
-    endpoint: `${basePath}`,
-    method: 'POST',
-    data,
-    onError,
-  });
-
-  return {
-    building: toBuilding(res.building),
-  };
-};
 
 const readBuilding = async (
   id: number,
@@ -46,34 +26,6 @@ const readBuilding = async (
   return {
     building: toBuilding(res.building),
   };
-};
-
-const updateBuilding = async (
-  id: number,
-  data: UpdateBuildingRequest,
-  onError?: ErrorHandler,
-): Promise<UpdateBuildingResponse> => {
-  const res = await api<UpdateBuildingResponse>({
-    endpoint: `${basePath}/${id}`,
-    method: 'PUT',
-    data,
-    onError,
-  });
-
-  return {
-    building: toBuilding(res.building),
-  };
-};
-
-const deleteBuilding = async (
-  id: number,
-  onError?: ErrorHandler,
-): Promise<void> => {
-  await api({
-    endpoint: `${basePath}/${id}`,
-    method: 'DELETE',
-    onError,
-  });
 };
 
 const listBuildings = async (
@@ -96,9 +48,6 @@ const listBuildings = async (
 };
 
 export const BuildingAPI = {
-  create: createBuilding,
   get: readBuilding,
-  update: updateBuilding,
-  delete: deleteBuilding,
   list: listBuildings,
 };

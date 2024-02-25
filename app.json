@@ -12,77 +12,86 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "bundleIdentifier": "com.fairpnp.fairpnp",
-      "entitlements": {
-        "com.apple.developer.in-app-payments": ["merchant.com.fairpnp.fairpnp"]
-      },
-      "supportsTablet": true,
-      "config": {
-        "googleMapsApiKey": "AIzaSyCLyaEZP8HDbjZcqJOz9EXeiRXMJeGVDwU"
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE"
-      ],
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
-        }
-      },
-      "package": "com.fairpnp.fairpnp",
-      "googleServicesFile": "./google-services.json"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "merchant.com.fairpnp.fairpnp",
-          "enableGooglePay": true
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff"
-        }
-      ],
-      ["expo-location"],
-      [
-        "expo-image-picker",
-        {
-          "microphonePermission": false
-        }
-      ],
-      "sentry-expo"
+    "assetBundlePatterns": [
+      "**/*"
     ],
-    "extra": {
-      "eas": {
-        "projectId": "1a42a9cc-a4cb-426b-8ad0-ad11242d9e70"
-      }
-    },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "fair-park-and-pay-ltd",
-            "project": "fairpnp"
-          }
-        }
+    
+  
+  "ios": {
+    "bundleIdentifier": "com.fairpnp.fairpnp",
+    "entitlements": {
+      "com.apple.developer.in-app-payments": [
+        "merchant.com.fairpnp.fairpnp"
       ]
-    }
+    
+  },
+  "supportsTablet": true,
+  "config": {
+    "googleMapsApiKey": "AIzaSyCLyaEZP8HDbjZcqJOz9EXeiRXMJeGVDwU"
   }
+},
+"android": {
+  "adaptiveIcon": {
+    "foregroundImage": "./assets/adaptive-icon.png",
+    "backgroundColor": "#ffffff"
+  },
+  "permissions": [
+    "android.permission.ACCESS_COARSE_LOCATION",
+    "android.permission.ACCESS_FINE_LOCATION",
+    "android.permission.FOREGROUND_SERVICE"
+  ],
+  "config": {
+    "googleMaps": {
+      "apiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
+    }
+  },
+  "package": "com.fairpnp.fairpnp",
+  "googleServicesFile": "./google-services.json"
+},
+"web": {
+  "favicon": "./assets/favicon.png"
+},
+"plugins": [
+  [
+    "@stripe/stripe-react-native",
+    {
+      "merchantIdentifier": "merchant.com.fairpnp.fairpnp",
+      "enableGooglePay": true
+    }
+  ],
+  [
+    "expo-notifications",
+    {
+      "icon": "./assets/icon.png",
+      "color": "#ffffff"
+    }
+  ],
+  [
+    "expo-location"
+  ],[
+    "expo-image-picker",
+    {
+      "microphonePermission": false
+    }
+  ],
+  "sentry-expo"
+],
+"extra": {
+  "eas": {
+    "projectId": "1a42a9cc-a4cb-426b-8ad0-ad11242d9e70"
+  },
+  "googleWebApiKey": "AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8"
+},
+"hooks": {
+  "postPublish": [
+    {
+      "file": "sentry-expo/upload-sourcemaps",
+      "config": {
+        "organization": "fair-park-and-pay-ltd",
+        "project": "fairpnp"
+      }
+    }
+  ]
+}
+}
 }

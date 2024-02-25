@@ -1,12 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   AutocompleteRequestType,
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
-import {TouchableOpacity, StyleSheet, View} from 'react-native';
-import {useTheme, AppTheme} from '@/view/theme';
-import {Text} from '../components/common';
-import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { useTheme, AppTheme } from '@/view/theme';
+import { Text } from '../components/common';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 
 export type LocationSearchProps = {
   onLocationSelected: (data: any, details: any) => void;
@@ -40,7 +41,7 @@ export const LocationSearch = ({
           placeholderTextColor: theme.colors.text,
         }}
         query={{
-          key: 'AIzaSyDMP8gXyXheqkMq8KdjZiIuM0YxADie1Z8',
+          key: Constants.expoConfig.extra.googleWebApiKey,
           language: 'en',
           components: 'country:can',
           types: locationTypes,
