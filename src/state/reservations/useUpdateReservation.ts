@@ -11,7 +11,7 @@ export const useUpdateReservation = () => {
       reservationId,
       updateData,
     }: {
-      reservationId: number;
+      reservationId: string;
       updateData: UpdateReservationRequest;
     }) => {
       const response = await ReservationAPI.update(reservationId, updateData);

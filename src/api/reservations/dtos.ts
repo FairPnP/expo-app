@@ -2,8 +2,8 @@
 // Entity
 
 export interface Reservation {
-  id: number;
-  space_id: number;
+  id: string;
+  space_id: string;
   start_date: Date;
   end_date: Date;
 }
@@ -12,7 +12,7 @@ export interface Reservation {
 // Create DTOs
 
 export interface CreateReservationRequest {
-  space_id: number;
+  space_id: string;
   start_date: string;
   end_date: string;
 }
@@ -65,16 +65,16 @@ export interface UpdateReservationResponse {
 // Chat Entity
 
 export interface ChatMessage {
-  id: number;
+  id: string;
   sender_id: string;
   message: string;
   created_at: Date;
 }
 
 export interface ChatSummary {
-  reservation_id: number;
+  reservation_id: string;
   user_id: string;
-  message_id: number;
+  message_id: string;
   message: string;
   created_at: Date;
 }
@@ -83,7 +83,7 @@ export interface ChatSummary {
 // Chat DTOs
 
 export interface CreateChatMessageRequest {
-  reservation_id: number;
+  reservation_id: string;
   message: string;
 }
 
@@ -99,7 +99,7 @@ export interface ListChatMessagesParams {
 
 export interface ListChatMessagesResponse {
   messages: ChatMessage[];
-  reservation_id: number;
+  reservation_id: string;
   next_offset_id?: number;
   limit: number;
 }

@@ -14,7 +14,7 @@ export const toBuilding = (buildingResponse: any) => ({
 });
 
 const readBuilding = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<ReadBuildingResponse> => {
   const res = await api<ReadBuildingResponse>({

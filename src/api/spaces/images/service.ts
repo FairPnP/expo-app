@@ -1,10 +1,10 @@
-import {ErrorHandler, api} from '../../api';
-import {CreatePresignedUrlsResponse} from './dtos';
+import { ErrorHandler, api } from '../../api';
+import { CreatePresignedUrlsResponse } from './dtos';
 
 const basePath = '/space_images/v1';
 
 const createPresignedUrls = async (
-  space_id: number,
+  space_id: string,
   num_images: number,
   onError?: ErrorHandler,
 ): Promise<CreatePresignedUrlsResponse> => {
@@ -20,7 +20,7 @@ const createPresignedUrls = async (
 };
 
 export const postImageUpload = async (
-  space_image_ids: number[],
+  space_image_ids: string[],
   onError?: ErrorHandler,
 ): Promise<void> => {
   return await api({

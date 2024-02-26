@@ -4,7 +4,7 @@ import { MESSAGES_QUERY_KEY } from './consts';
 import { useAppMode } from '../useAppMode';
 
 export const useMessages = (
-  reservation_id: number,
+  reservation_id: string,
   params: ListChatMessagesParams,
 ) => {
   const { appMode } = useAppMode();

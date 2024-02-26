@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ReservationReviewModal } from './ReservationReviewModal';
 
 export type ReservationDetailsScreenProps = {
-  reservation_id: number;
+  reservation_id: string;
 };
 
 export const ReservationDetailsScreen = ({ navigation, route }) => {

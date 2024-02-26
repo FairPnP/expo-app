@@ -15,7 +15,7 @@ const basePath = '/space_summaries/v1';
 const toSpaceSummary = (res: any): SpaceSummary => res as SpaceSummary;
 
 const getSpaceSummary = async (
-  space_id: number,
+  space_id: string,
   onError?: ErrorHandler,
 ): Promise<GetSpaceSummaryResponse> => {
   const res = await api<GetSpaceSummaryResponse>({

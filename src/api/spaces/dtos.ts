@@ -2,9 +2,9 @@
 // Entity
 
 export interface Space {
-  id: number;
+  id: string;
   user_id: string;
-  building_id: number;
+  building_id: string;
   name: string;
   description?: string;
   max_vehicle_size: string;

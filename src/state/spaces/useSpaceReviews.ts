@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { SpaceReviewAPI } from '@/api';
 import { REVIEWS_QUERY_KEY, SPACE_QUERY_KEY } from './consts';
 
-export const useSpaceReviews = (space_id: number, limit = 10) => {
+export const useSpaceReviews = (space_id: string, limit = 10) => {
   const {
     data,
     isLoading,

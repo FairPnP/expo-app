@@ -11,7 +11,7 @@ export const useUpdateAvailability = () => {
       availabilityId,
       updateData,
     }: {
-      availabilityId: number;
+      availabilityId: string;
       updateData: UpdateAvailabilityRequest;
     }) => {
       const response = await AvailabilityAPI.update(availabilityId, updateData);

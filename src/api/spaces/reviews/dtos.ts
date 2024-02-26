@@ -2,9 +2,9 @@
 // SpaceReview Entity
 
 export interface SpaceReview {
-  id: number;
+  id: string;
   user_id: string;
-  space_id: number;
+  space_id: string;
   message: string;
   stars: number;
   created_at: Date;
@@ -15,7 +15,7 @@ export interface SpaceReview {
 // SpaceReview DTOs
 
 export interface CreateSpaceReviewRequest {
-  space_id: number;
+  space_id: string;
   message: string;
   stars: number;
 }
@@ -25,7 +25,7 @@ export interface CreateSpaceReviewResponse {
 }
 
 export interface ListSpaceReviewsParams {
-  space_id: number;
+  space_id: string;
   offset_id?: number;
   limit?: number;
 }

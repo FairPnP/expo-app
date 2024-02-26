@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BUILDINGS_QUERY_KEY } from './consts';
 import { BuildingAPI } from '@/api';
 
-export const useBuilding = (id: number) => {
+export const useBuilding = (id: string) => {
   return useQuery({
     queryKey: [BUILDINGS_QUERY_KEY, id],
     queryFn: async () => {

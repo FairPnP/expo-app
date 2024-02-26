@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MESSAGES_QUERY_KEY } from './consts';
 import { useAppMode } from '../useAppMode';
 
-export const useCreateMessage = (reservation_id: number) => {
+export const useCreateMessage = (reservation_id: string) => {
   const queryClient = useQueryClient();
   const { appMode } = useAppMode();
 

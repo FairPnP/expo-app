@@ -1,7 +1,7 @@
-import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {Building, BuildingAPI} from '@/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Building, BuildingAPI } from '@/api';
 
-export const useBuildings = (buildingIds: number[]) => {
+export const useBuildings = (buildingIds: string[]) => {
   const queryClient = useQueryClient();
 
   buildingIds = buildingIds?.filter(id => id !== undefined);
@@ -22,7 +22,7 @@ export const useBuildings = (buildingIds: number[]) => {
       }
 
       // Fetch only the missing buildings
-      const fetchedBuildings = (await BuildingAPI.list({ids: idsToFetch}))
+      const fetchedBuildings = (await BuildingAPI.list({ ids: idsToFetch }))
         .buildings;
 
       // Update the cache with the newly fetched buildings

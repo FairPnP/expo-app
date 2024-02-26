@@ -88,7 +88,7 @@ export const AvailabilityMap = ({
   const onMarkerPress = useCallback(
     (e: MarkerPressEvent) => {
       e.stopPropagation();
-      const markerId = +e.nativeEvent.id;
+      const markerId = e.nativeEvent.id;
       const markerData = markers.find(m => m.availability?.id === markerId);
       setSelectedMarker(markerData);
       onMarkerSelected?.(markerData);

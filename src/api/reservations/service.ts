@@ -51,7 +51,7 @@ const createReservation = async (
 };
 
 const readReservation = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<ReadReservationResponse> => {
   const res = await api<CreateReservationResponse>({
@@ -66,7 +66,7 @@ const readReservation = async (
 };
 
 const updateReservation = async (
-  id: number,
+  id: string,
   data: UpdateReservationRequest,
   onError?: ErrorHandler,
 ): Promise<UpdateReservationResponse> => {
@@ -83,7 +83,7 @@ const updateReservation = async (
 };
 
 const deleteReservation = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<void> => {
   await api({
@@ -156,7 +156,7 @@ const createMessage = async (
 };
 
 const listMessages = async (
-  reservation_id: number,
+  reservation_id: string,
   params: ListChatMessagesParams,
   onError?: ErrorHandler,
 ): Promise<ListChatMessagesResponse> => {

@@ -6,7 +6,7 @@ import { useCreateSpaceReview, useReservation } from '@/state';
 import { CreateSpaceReviewRequest } from '@/api';
 
 export interface ReservationReviewModalProps {
-  reservation_id: number;
+  reservation_id: string;
 };
 
 type FormValues = {

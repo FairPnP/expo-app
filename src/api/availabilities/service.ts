@@ -40,7 +40,7 @@ const createAvailability = async (
 };
 
 const readAvailability = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<ReadAvailabilityResponse> => {
   const res = await api<ReadAvailabilityResponse>({
@@ -55,7 +55,7 @@ const readAvailability = async (
 };
 
 const updateAvailability = async (
-  id: number,
+  id: string,
   data: UpdateAvailabilityRequest,
   onError?: ErrorHandler,
 ): Promise<UpdateAvailabilityResponse> => {
@@ -72,7 +72,7 @@ const updateAvailability = async (
 };
 
 const deleteAvailability = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<void> => {
   await api({

@@ -12,11 +12,11 @@ import {
 import {LoadingSpinner} from '../components';
 
 export type ReservationChatScreenProps = {
-  reservation_id: number;
+  reservation_id: string;
 };
 
 type MessageData = {
-  _id: number;
+  _id: string;
   text: string;
   createdAt: Date;
   user: {

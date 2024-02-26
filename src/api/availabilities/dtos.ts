@@ -4,8 +4,8 @@
 import {Building} from '../buildings';
 
 export interface Availability {
-  id: number;
-  space_id: number;
+  id: string;
+  space_id: string;
   start_date: Date;
   end_date: Date;
   hourly_rate: number;
@@ -15,7 +15,7 @@ export interface Availability {
 // Create DTOs
 
 export interface CreateAvailabilityRequest {
-  space_id: number;
+  space_id: string;
   start_date: string;
   end_date: string;
   hourly_rate: number;
@@ -74,8 +74,8 @@ export interface SearchAvailabilityRequest {
 }
 
 export interface SpaceResult {
-  id: number;
-  building_id: number;
+  id: string;
+  building_id: string;
 }
 
 export interface SearchAvailabilityResponse {

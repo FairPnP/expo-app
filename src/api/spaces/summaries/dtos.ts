@@ -3,7 +3,7 @@
 
 export interface SpaceSummary {
   host_user_id: string;
-  space_id: number;
+  space_id: string;
   total_reviews: number;
   average_stars: number;
 }

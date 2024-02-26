@@ -27,7 +27,7 @@ const createSpace = async (
 };
 
 const readSpace = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<ReadSpaceResponse> => {
   let res = await api({
@@ -40,7 +40,7 @@ const readSpace = async (
 };
 
 const updateSpace = async (
-  id: number,
+  id: string,
   data: UpdateSpaceRequest,
   onError?: ErrorHandler,
 ): Promise<UpdateSpaceResponse> => {
@@ -55,7 +55,7 @@ const updateSpace = async (
 };
 
 const deleteSpace = async (
-  id: number,
+  id: string,
   onError?: ErrorHandler,
 ): Promise<void> => {
   await api({

@@ -11,7 +11,7 @@ export const useUpdateSpaceImages = () => {
       spaceId,
       imageUris,
     }: {
-      spaceId: number;
+      spaceId: string;
       imageUris: string[];
     }) => {
       // create presigned urls

@@ -2,7 +2,7 @@ import {useQuery} from '@tanstack/react-query';
 import {SPACE_QUERY_KEY} from './consts';
 import {SpaceAPI} from '@/api';
 
-export const useSpace = (id: number) => {
+export const useSpace = (id: string) => {
   return useQuery({
     queryKey: [SPACE_QUERY_KEY, id],
     queryFn: async () => {

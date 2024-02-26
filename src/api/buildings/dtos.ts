@@ -4,7 +4,7 @@
 import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-autocomplete";
 
 export interface Building {
-  id: number;
+  id: string;
   name: string;
   place_id: string;
   latitude: number;
@@ -28,7 +28,7 @@ export interface ListBuildingsParams {
   offset_id?: number;
   limit?: number;
   place_id?: string;
-  ids?: number[];
+  ids?: string[];
 }
 
 export interface ListBuildingsResponse {

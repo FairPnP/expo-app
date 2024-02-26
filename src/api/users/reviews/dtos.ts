@@ -2,7 +2,7 @@
 // UserReview Entity
 
 export interface UserReview {
-  id: number;
+  id: string;
   from_user_id: string;
   to_user_id: string;
   message: string;
@@ -14,7 +14,7 @@ export interface UserReview {
 // UserReview DTOs
 
 export interface CreateUserReviewRequest {
-  user_id: number;
+  user_id: string;
   message: string;
   stars: number;
 }

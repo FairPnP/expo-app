@@ -2,8 +2,8 @@
 // Presigned URL Entity
 
 export interface PresignedUrl {
-  space_image_id: number;
-  slot_id: number;
+  space_image_id: string;
+  slot_id: string;
   presigned_url: string;
 }
 
