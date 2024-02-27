@@ -39,6 +39,7 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      padding: 16,
       backgroundColor: theme.colors.background,
     },
     topArea: {

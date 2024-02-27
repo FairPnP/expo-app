@@ -18,6 +18,7 @@ import {
 } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useUpdates } from '@/view/useUpdates';
 
 export const ProfileScreen = ({ navigation }) => {
   const { tokens } = useAuth();
@@ -32,6 +33,7 @@ export const ProfileScreen = ({ navigation }) => {
   const styles = getStyles(theme.appTheme);
   const { appMode, setAppMode } = useAppMode();
   const { data: stripeAccount } = useMerchantAccount();
+  const { checkAndApplyUpdates } = useUpdates();
 
   const stripeAccountPressed = async () => {
     await StripeAPI.showDashboard();
@@ -114,6 +116,7 @@ export const ProfileScreen = ({ navigation }) => {
         />
       )}
 
+      <IconButton icon="sync" text="Check for Updates" onPress={() => checkAndApplyUpdates(true)} />
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
       <EditUserProfileBottomSheet ref={editModalRef} />
     </SafeAreaView>
