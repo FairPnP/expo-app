@@ -1,14 +1,17 @@
-import {View, StyleSheet} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import {useAppMode} from '@/state';
-import {LoadingSpinner, Text} from './shared';
+import { LoadingSpinner, Text } from './shared';
 
-export const LoadingScreen = () => {
-  const {appMode} = useAppMode();
+export type LoadingScreenProps = {
+  message?: string;
+};
 
+export const LoadingScreen = ({ message }: LoadingScreenProps) => {
   return (
     <View style={styles.container}>
-      <Text>Loading {appMode}...</Text>
+      <Text>
+        {message ? message : 'Loading'}
+      </Text>
       <LoadingSpinner />
     </View>
   );
