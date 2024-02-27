@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useAppMode } from '@/state';
 import { LoadingScreen } from './LoadingScreen';
-import { View } from 'react-native';
+import { AppState, AppStateStatus, View } from 'react-native';
 import { HostingMain } from './hosting/HostingMain';
 import { ParkingMain } from './parking/ParkingMain';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,15 +21,18 @@ import { useUpdates } from './useUpdates';
 
 export const MainScreen = () => {
   const { appMode, isLoading } = useAppMode();
-  const [lastUpdateCheck, setLastUpdateCheck] = React.useState<number | null>(null);
   const { isLoading: updateLoading, checkAndApplyUpdates } = useUpdates();
 
-  useFocusEffect(() => {
-    if (lastUpdateCheck === null || Date.now() - lastUpdateCheck > 1000 * 60 * 60) {
-      setLastUpdateCheck(Date.now());
-      checkAndApplyUpdates();
-    }
-  });
+  // Check for updates when the app is focused
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (status: AppStateStatus) => {
+      if (status === 'active') {
+        checkAndApplyUpdates();
+      }
+    });
+    return () => subscription.remove();
+  }, []);
+
 
   if (isLoading || updateLoading) {
     const message = updateLoading ? 'Updating' : `Loading ${appMode}`;

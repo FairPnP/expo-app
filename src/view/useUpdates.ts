@@ -5,6 +5,13 @@ export const useUpdates = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const checkAndApplyUpdates = useCallback(async (prompt?: boolean) => {
+    if (__DEV__) {
+      if (prompt) {
+        alert('Cannot check for updates in development mode');
+      }
+      return;
+    }
+
     try {
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
