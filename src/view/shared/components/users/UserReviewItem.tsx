@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTheme, AppTheme } from '@/view/theme';
 import { HorizontalGroup, Text, VerticalGroup } from '../common';
 import { UserReview } from '@/api';
 import { toMonthYearString } from '@/utils';
@@ -12,13 +11,12 @@ export type UserReviewItemProps = {
 };
 
 export const UserReviewItem = ({ review }: UserReviewItemProps) => {
-  const theme = useTheme().theme.appTheme;
-  const styles = getStyles(theme);
+  const styles = getStyles();
 
   return (
     <View style={styles.container}>
       <VerticalGroup>
-        <UserProfileLabel userId={review.from_user_id} />
+        <UserProfileLabel linkToProfile userId={review.from_user_id} />
         <HorizontalGroup
           style={{ marginVertical: 6, justifyContent: 'flex-start' }}>
           <ReviewStarsSelect initialStars={review.stars} editable={false} size={20} />
@@ -33,7 +31,7 @@ export const UserReviewItem = ({ review }: UserReviewItemProps) => {
   );
 };
 
-const getStyles = (theme: AppTheme) =>
+const getStyles = () =>
   StyleSheet.create({
     container: {
       padding: 10,

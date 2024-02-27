@@ -156,7 +156,7 @@ export const ViewSpotScreen = ({ navigation, route }) => {
             </HorizontalGroup>
           </Section>
           <View style={styles.separator} />
-          <UserProfileLabel userId={space.user_id} namePrefix="Hosted by " />
+          <UserProfileLabel linkToProfile userId={space.user_id} namePrefix="Hosted by " />
           <View style={styles.separator} />
           <Section title="Location">
             <StaticMap

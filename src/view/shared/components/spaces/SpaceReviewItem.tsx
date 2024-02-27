@@ -18,7 +18,7 @@ export const SpaceReviewItem = ({ review }: SpaceReviewItemProps) => {
   return (
     <View style={styles.container}>
       <VerticalGroup>
-        <UserProfileLabel userId={review.user_id} />
+        <UserProfileLabel linkToProfile userId={review.user_id} />
         <HorizontalGroup
           style={{ marginVertical: 6, justifyContent: 'flex-start' }}>
           <ReviewStarsSelect initialStars={review.stars} editable={false} size={20} />

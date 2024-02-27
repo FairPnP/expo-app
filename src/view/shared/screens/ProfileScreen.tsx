@@ -40,6 +40,7 @@ export const ProfileScreen = ({ navigation }) => {
   };
 
   const onSignOut = () => {
+    queryClient.removeQueries();
     queryClient.clear();
     signOut();
   };
@@ -61,7 +62,7 @@ export const ProfileScreen = ({ navigation }) => {
         titleComponent={() => (
           <TextLink onPress={editProfilePressed}>Edit Profile</TextLink>
         )}>
-        <UserProfileLabel userId={userId} />
+        <UserProfileLabel linkToProfile userId={userId} />
         <HorizontalGroup
           style={{
             marginVertical: 6,

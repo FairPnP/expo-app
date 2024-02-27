@@ -1,10 +1,12 @@
-import { Modal, StatusBar, StyleSheet, View } from 'react-native'
+import { KeyboardAvoidingView, Modal, StyleSheet, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { AppTheme, useTheme } from '@/view/theme'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Title } from './common';
 
 export interface ModalProps {
+  title?: string;
   children: React.ReactNode;
 };
 
@@ -18,7 +20,7 @@ export const StandardModal = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const styles = getStyles(theme);
   const [isVisible, setIsVisible] = useState(false);
 
-  const { children, ...modalProps } = props;
+  const { title, children, ...modalProps } = props;
 
   useImperativeHandle(ref, () => ({
     show() {
@@ -36,16 +38,18 @@ export const StandardModal = forwardRef<ModalRef, ModalProps>((props, ref) => {
       transparent={true}
       {...modalProps}
     >
-      <View style={styles.background}>
+      <KeyboardAvoidingView behavior="padding"
+        style={styles.background}>
         <View style={styles.modal}>
           <View style={styles.header}>
+            <Title>{title}</Title>
             <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
               <MaterialCommunityIcons name="close" size={24} color={theme.colors.text} />
             </TouchableWithoutFeedback>
           </View>
           {children}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal >
   )
 });

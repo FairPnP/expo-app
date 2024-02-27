@@ -38,6 +38,8 @@ export const ParkingHome = ({ }) => {
     return <SpaceListing style={{ marginVertical: 16 }} availability={item} width={listingWidth} />
   };
 
+  console.log('searchResults', searchResults);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topArea}>

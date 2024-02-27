@@ -9,6 +9,11 @@ export const useUserSummary = (userId: string) => {
       const response = await UserSummaryAPI.get(userId, {
         404: () => null,
       });
+
+      if (!response) {
+        return null;
+      }
+
       return response.user_summary;
     },
     enabled: !!userId,

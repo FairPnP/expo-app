@@ -8,3 +8,5 @@ export * from './UserReviewsScreen';
 export * from './ViewSpotScreen';
 export * from './ReservationDetailsScreen';
 export * from './ReservationReviewModal';
+export * from './UserProfileScreen';
+export * from './UserReviewModal';

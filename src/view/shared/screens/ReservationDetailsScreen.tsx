@@ -139,7 +139,7 @@ export const ReservationDetailsScreen = ({ navigation, route }) => {
         </Section>
         <View style={styles.horizontalSeparator} />
         <Section style={{ marginVertical: 16 }} title="Reservation">
-          <UserProfileLabel style={{ marginBottom: 8 }} userId={space.user_id} namePrefix="Hosted by " />
+          <UserProfileLabel linkToProfile style={{ marginBottom: 8 }} userId={space.user_id} namePrefix="Hosted by " />
           <View style={{ marginVertical: 16 }}>
             <Title>Confirmation Code</Title>
             <Text>{reservation.id}</Text>

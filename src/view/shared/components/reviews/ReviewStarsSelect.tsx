@@ -7,6 +7,7 @@ export interface ReviewStarsSelectProps {
   initialStars?: number;
   editable?: boolean;
   size?: number;
+  style?: any;
 };
 
 export interface ReviewStarsSelectRef {
@@ -33,7 +34,7 @@ export const ReviewStarsSelect = forwardRef<ReviewStarsSelectRef, ReviewStarsSel
   }
 
   return (
-    <View style={{ flexDirection: 'row' }} >
+    <View style={[{ flexDirection: 'row' }, props.style]} >
       {
         [1, 2, 3, 4, 5].map((star) => (
           <TouchableWithoutFeedback key={star} onPress={() => onStarPress(star)}>

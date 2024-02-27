@@ -6,7 +6,8 @@ import {
   UserReviewsScreen,
   ReservationDetailsScreen,
   ViewSpotScreen,
-} from '../shared/screens';
+  UserProfileScreen,
+} from './screens';
 
 export const addSharedStackScreens = (Stack: any) => {
   return (
@@ -58,6 +59,13 @@ export const addSharedStackScreens = (Stack: any) => {
         component={StripeRefreshScreen}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfileScreen}
+        options={{
+          headerTitle: 'User Profile',
         }}
       />
     </>
