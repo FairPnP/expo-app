@@ -80,6 +80,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 function onAppStateChange(status: AppStateStatus) {
   if (Platform.OS !== 'web') {
     focusManager.setFocused(status === 'active');
@@ -107,7 +108,6 @@ function App() {
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', onAppStateChange);
-
     return () => subscription.remove();
   }, []);
 
