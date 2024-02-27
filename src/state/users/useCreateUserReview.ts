@@ -1,6 +1,6 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {CreateUserReviewRequest, UserReviewAPI} from '@/api';
-import {REVIEWS_QUERY_KEY, USER_QUERY_KEY} from './consts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateUserReviewRequest, UserReviewAPI } from '@/api';
+import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from './consts';
 
 export const useCreateUserReview = () => {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export const useCreateUserReview = () => {
     onSuccess: newUserReview => {
       // Invalidate and refetch users query to update the list
       queryClient.invalidateQueries({
-        queryKey: [USER_QUERY_KEY, REVIEWS_QUERY_KEY, newUserReview.to_user_id],
+        queryKey: [USER_QUERY_KEY, newUserReview.to_user_id, REVIEWS_QUERY_KEY],
       });
 
       // Optionally, update the users cache directly if you want to append the new user

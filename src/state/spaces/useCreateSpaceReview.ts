@@ -1,6 +1,6 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {CreateSpaceReviewRequest, SpaceReviewAPI} from '@/api';
-import {REVIEWS_QUERY_KEY, SPACE_QUERY_KEY} from './consts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateSpaceReviewRequest, SpaceReviewAPI } from '@/api';
+import { REVIEWS_QUERY_KEY, SPACE_QUERY_KEY } from './consts';
 
 export const useCreateSpaceReview = () => {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export const useCreateSpaceReview = () => {
     onSuccess: newSpaceReview => {
       // Invalidate and refetch spaces query to update the list
       queryClient.invalidateQueries({
-        queryKey: [SPACE_QUERY_KEY, REVIEWS_QUERY_KEY, newSpaceReview.space_id],
+        queryKey: [SPACE_QUERY_KEY, newSpaceReview.space_id, REVIEWS_QUERY_KEY],
       });
 
       // Optionally, update the spaces cache directly if you want to append the new space

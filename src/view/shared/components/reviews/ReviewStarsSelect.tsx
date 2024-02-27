@@ -1,7 +1,7 @@
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
 
 export interface ReviewStarsSelectProps {
   initialStars?: number;
@@ -37,14 +37,15 @@ export const ReviewStarsSelect = forwardRef<ReviewStarsSelectRef, ReviewStarsSel
     <View style={[{ flexDirection: 'row' }, props.style]} >
       {
         [1, 2, 3, 4, 5].map((star) => (
-          <TouchableWithoutFeedback key={star} onPress={() => onStarPress(star)}>
+          <TouchableOpacity activeOpacity={1} key={star} onPress={() => onStarPress(star)}>
             <FontAwesome
               key={star}
               name={star <= stars ? 'star' : 'star-o'}
               size={props.size ?? 36}
               color="black"
+              style={{ marginRight: 4 }}
             />
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ))
       }
     </View>

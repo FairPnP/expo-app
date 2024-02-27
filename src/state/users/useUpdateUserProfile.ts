@@ -1,7 +1,7 @@
 // useUpdateUser.js
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {UserProfileAPI, uploadToS3} from '@/api';
-import {PROFILES_QUERY_KEY, USER_QUERY_KEY} from './consts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UserProfileAPI, uploadToS3 } from '@/api';
+import { PROFILES_QUERY_KEY, USER_QUERY_KEY } from './consts';
 
 export const useUpdateUserProfiles = () => {
   const queryClient = useQueryClient();
@@ -36,8 +36,8 @@ export const useUpdateUserProfiles = () => {
       queryClient.invalidateQueries({
         queryKey: [
           USER_QUERY_KEY,
-          PROFILES_QUERY_KEY,
           profile.user_profile.user_id,
+          PROFILES_QUERY_KEY,
         ],
       });
     },

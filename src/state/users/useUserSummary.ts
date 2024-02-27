@@ -4,7 +4,7 @@ import { UserSummaryAPI } from '@/api';
 
 export const useUserSummary = (userId: string) => {
   return useQuery({
-    queryKey: [USER_QUERY_KEY, SUMMARIES_QUERY_KEY, userId],
+    queryKey: [USER_QUERY_KEY, userId, SUMMARIES_QUERY_KEY],
     queryFn: async () => {
       const response = await UserSummaryAPI.get(userId, {
         404: () => null,

@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import React, { useCallback } from 'react';
 import {
   Text,
@@ -41,7 +41,7 @@ export const MapCard = ({
   }, [building, space, availability, startDate, endDate]);
 
   return (
-    <TouchableWithoutFeedback onPress={handleBooking}>
+    <TouchableOpacity activeOpacity={1} onPress={handleBooking}>
       <View style={[styles.container, style]}>
         <HorizontalGroup>
           <ImageDownload
@@ -68,7 +68,7 @@ export const MapCard = ({
           </View>
         </HorizontalGroup>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 

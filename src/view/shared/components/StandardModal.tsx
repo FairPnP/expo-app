@@ -1,9 +1,9 @@
 import { KeyboardAvoidingView, Modal, StyleSheet, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { AppTheme, useTheme } from '@/view/theme'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Title } from './common';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface ModalProps {
   title?: string;
@@ -43,9 +43,9 @@ export const StandardModal = forwardRef<ModalRef, ModalProps>((props, ref) => {
         <View style={styles.modal}>
           <View style={styles.header}>
             <Title>{title}</Title>
-            <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+            <TouchableOpacity activeOpacity={1} onPress={() => setIsVisible(false)}>
               <MaterialCommunityIcons name="close" size={24} color={theme.colors.text} />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
           {children}
         </View>

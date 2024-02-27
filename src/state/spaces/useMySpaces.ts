@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SpaceAPI } from '@/api';
-import { MY_SPACES_QUERY_KEY, SPACE_QUERY_KEY } from './consts';
+import { SPACE_QUERY_KEY } from './consts';
 
 export const useMySpaces = (limit = 3) => {
   const {
@@ -14,7 +14,7 @@ export const useMySpaces = (limit = 3) => {
     isFetchingNextPage,
     isFetchingPreviousPage,
   } = useInfiniteQuery({
-    queryKey: [SPACE_QUERY_KEY, MY_SPACES_QUERY_KEY],
+    queryKey: [SPACE_QUERY_KEY],
     queryFn: async ({ pageParam = undefined }) => {
       const response = await SpaceAPI.list({
         offset_id: pageParam,
