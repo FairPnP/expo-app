@@ -91,7 +91,7 @@ const getStyles = (theme: AppTheme) =>
     pageContainer: {
     },
     itemContainer: {
-      width: 400,
+      width: 360,
       marginHorizontal: 10,
       marginVertical: 4,
     },

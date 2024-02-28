@@ -8,6 +8,7 @@ export const useCreateUserReview = () => {
   return useMutation({
     mutationFn: async (newUserData: CreateUserReviewRequest) => {
       const response = await UserReviewAPI.create(newUserData);
+
       return response.user_review;
     },
     onSuccess: newUserReview => {

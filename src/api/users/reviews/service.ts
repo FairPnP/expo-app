@@ -1,4 +1,4 @@
-import {ErrorHandler, api} from '../../api';
+import { ErrorHandler, api } from '../../api';
 import {
   CreateUserReviewRequest,
   CreateUserReviewResponse,

@@ -1,9 +1,8 @@
-import { KeyboardAvoidingView, Modal, StyleSheet, View } from 'react-native'
+import { KeyboardAvoidingView, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { AppTheme, useTheme } from '@/view/theme'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Title } from './common';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface ModalProps {
   title?: string;

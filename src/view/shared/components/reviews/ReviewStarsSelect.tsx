@@ -1,7 +1,6 @@
-import { View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
-import { TouchableOpacity } from '@gorhom/bottom-sheet';
 
 export interface ReviewStarsSelectProps {
   initialStars?: number;
