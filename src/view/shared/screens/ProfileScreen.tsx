@@ -1,9 +1,7 @@
 import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useTheme, AppTheme } from '@/view/theme';
 import { StripeAPI } from '@/api';
-import { useQueryClient } from '@tanstack/react-query';
 import { useAppMode, useAuth, useMerchantAccount, useUserSummary } from '@/state';
 import {
   IconButton,
@@ -21,13 +19,10 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useUpdates } from '@/view/useUpdates';
 
 export const ProfileScreen = ({ navigation }) => {
-  const { tokens } = useAuth();
+  const { tokens, signOut } = useAuth();
   const email = tokens?.idToken?.payload.email?.toString();
   const userId = tokens?.idToken?.payload.sub;
   const { data: summary } = useUserSummary(userId);
-
-  const { signOut } = useAuthenticator(context => [context.user]);
-  const queryClient = useQueryClient();
 
   const { theme, toggleTheme } = useTheme();
   const styles = getStyles(theme.appTheme);
@@ -37,12 +32,6 @@ export const ProfileScreen = ({ navigation }) => {
 
   const stripeAccountPressed = async () => {
     await StripeAPI.showDashboard();
-  };
-
-  const onSignOut = () => {
-    queryClient.removeQueries();
-    queryClient.clear();
-    signOut();
   };
 
   const onReviewsPressed = () => {
@@ -118,7 +107,7 @@ export const ProfileScreen = ({ navigation }) => {
       )}
 
       <IconButton icon="sync" text="Check for Updates" onPress={() => checkAndApplyUpdates(true)} />
-      <IconButton icon="sign-out-alt" text="Sign Out" onPress={onSignOut} />
+      <IconButton icon="sign-out-alt" text="Sign Out" onPress={signOut} />
       <EditUserProfileBottomSheet ref={editModalRef} />
     </SafeAreaView>
   );
