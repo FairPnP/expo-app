@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme, AppTheme } from '@/view/theme';
-import { StripeAPI } from '@/api';
+import { StripeAccountsAPI } from '@/api';
 import { useAppMode, useAuth, useMerchantAccount, useUserSummary } from '@/state';
 import {
   IconButton,
@@ -31,7 +31,7 @@ export const ProfileScreen = ({ navigation }) => {
   const { checkAndApplyUpdates } = useUpdates();
 
   const stripeAccountPressed = async () => {
-    await StripeAPI.showDashboard();
+    await StripeAccountsAPI.showDashboard();
   };
 
   const onReviewsPressed = () => {

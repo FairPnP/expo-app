@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { friendlyDateRange, toDateTimeString } from '@/utils';
 import { useStripe } from '@stripe/stripe-react-native';
 import { useTheme, AppTheme } from '@/view/theme';
-import { Building, Space, StripeAPI, getAvailabilityCost } from '@/api';
+import { Building, Space, StripePaymentsAPI, getAvailabilityCost } from '@/api';
 import { Button, LocationCard, SpaceCard, Title, Text, LoadingOverlay } from '@/view/shared';
 import { useCreateReservation } from '@/state';
 
@@ -39,7 +39,7 @@ export const ConfirmReservationScreen = ({ navigation, route }) => {
   }, [startDate, endDate]);
 
   const fetchPaymentSheetParams = async () =>
-    await StripeAPI.createPaymentIntent({
+    await StripePaymentsAPI.createPaymentIntent({
       dest_account: 'acct_1OVZgSIdfTCpbyKQ',
       amount: getAvailabilityCost(hourly_rate, startDate, endDate) * 100,
     });

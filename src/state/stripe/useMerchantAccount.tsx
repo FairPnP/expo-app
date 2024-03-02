@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MERCHANT_QUERY_KEY, STRIPE_QUERY_KEY } from "./consts";
-import { StripeAPI } from "@/api";
+import { StripeAccountsAPI } from "@/api";
 
 export const useMerchantAccount = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useMerchantAccount = () => {
   const query = useQuery({
     queryKey: [STRIPE_QUERY_KEY, MERCHANT_QUERY_KEY],
     queryFn: async () => {
-      let res = await StripeAPI.getAccount({
+      let res = await StripeAccountsAPI.getAccount({
         404: () => null,
       });
 

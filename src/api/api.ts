@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { fetchAuthSession } from '@aws-amplify/auth';
 import axiosRetry from 'axios-retry';
 import Toast from 'react-native-toast-message';
@@ -8,11 +8,17 @@ const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 // const apiBaseUrl: string = 'http://192.168.86.40:3000';
 // const apiBaseUrl: string = 'http://localhost:3000';
 // const apiBaseUrl: string = 'http://192.168.0.114:3000';
+const apiBaseUrlStripe: string = 'http://192.168.0.114:3001';
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
 });
 axiosRetry(apiClient, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+
+const apiClientStripe = axios.create({
+  baseURL: apiBaseUrlStripe,
+});
+axiosRetry(apiClientStripe, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 const getAccessToken = async (): Promise<string | undefined> => {
   try {
@@ -39,14 +45,15 @@ interface ApiOptions<T> {
   onError?: ErrorHandler<T>;
 }
 
-export const api = async <T>({
+const baseApi = async <T>(client: AxiosInstance, {
   endpoint,
   method,
   data = null,
   onError,
 }: ApiOptions<T>): Promise<T> => {
   const url = `api${endpoint}`;
-  console.log('API call', method, url);
+  console.log('API call', client.defaults.baseURL, method, url);
+
   try {
     const accessToken: string | undefined = await getAccessToken();
 
@@ -67,7 +74,7 @@ export const api = async <T>({
       headers: headers,
     };
 
-    const response: AxiosResponse<T> = await apiClient(config);
+    const response: AxiosResponse<T> = await client(config);
 
     return response.data;
   } catch (error: any) {
@@ -123,3 +130,11 @@ export const api = async <T>({
     throw error;
   }
 };
+
+export function api<T>(options: ApiOptions<T>) {
+  return baseApi(apiClient, options);
+}
+
+export function apiStripe<T>(options: ApiOptions<T>) {
+  return baseApi(apiClientStripe, options);
+}
