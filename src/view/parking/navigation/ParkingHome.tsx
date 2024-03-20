@@ -50,7 +50,7 @@ export const ParkingHome = ({ }) => {
         {isPending ? <LoadingSpinner /> :
           <ListView
             key={listingWidth}
-            data={searchResults.availabilities}
+            data={searchResults?.availabilities}
             keyExtractor={(item: any) => item.id.toString()}
             renderItem={renderSpace}
             emptyMessage='No spaces found'

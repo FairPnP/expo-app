@@ -8,7 +8,8 @@ const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 // const apiBaseUrl: string = 'http://192.168.86.40:3000';
 // const apiBaseUrl: string = 'http://localhost:3000';
 // const apiBaseUrl: string = 'http://192.168.0.114:3000';
-const apiBaseUrlStripe: string = 'http://192.168.0.114:3001';
+// const apiBaseUrl: string = 'http://192.168.38.51:3000';
+// const apiBaseUrlStripe: string = 'http://192.168.0.114:3001';
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
@@ -16,7 +17,7 @@ const apiClient = axios.create({
 axiosRetry(apiClient, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 const apiClientStripe = axios.create({
-  baseURL: apiBaseUrlStripe,
+  baseURL: apiBaseUrl,
 });
 axiosRetry(apiClientStripe, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
