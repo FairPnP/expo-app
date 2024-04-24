@@ -1,33 +1,35 @@
 import 'react-native-url-polyfill/auto';
-import { polyfillWebCrypto } from 'expo-standard-web-crypto';
+import {polyfillWebCrypto} from 'expo-standard-web-crypto';
 polyfillWebCrypto();
-import { enableLatestRenderer } from 'react-native-maps';
+import {enableLatestRenderer} from 'react-native-maps';
 enableLatestRenderer();
 
 import * as React from 'react';
-import { StripeProvider } from '@stripe/stripe-react-native';
+import {StripeProvider} from '@stripe/stripe-react-native';
 import {
   Authenticator,
   ThemeProvider as AmplifyThemeProvider,
 } from '@aws-amplify/ui-react-native';
-import { Amplify } from 'aws-amplify';
-import { MainScreen } from '@/view/MainScreen';
-import { ThemeProvider, useTheme } from '@/view/theme';
-import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import {Amplify} from 'aws-amplify';
+import {MainScreen} from '@/view/MainScreen';
+import {ThemeProvider, useTheme} from '@/view/theme';
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import * as Sentry from 'sentry-expo';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { AppState, Platform } from 'react-native';
-import type { AppStateStatus } from 'react-native';
-import { focusManager } from '@tanstack/react-query';
+import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
+import {useEffect} from 'react';
+import {AppState, Platform} from 'react-native';
+import type {AppStateStatus} from 'react-native';
+import {focusManager} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
-import { AppModeProvider } from '@/state';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { initNotifHandler, registerForPushNotificationsAsync } from '@/view/Notifications';
-import * as Notifications from 'expo-notifications';
+import {AppModeProvider} from '@/state';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {initNotifHandler} from '@/view/Notifications';
 
 // sentry
 Sentry.init({
@@ -111,29 +113,6 @@ function App() {
     return () => subscription.remove();
   }, []);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync();
-
-    const notifListener = Notifications
-      .addNotificationReceivedListener(notif => console.log('notification', notif))
-
-    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('notif response', response.notification.request.content);
-      let data = response.notification.request.content.data;
-      console.log('screen', data?.screen_name, 'navigationRef', navigationRef.isReady(), navigationRef.current);
-      if (data?.screen_name && navigationRef.isReady()) {
-        // @ts-ignore
-        navigationRef.current?.navigate(data.screen_name, data.screen_params);
-      }
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notifListener)
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-  }, []);
-
-
   return (
     <SafeAreaProvider>
       <ThemeProvider>
@@ -143,7 +122,7 @@ function App() {
             colorMode={theme.appTheme.dark ? 'dark' : 'light'}>
             <Authenticator.Provider>
               <Authenticator>
-                <GestureHandlerRootView style={{ flex: 1 }}>
+                <GestureHandlerRootView style={{flex: 1}}>
                   <BottomSheetModalProvider>
                     <StripeProvider
                       publishableKey="pk_test_51OPtRcEjtf5XGOQ8ilrOwXIYXeuCff1rPBUTW48QZxOVzFXtnyrBYDnNuhvrwUADoi1JsWa0nk4kua6z6KG3BaJd00GMLmWRvS"

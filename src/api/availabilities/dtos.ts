@@ -36,10 +36,10 @@ export interface ReadAvailabilityResponse {
 // List DTOs
 
 export interface ListAvailabilityParams {
-  offset_id?: number;
+  offset_id?: string;
   limit?: number;
   user?: boolean;
-  space_id?: number;
+  space_id?: string;
 }
 
 export interface ListAvailabilityResponse {

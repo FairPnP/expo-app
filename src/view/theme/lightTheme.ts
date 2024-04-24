@@ -1,10 +1,10 @@
-import { Theme } from '@aws-amplify/ui-react-native';
-import { AppTheme } from '.';
+import {Theme} from '@aws-amplify/ui-react-native';
+import {AppTheme} from '.';
 
 export const lightTheme: AppTheme = {
   dark: false,
   colors: {
-    primary: '#61CF64',
+    primary: '#33abf5',
     background: '#FFFFFF',
     card: '#F5F5F5',
     text: '#212121',

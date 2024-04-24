@@ -2,7 +2,6 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Availability} from '@/api';
-import {useBuilding, useSpace} from '@/state';
 import {Text} from '../common';
 
 export type AvailabilityItemProps = {
@@ -12,13 +11,9 @@ export type AvailabilityItemProps = {
 export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const {data: space} = useSpace(availability.space_id);
-  const {data: building} = useBuilding(space?.building_id);
 
   return (
     <View style={styles.container}>
-      <Text>{building?.name}</Text>
-      <Text>{space?.name}</Text>
       <Text>
         {`Start: ${availability.start_date.toDateString()} - ${availability.start_date
           .toTimeString()

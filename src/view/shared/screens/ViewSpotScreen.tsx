@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -22,16 +22,16 @@ import {
   CircleButton,
   ImageSwiper,
 } from '../components';
-import { Building, Space, getAvailabilityCost } from '@/api';
-import { useTheme, AppTheme, setStatusBar } from '@/view/theme';
-import { useAppMode, useSearchState, useSpaceSummary } from '@/state';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { openMap } from '@/utils/maps';
-import { FontAwesome } from '@expo/vector-icons';
-import { toMinimalDateRange } from '@/utils';
-import { ConfirmReservationScreenProps } from '@/view/parking/stack/ConfirmReservationScreen';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import {Building, Space, getAvailabilityCost} from '@/api';
+import {useTheme, AppTheme, setStatusBar} from '@/view/theme';
+import {useAppMode, useSearchState, useSpaceSummary} from '@/state';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {openMap} from '@/utils/maps';
+import {FontAwesome} from '@expo/vector-icons';
+import {toMinimalDateRange} from '@/utils';
+import {ConfirmReservationScreenProps} from '@/view/parking/stack/ConfirmReservationScreen';
+import {Ionicons} from '@expo/vector-icons';
+import {useFocusEffect} from '@react-navigation/native';
 
 export type ViewSpotScreenProps = {
   building: Building;
@@ -41,20 +41,20 @@ export type ViewSpotScreenProps = {
 const calcDimensions = (window: ScaledSize) => {
   const width = window.width;
   const height = Math.round(Math.min(window.width * 0.75, window.height * 0.4));
-  return { width, height };
+  return {width, height};
 };
 
-export const ViewSpotScreen = ({ navigation, route }) => {
-  const { building, space } = route.params as ViewSpotScreenProps;
+export const ViewSpotScreen = ({navigation, route}) => {
+  const {building, space} = route.params as ViewSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const { appMode } = useAppMode();
-  const { startDate, endDate } = useSearchState();
+  const {appMode} = useAppMode();
+  const {startDate, endDate} = useSearchState();
 
-  const { data: summary } = useSpaceSummary(space.id);
+  const {data: summary} = useSpaceSummary(space.id);
 
   const onReviewPressed = () => {
-    navigation.navigate('SpaceReviews', { space });
+    navigation.navigate('SpaceReviews', {space});
   };
 
   const onGetDirectionsPressed = () => {
@@ -66,7 +66,7 @@ export const ViewSpotScreen = ({ navigation, route }) => {
   );
 
   useEffect(() => {
-    const onChange = ({ window }: { window: ScaledSize }) => {
+    const onChange = ({window}: {window: ScaledSize}) => {
       setDimensions(calcDimensions(window));
     };
 
@@ -78,7 +78,7 @@ export const ViewSpotScreen = ({ navigation, route }) => {
     StatusBar.setBarStyle('light-content');
 
     return () => setStatusBar(theme);
-  })
+  });
 
   const onReservePressed = () => {
     navigation.navigate('ConfirmReservation', {
@@ -118,7 +118,9 @@ export const ViewSpotScreen = ({ navigation, route }) => {
     return (
       <View style={styles.bottomArea}>
         <Button
-          onPress={() => navigation.navigate('ManageSpot', { building, space })}>
+          onPress={() =>
+            navigation.navigate('ManageAvailability', {building, space})
+          }>
           <Text>Manage Availability</Text>
         </Button>
       </View>
@@ -156,12 +158,16 @@ export const ViewSpotScreen = ({ navigation, route }) => {
             </HorizontalGroup>
           </Section>
           <View style={styles.separator} />
-          <UserProfileLabel linkToProfile userId={space.user_id} namePrefix="Hosted by " />
+          <UserProfileLabel
+            linkToProfile
+            userId={space.user_id}
+            namePrefix="Hosted by "
+          />
           <View style={styles.separator} />
           <Section title="Location">
             <StaticMap
               key={dimensions.width}
-              style={{ marginBottom: 16, alignSelf: 'center' }}
+              style={{marginBottom: 16, alignSelf: 'center'}}
               lat={building.latitude}
               lng={building.longitude}
               width={Math.round(dimensions.width - 64)}
@@ -170,7 +176,9 @@ export const ViewSpotScreen = ({ navigation, route }) => {
             <HorizontalGroup>
               <VerticalGroup>
                 <Text>{building.name}</Text>
-                <Text>{building.city}, {building.state}, {building.country}</Text>
+                <Text>
+                  {building.city}, {building.state}, {building.country}
+                </Text>
               </VerticalGroup>
               <Button onPress={onGetDirectionsPressed}>
                 <Text>Get Directions</Text>
@@ -190,10 +198,10 @@ export const ViewSpotScreen = ({ navigation, route }) => {
             <Text>TODO: Cancellation policy</Text>
           </Section>
           <View style={styles.separator} />
-          <Section style={{ marginBottom: 16 }}>
-            <HorizontalGroup style={{ justifyContent: 'flex-start' }}>
-              <FontAwesome style={{ paddingRight: 12 }} name="flag" size={16} />
-              <TextLink onPress={() => { }}>Report this listing</TextLink>
+          <Section style={{marginBottom: 16}}>
+            <HorizontalGroup style={{justifyContent: 'flex-start'}}>
+              <FontAwesome style={{paddingRight: 12}} name="flag" size={16} />
+              <TextLink onPress={() => {}}>Report this listing</TextLink>
             </HorizontalGroup>
           </Section>
         </View>

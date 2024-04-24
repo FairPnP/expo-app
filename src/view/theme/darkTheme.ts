@@ -4,7 +4,7 @@ import {AppTheme} from '.';
 export const darkTheme: AppTheme = {
   dark: true,
   colors: {
-    primary: '#81C784', // Keeping the primary color similar
+    primary: '#33abf5', // Keeping the primary color similar
     background: '#303030', // Dark but not too dark for the background
     card: '#424242', // Slightly lighter than background for distinction
     text: '#E0E0E0', // Light color for text for readability

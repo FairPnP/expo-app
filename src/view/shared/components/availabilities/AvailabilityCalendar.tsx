@@ -1,47 +1,59 @@
-import {Space} from '@/api';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Calendar, CalendarProvider} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import {useTheme} from '@/view/theme';
-import {useMyAvailabilities} from '@/state';
+import {Availability} from '@/api';
+import {toCalendarDateString} from '@/utils';
 
 export type AvailabilityCalendarProps = {
   style?: any;
-  space: Space;
+  availabilities: Availability[];
+  onDayPress?: (day: string, availabilities: Availability[]) => void;
 };
 
 export const AvailabilityCalendar = ({
   style,
-  space,
+  availabilities,
+  onDayPress,
 }: AvailabilityCalendarProps) => {
   const theme = useTheme().theme.appTheme;
-  const {data: availabilities} = useMyAvailabilities();
+  const [selectedDate, setSelectedDate] = useState<string>(undefined);
 
   const markedDates = useMemo(() => {
     const markers: MarkedDates = {};
-    for (const availability of availabilities.availability) {
+
+    for (const availability of availabilities) {
       const startDate = new Date(availability.start_date);
       const endDate = new Date(availability.end_date);
       const startDay = startDate.toISOString().slice(0, 10);
       const endDay = endDate.toISOString().slice(0, 10);
       if (startDay === endDay) {
         markers[startDay] = {
-          color: theme.colors.primary,
-          textColor: theme.colors.text,
-          startingDay: true,
-          endingDay: true,
+          periods: [
+            {
+              color: theme.colors.primary,
+              startingDay: true,
+              endingDay: true,
+            },
+          ],
         };
       } else {
         markers[startDay] = {
-          color: theme.colors.primary,
-          textColor: theme.colors.text,
-          startingDay: true,
+          periods: [
+            {
+              color: theme.colors.primary,
+              startingDay: true,
+            },
+          ],
         };
         markers[endDay] = {
-          color: theme.colors.primary,
-          textColor: theme.colors.text,
-          endingDay: true,
+          periods: [
+            {
+              color: theme.colors.primary,
+              endingDay: true,
+            },
+          ],
         };
 
         const daysBetween = Math.round(
@@ -52,35 +64,49 @@ export const AvailabilityCalendar = ({
           day.setDate(day.getDate() + i);
           const dayString = day.toISOString().slice(0, 10);
           markers[dayString] = {
-            color: theme.colors.primary,
-            textColor: theme.colors.text,
+            periods: [{color: theme.colors.primary}],
           };
         }
       }
     }
+
+    if (selectedDate) {
+      if (!markers[selectedDate]) {
+        markers[selectedDate] = {
+          selected: true,
+        };
+      } else {
+        markers[selectedDate].selected = true;
+      }
+    }
     return markers;
-  }, [space.id, theme.colors.primary, theme.colors.text, availabilities]);
+  }, [availabilities, selectedDate]);
 
   return (
     <View style={[styles.container, style]}>
-      <CalendarProvider date={''}>
-        <Calendar
-          horizontal={true}
-          markingType="period"
-          markedDates={markedDates}
-          minDate={new Date().toDateString()}
-          // dayComponent={renderDayComponent as any}
-        />
-      </CalendarProvider>
+      <Calendar
+        horizontal={true}
+        markingType="multi-period"
+        markedDates={markedDates}
+        allowSelectionOutOfRange={true}
+        minDate={new Date().toDateString()}
+        onDayPress={({dateString}) => {
+          setSelectedDate(dateString);
+          const date = new Date(dateString);
+          const a = availabilities.filter(
+            availability =>
+              toCalendarDateString(availability.start_date) === dateString ||
+              toCalendarDateString(availability.end_date) === dateString ||
+              (date >= availability.start_date &&
+                date <= availability.end_date),
+          );
+          onDayPress?.(dateString, a);
+        }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {},
-  itemContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
 });

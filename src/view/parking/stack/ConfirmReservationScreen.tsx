@@ -1,11 +1,18 @@
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
-import React, { useCallback, useEffect } from 'react';
-import { friendlyDateRange, toDateTimeString } from '@/utils';
-import { useStripe } from '@stripe/stripe-react-native';
-import { useTheme, AppTheme } from '@/view/theme';
-import { Building, Space, StripePaymentsAPI, getAvailabilityCost } from '@/api';
-import { Button, LocationCard, SpaceCard, Title, Text, LoadingOverlay } from '@/view/shared';
-import { useCreateReservation } from '@/state';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {friendlyDateRange, toDateTimeString} from '@/utils';
+import {useStripe} from '@stripe/stripe-react-native';
+import {useTheme, AppTheme} from '@/view/theme';
+import {Building, Space, StripePaymentsAPI, getAvailabilityCost} from '@/api';
+import {
+  Button,
+  LocationCard,
+  SpaceCard,
+  Title,
+  Text,
+  LoadingOverlay,
+} from '@/view/shared';
+import {useCreateReservation} from '@/state';
 
 export type ConfirmReservationScreenProps = {
   building: Building;
@@ -15,13 +22,13 @@ export type ConfirmReservationScreenProps = {
   hourly_rate: number;
 };
 
-export const ConfirmReservationScreen = ({ navigation, route }) => {
+export const ConfirmReservationScreen = ({navigation, route}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const { mutateAsync: createReservation, isPending } = useCreateReservation();
+  const {initPaymentSheet, presentPaymentSheet} = useStripe();
+  const {mutateAsync: createReservation, isPending} = useCreateReservation();
 
-  const { building, space, startTimestamp, endTimestamp, hourly_rate } =
+  const {building, space, startTimestamp, endTimestamp, hourly_rate} =
     route.params as ConfirmReservationScreenProps;
 
   const startDate = new Date(startTimestamp);
@@ -40,14 +47,13 @@ export const ConfirmReservationScreen = ({ navigation, route }) => {
 
   const fetchPaymentSheetParams = async () =>
     await StripePaymentsAPI.createPaymentIntent({
-      dest_account: 'acct_1OVZgSIdfTCpbyKQ',
       amount: getAvailabilityCost(hourly_rate, startDate, endDate) * 100,
     });
 
   const initializePaymentSheet = async () => {
     const params = await fetchPaymentSheetParams();
 
-    const { error } = await initPaymentSheet({
+    const {error} = await initPaymentSheet({
       merchantDisplayName: 'Fair Park And Pay Ltd.',
       customerId: params.customer_id,
       customerEphemeralKeySecret: params.ephemeral_key,
@@ -64,7 +70,7 @@ export const ConfirmReservationScreen = ({ navigation, route }) => {
   }, []);
 
   const openPaymentSheet = async () => {
-    const { error } = await presentPaymentSheet();
+    const {error} = await presentPaymentSheet();
 
     if (error) {
       console.error('Error processing payment', error);
@@ -105,7 +111,7 @@ export const ConfirmReservationScreen = ({ navigation, route }) => {
       </View>
 
       <View style={styles.bottomArea}>
-        <Button style={{ marginRight: 8 }} onPress={openPaymentSheet}>
+        <Button style={{marginRight: 8}} onPress={openPaymentSheet}>
           <Text>Confirm Reservation</Text>
         </Button>
         <Button onPress={handleReservation}>

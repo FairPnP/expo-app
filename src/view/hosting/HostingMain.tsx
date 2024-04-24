@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import { HostingNavigator } from './navigation/HostingNavigator';
-import { addSharedStackScreens } from '../shared';
-import { EditParkingSpaceScreen } from './stack/EditParkingSpaceScreen';
-import { AddSpotScreen } from './stack/AddSpotScreen';
-import { ManageSpotScreen } from './stack/ManageSpotScreen';
+import {HostingNavigator} from './navigation/HostingNavigator';
+import {addSharedStackScreens} from '../shared';
+import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
+import {AddSpotScreen} from './stack/AddSpotScreen';
+import {ManageAvailabilityScreen} from './stack/ManageAvailabilityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,8 +13,7 @@ export const HostingMain = () => {
     <Stack.Navigator
       screenOptions={{
         headerTintColor: 'black',
-      }}
-    >
+      }}>
       <Stack.Screen
         name="Navigator"
         component={HostingNavigator}
@@ -37,10 +36,10 @@ export const HostingMain = () => {
         }}
       />
       <Stack.Screen
-        name="ManageSpot"
-        component={ManageSpotScreen}
+        name="ManageAvailability"
+        component={ManageAvailabilityScreen}
         options={{
-          headerTitle: 'Manage Parking Space',
+          headerTitle: 'Manage Availability',
         }}
       />
       {addSharedStackScreens(Stack)}

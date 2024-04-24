@@ -14,12 +14,22 @@ export const toDollarString = (amount: number | string) => {
 
 export const toTimeString = (date: Date) => {
   // 2:00 p.m.
-  const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  const time = date.toLocaleString('en-US', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
   return time.replace('AM', 'a.m.').replace('PM', 'p.m.');
 };
 
 export const toDateString = (date: Date) => {
-  return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return date.toLocaleString('en-US', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 };
 
 export const toDateTimeString = (date: Date) => {
@@ -28,16 +38,17 @@ export const toDateTimeString = (date: Date) => {
 
 export const toMonthYearString = (date: Date) => {
   return (
-    date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear()
+    date.toLocaleString('default', {month: 'long'}) + ' ' + date.getFullYear()
   );
 };
 
 export const toMinimalTimeString = (date: Date) => {
   if (date.getMinutes() === 0) {
-    return date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+    return date.toLocaleString('en-US', {hour: 'numeric', hour12: true});
   }
 
   return date.toLocaleString('en-US', {
+    timeZone: 'UTC',
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
@@ -45,7 +56,7 @@ export const toMinimalTimeString = (date: Date) => {
 };
 
 export const toMinimalDateString = (date: Date) => {
-  return date.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+  return date.toLocaleString('en-US', {month: 'short', day: 'numeric'});
 };
 
 export const toMinimalDateRange = (start: Date, end: Date) => {
@@ -62,5 +73,15 @@ export const toMinimalDateRange = (start: Date, end: Date) => {
 
 export const toFullDateString = (date: Date) => {
   // Sun, Jan 5, 2020
-  return date.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  return date.toLocaleString('en-US', {
+    timeZone: 'UTC',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+export const toCalendarDateString = (date: Date) => {
+  return date.toISOString().substring(0, 10);
 };

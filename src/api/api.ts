@@ -1,24 +1,25 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { fetchAuthSession } from '@aws-amplify/auth';
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import {fetchAuthSession} from '@aws-amplify/auth';
 import axiosRetry from 'axios-retry';
 import Toast from 'react-native-toast-message';
 
-const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
+// const apiBaseUrl: string = 'https://api-dev.fairpnp.com';
 // const apiBaseUrl: string = 'http://10.0.2.2:3000';
-// const apiBaseUrl: string = 'http://192.168.86.40:3000';
+const apiBaseUrl: string = 'http://192.168.86.40:3000';
 // const apiBaseUrl: string = 'http://localhost:3000';
-// const apiBaseUrl: string = 'http://192.168.0.114:3000';
-const apiBaseUrlStripe: string = 'http://192.168.0.114:3001';
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
 });
-axiosRetry(apiClient, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(apiClient, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 const apiClientStripe = axios.create({
-  baseURL: apiBaseUrlStripe,
+  baseURL: apiBaseUrl,
 });
-axiosRetry(apiClientStripe, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(apiClientStripe, {
+  retries: 3,
+  retryDelay: axiosRetry.exponentialDelay,
+});
 
 const getAccessToken = async (): Promise<string | undefined> => {
   try {
@@ -35,8 +36,8 @@ export type HttpError = {
 };
 
 export type ErrorHandler<T = any> =
-  | ((error: HttpError) => { handled: boolean; data?: T })
-  | { [status: number]: (error: HttpError) => Promise<T> | T };
+  | ((error: HttpError) => {handled: boolean; data?: T})
+  | {[status: number]: (error: HttpError) => Promise<T> | T};
 
 interface ApiOptions<T> {
   endpoint: string;
@@ -45,12 +46,10 @@ interface ApiOptions<T> {
   onError?: ErrorHandler<T>;
 }
 
-const baseApi = async <T>(client: AxiosInstance, {
-  endpoint,
-  method,
-  data = null,
-  onError,
-}: ApiOptions<T>): Promise<T> => {
+const baseApi = async <T>(
+  client: AxiosInstance,
+  {endpoint, method, data = null, onError}: ApiOptions<T>,
+): Promise<T> => {
   const url = `api${endpoint}`;
   console.log('API call', client.defaults.baseURL, method, url);
 
@@ -112,7 +111,7 @@ const baseApi = async <T>(client: AxiosInstance, {
 
       if (onError instanceof Function) {
         // Error handled by generic handler
-        const result = onError(httpError) as { handled: boolean; data?: T };
+        const result = onError(httpError) as {handled: boolean; data?: T};
         if (result.handled) {
           // Error handled, no further action needed
           return result.data;
