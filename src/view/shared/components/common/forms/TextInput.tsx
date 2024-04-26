@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, {forwardRef} from 'react';
 import {
   View,
   TextInput as RNTextInput,
@@ -6,76 +6,82 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import { useController, UseControllerProps } from 'react-hook-form';
-import { AppTheme, useTheme } from '@/view/theme';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import {useController, UseControllerProps} from 'react-hook-form';
+import {AppTheme, useTheme} from '@/view/theme';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 
 interface TextInputProps extends RNTextInputProps, UseControllerProps {
   label: string;
   name: string;
   defaultValue?: string;
   bottomSheet?: boolean;
-  numberOfLines?: number;
   inputStyle?: any;
+  multiline?: boolean;
 }
 
-export const TextInput = forwardRef<RNTextInput, TextInputProps>(
-  (props, _) => {
-    const theme = useTheme().theme.appTheme;
-    const styles = getStyles(theme);
+export const TextInput = forwardRef<RNTextInput, TextInputProps>((props, _) => {
+  const theme = useTheme().theme.appTheme;
+  const styles = getStyles(theme);
 
-    const { name, label, rules, bottomSheet, numberOfLines, inputStyle, ...inputProps } = props;
+  const {
+    name,
+    label,
+    rules,
+    bottomSheet,
+    multiline,
+    inputStyle,
+    ...inputProps
+  } = props;
 
-    const { field, fieldState } = useController({ name, rules });
+  const {field, fieldState} = useController({name, rules});
 
-    const hasError = fieldState.invalid;
+  const hasError = fieldState.invalid;
 
-    return (
-      <View style={styles.container}>
-        {label && (
-          <Text style={styles.label} accessibilityLabel={label}>
-            {label}
+  return (
+    <View style={styles.container}>
+      {label && (
+        <Text style={styles.label} accessibilityLabel={label}>
+          {label}
+        </Text>
+      )}
+      {bottomSheet ? (
+        <BottomSheetTextInput
+          autoCapitalize="none"
+          textAlign="left"
+          style={[styles.input, inputStyle, hasError && styles.errorInput]}
+          onChangeText={field.onChange}
+          onBlur={field.onBlur}
+          ref={field.ref}
+          placeholderTextColor={theme.colors.disabled}
+          multiline={multiline}
+          scrollEnabled={multiline}
+          {...inputProps}
+        />
+      ) : (
+        <RNTextInput
+          autoCapitalize="none"
+          textAlign="left"
+          style={[styles.input, inputStyle, hasError && styles.errorInput]}
+          onChangeText={field.onChange}
+          onBlur={field.onBlur}
+          ref={field.ref}
+          placeholderTextColor={theme.colors.disabled}
+          multiline={multiline}
+          scrollEnabled={multiline}
+          {...inputProps}
+        />
+      )}
+
+      {hasError && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.error}>
+            {fieldState.error?.message as string}
           </Text>
-        )}
-        {bottomSheet ? (
-          <BottomSheetTextInput
-            autoCapitalize="none"
-            textAlign="left"
-            style={[styles.input, inputStyle, hasError && styles.errorInput]}
-            onChangeText={field.onChange}
-            onBlur={field.onBlur}
-            ref={field.ref}
-            placeholderTextColor={theme.colors.disabled}
-            multiline={numberOfLines && numberOfLines > 1}
-            numberOfLines={numberOfLines ?? 1}
-            {...inputProps}
-          />
-        ) : (
-          <RNTextInput
-            autoCapitalize="none"
-            textAlign="left"
-            style={[styles.input, inputStyle, hasError && styles.errorInput]}
-            onChangeText={field.onChange}
-            onBlur={field.onBlur}
-            ref={field.ref}
-            placeholderTextColor={theme.colors.disabled}
-            multiline={numberOfLines && numberOfLines > 1}
-            numberOfLines={numberOfLines ?? 1}
-            {...inputProps}
-          />
-        )}
-
-        {hasError && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.error}>
-              {fieldState.error?.message as string}
-            </Text>
-          </View>
-        )}
-      </View>
-    );
-  },
-);
+        </View>
+      )}
+    </View>
+  );
+});
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
@@ -84,7 +90,7 @@ const getStyles = (theme: AppTheme) =>
       marginBottom: 8,
     },
     container: {
-      minHeight: 100,
+      marginVertical: 8,
       justifyContent: 'center',
       backgroundColor: theme.colors.background,
     },

@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import {
   Title,
@@ -11,10 +11,10 @@ import {
   SpaceCard,
   LoadingOverlay,
 } from '@/view/shared';
-import { toDateTimeString, toDollarString } from '@/utils';
-import { Building, Space } from '@/api';
-import { useTheme, AppTheme } from '@/view/theme';
-import { useCreateAvailability } from '@/state';
+import {toDateTimeString, toDollarString} from '@/utils';
+import {Building, Space} from '@/api';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useCreateAvailability} from '@/state';
 
 // ====================================================
 // OLD FOR REFERENCING
@@ -25,14 +25,14 @@ export type ManageSpotScreenProps = {
   space: Space;
 };
 
-export const ManageSpotScreen = ({ navigation, route }) => {
-  const { building, space } = route.params as ManageSpotScreenProps;
+export const ManageSpotScreen = ({navigation, route}) => {
+  const {building, space} = route.params as ManageSpotScreenProps;
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
   const [isWhenSectionOpen, setIsWhenSectionOpen] = useState(true);
   const [isOptionsSectionOpen, setIsOptionsSectionOpen] = useState(false);
-  const { mutateAsync: createAvailability, isPending } = useCreateAvailability();
+  const {mutateAsync: createAvailability, isPending} = useCreateAvailability();
 
   // State for date range and options
   const today = new Date();
@@ -61,7 +61,7 @@ export const ManageSpotScreen = ({ navigation, route }) => {
   };
 
   const onDateRangeSelected = (startDate, endDate) => {
-    setSelectedDateRange({ startDate, endDate });
+    setSelectedDateRange({startDate, endDate});
   };
 
   const onSubmit = useCallback(async () => {
@@ -108,9 +108,7 @@ export const ManageSpotScreen = ({ navigation, route }) => {
       </View>
 
       <View style={styles.bottomArea}>
-        <Button onPress={onSubmit}>
-          <Text>Add Availability</Text>
-        </Button>
+        <Button text="Add Availability" onPress={onSubmit} />
       </View>
     </View>
   );

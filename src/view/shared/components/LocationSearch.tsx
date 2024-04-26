@@ -1,20 +1,27 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   AutocompleteRequestType,
+  GooglePlaceData,
+  GooglePlaceDetail,
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { useTheme, AppTheme } from '@/view/theme';
-import { Text } from '../components/common';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import {TouchableOpacity, StyleSheet, View} from 'react-native';
+import {useTheme, AppTheme} from '@/view/theme';
+import {Text} from '../components/common';
+import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 export type LocationSearchProps = {
-  onLocationSelected: (data: any, details: any) => void;
+  placeholder?: string;
+  onLocationSelected: (
+    data: GooglePlaceData,
+    details: GooglePlaceDetail,
+  ) => void;
   locationTypes?: AutocompleteRequestType;
 };
 
 export const LocationSearch = ({
+  placeholder,
   onLocationSelected,
   locationTypes,
 }: LocationSearchProps) => {
@@ -34,7 +41,7 @@ export const LocationSearch = ({
     <View style={styles.container}>
       <GooglePlacesAutocomplete
         ref={googlePlacesRef}
-        placeholder="Search"
+        placeholder={placeholder || 'Search'}
         styles={autoCompleteStyles(theme)}
         textInputProps={{
           onChangeText: setSearchText,

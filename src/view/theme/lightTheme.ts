@@ -12,7 +12,8 @@ export const lightTheme: AppTheme = {
     notification: '#4DB6AC',
     shadow: '#000000',
     error: '#E57373',
-    disabled: '#BDBDBD',
+    disabled: '#DDDDDD',
+    textButton: '#FFFFFF',
   },
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
-import { AppTheme, useTheme } from '@/view/theme';
-import { HorizontalGroup } from './HorizontalGroup';
+import {Text, StyleSheet, View} from 'react-native';
+import {AppTheme, useTheme} from '@/view/theme';
+import {HorizontalGroup} from './HorizontalGroup';
 
 export type SectionProps = {
   children: React.ReactNode;
@@ -31,8 +31,7 @@ export const Section = ({
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    section: {
-    },
+    section: {},
     header: {
       marginBottom: 16,
     },

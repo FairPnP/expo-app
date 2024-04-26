@@ -106,9 +106,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
               Total: ${getAvailabilityCost(1, startDate, endDate).toFixed(2)}
             </Text>
           </VerticalGroup>
-          <Button onPress={onReservePressed}>
-            <Text>Reserve</Text>
-          </Button>
+          <Button text="Reserve" onPress={onReservePressed} />
         </HorizontalGroup>
       </View>
     );
@@ -118,11 +116,11 @@ export const ViewSpotScreen = ({navigation, route}) => {
     return (
       <View style={styles.bottomArea}>
         <Button
+          text="Manage Availability"
           onPress={() =>
             navigation.navigate('ManageAvailability', {building, space})
-          }>
-          <Text>Manage Availability</Text>
-        </Button>
+          }
+        />
       </View>
     );
   };
@@ -180,9 +178,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
                   {building.city}, {building.state}, {building.country}
                 </Text>
               </VerticalGroup>
-              <Button onPress={onGetDirectionsPressed}>
-                <Text>Get Directions</Text>
-              </Button>
+              <Button text="Get Directions" onPress={onGetDirectionsPressed} />
             </HorizontalGroup>
           </Section>
           <View style={styles.separator} />

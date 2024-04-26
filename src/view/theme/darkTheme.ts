@@ -13,6 +13,7 @@ export const darkTheme: AppTheme = {
     shadow: '#000000', // Shadow can remain black
     error: '#FF8A80', // Adjusted for better visibility on dark background
     disabled: '#757575', // Visible yet distinct for disabled elements
+    textButton: '#303030', // Button text color
   },
 };
 

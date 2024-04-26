@@ -1,8 +1,8 @@
 export * from './themeContext';
 
 // src/themes/themeTypes.ts
-import { Theme as AmplifyTheme } from '@aws-amplify/ui-react-native';
-import { StatusBar } from 'react-native';
+import {Theme as AmplifyTheme} from '@aws-amplify/ui-react-native';
+import {StatusBar} from 'react-native';
 
 export interface AppTheme {
   dark: boolean;
@@ -16,6 +16,7 @@ export interface AppTheme {
     shadow: string;
     error: string;
     disabled: string;
+    textButton: string;
   };
 }
 

@@ -2,8 +2,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {HostingNavigator} from './navigation/HostingNavigator';
 import {addSharedStackScreens} from '../shared';
-import {EditParkingSpaceScreen} from './stack/EditParkingSpaceScreen';
-import {AddSpotScreen} from './stack/AddSpotScreen';
+import {EditListingScreen} from './stack/EditListingScreen';
+import {AddListingAddressScreen} from './stack/AddListingAddressScreen';
 import {ManageAvailabilityScreen} from './stack/ManageAvailabilityScreen';
 
 const Stack = createNativeStackNavigator();
@@ -22,17 +22,17 @@ export const HostingMain = () => {
         }}
       />
       <Stack.Screen
-        name="AddSpot"
-        component={AddSpotScreen}
+        name="AddListingAddress"
+        component={AddListingAddressScreen}
         options={{
-          headerTitle: 'Add Parking Space',
+          headerTitle: 'Listing Address',
         }}
       />
       <Stack.Screen
-        name="EditParkingSpace"
-        component={EditParkingSpaceScreen}
+        name="EditListing"
+        component={EditListingScreen}
         options={{
-          headerTitle: 'Edit Parking Space',
+          headerTitle: 'Listing Details',
         }}
       />
       <Stack.Screen

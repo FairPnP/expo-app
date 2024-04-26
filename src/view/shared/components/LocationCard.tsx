@@ -5,8 +5,8 @@ import {StaticMap} from './StaticMap';
 import {Text} from './common';
 
 export type LocationCardProps = {
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
   mainText: string;
   secondaryText: string;
   zoom?: number;
@@ -22,13 +22,15 @@ export const LocationCard = (props: LocationCardProps) => {
         <Text style={styles.mainText}>{props.mainText}</Text>
         <Text style={styles.secondaryText}>{props.secondaryText}</Text>
       </View>
-      <StaticMap
-        lat={props.lat}
-        lng={props.lng}
-        width={300}
-        height={225}
-        zoom={props.zoom}
-      />
+      {props.lat && props.lng && (
+        <StaticMap
+          lat={props.lat}
+          lng={props.lng}
+          width={300}
+          height={225}
+          zoom={props.zoom ?? 15}
+        />
+      )}
     </View>
   );
 };
@@ -38,13 +40,11 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flexDirection: 'column',
       alignItems: 'center',
-      backgroundColor: theme.colors.card,
-      borderRadius: 8,
-      borderWidth: 1,
       borderColor: theme.colors.border,
       padding: 20,
     },
     textContainer: {
+      marginBottom: 8,
       alignItems: 'center',
     },
     mainText: {

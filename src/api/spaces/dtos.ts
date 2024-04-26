@@ -6,12 +6,7 @@ export interface Space {
   user_id: string;
   building_id: string;
   name: string;
-  description?: string;
-  max_vehicle_size: string;
-  coverage: string;
-  height_clearance_cm?: number;
-  access_restrictions?: string;
-  parking_instructions?: string;
+  description: string;
   img_urls?: string[];
 }
 
@@ -21,12 +16,7 @@ export interface Space {
 export interface CreateSpaceRequest {
   place_id: string;
   name: string;
-  description?: string;
-  max_vehicle_size: string;
-  coverage: string;
-  height_clearance_cm?: number;
-  access_restrictions?: string;
-  parking_instructions?: string;
+  description: string;
 }
 
 export interface CreateSpaceResponse {
@@ -62,11 +52,6 @@ export interface ListSpacesResponse {
 export interface UpdateSpaceRequest {
   name?: string;
   description?: string;
-  max_vehicle_size?: string;
-  coverage?: string;
-  height_clearance_cm?: number;
-  access_restrictions?: string;
-  parking_instructions?: string;
 }
 
 export interface UpdateSpaceResponse {
