@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
-  Text,
   Title,
   SpaceCard,
   LoadingOverlay,
@@ -14,7 +13,7 @@ import {
 import {Availability, Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useCreateAvailability, useMyAvailabilities} from '@/state';
-import {toFullDateString, toISODateUTC} from '@/utils';
+import {parseDateAsLocal, toFullDateString, toISODateUTC} from '@/utils';
 import {AddAvailabilityModal, AddAvailabilityModalRef} from '../components';
 
 export type ManageAvailabilityScreenProps = {
@@ -42,7 +41,7 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
 
   //const {mutateAsync: createAvailability, isPending} = useCreateAvailability();
   const onDayPress = (day: string, availabilities: Availability[]) => {
-    setSelectedDate(new Date(day));
+    setSelectedDate(parseDateAsLocal(day));
     setSelectedAvailabilities(availabilities);
   };
 

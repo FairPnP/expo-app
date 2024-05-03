@@ -26,6 +26,12 @@ export const toISODate = (date: Date) => {
   return isoLikeDate;
 };
 
+// expects YYYY-MM-DD
+export const parseDateAsLocal = (date: string) => {
+  const [year, month, day] = date.split('-').map(part => parseInt(part));
+  return new Date(year, month - 1, day);
+};
+
 export const toISODateUTC = (date: Date) => {
   return date.toISOString().substring(0, 19);
 };

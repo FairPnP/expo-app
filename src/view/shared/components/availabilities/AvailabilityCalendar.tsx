@@ -4,7 +4,7 @@ import {Calendar} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import {useTheme} from '@/view/theme';
 import {Availability} from '@/api';
-import {toCalendarDateString} from '@/utils';
+import {parseDateAsLocal, toCalendarDateString} from '@/utils';
 
 export type AvailabilityCalendarProps = {
   style?: any;
@@ -85,7 +85,7 @@ export const AvailabilityCalendar = ({
 
   const onDayPressCb = ({dateString}) => {
     setSelectedDate(dateString);
-    const date = new Date(dateString);
+    const date = new Date(parseDateAsLocal(dateString));
     const a = availabilities?.filter(
       availability =>
         toCalendarDateString(availability.start_date) === dateString ||

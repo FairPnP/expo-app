@@ -12,8 +12,9 @@ export type ConfirmModalProps = {
 
 export const ConfirmModal = forwardRef<ModalRef, ConfirmModalProps>(
   (props, ref) => {
+    const {title, message, onConfirm, onCancel, ...modalProps} = props;
     return (
-      <StandardModal title={props.title} ref={ref}>
+      <StandardModal title={props.title} ref={ref} {...modalProps}>
         <View>
           <Text>{props.message}</Text>
           <Button text="Confirm" onPress={props.onConfirm} />

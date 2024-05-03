@@ -26,12 +26,15 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
     await deleteAvailability(availability.id);
   };
 
+  const isFuture = availability.end_date.getTime() > Date.now();
+
   return (
     <View style={styles.container}>
       <ConfirmModal
         title="Delete Availability"
         message="Are you sure you want to delete this availability?"
         onConfirm={onConfirmDelete}
+        ref={deleteModalRef}
       />
       <Card>
         <HorizontalGroup>
@@ -50,11 +53,13 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
             <Text>{'Price: $' + availability.hourly_rate.toFixed(2)}</Text>
           </VerticalGroup>
           <View>
-            <HorizontalGroup>
-              <Button text="Edit" onPress={() => {}} />
-              <View style={{width: 8}} />
-              <Button text="Delete" onPress={onDelete} />
-            </HorizontalGroup>
+            {isFuture && (
+              <HorizontalGroup>
+                <Button text="Edit" onPress={() => {}} />
+                <View style={{width: 8}} />
+                <Button text="Delete" onPress={onDelete} />
+              </HorizontalGroup>
+            )}
           </View>
         </HorizontalGroup>
       </Card>

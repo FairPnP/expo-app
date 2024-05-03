@@ -9,3 +9,4 @@ export * from './LocationCard';
 export * from './LocationSearch';
 export * from './StaticMap';
 export * from './StandardModal';
+export * from './ConfirmModal';
