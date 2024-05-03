@@ -12,15 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.fairpnp.fairpnp",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
+      },
       "entitlements": {
-        "com.apple.developer.in-app-payments": [
-          "merchant.com.fairpnp.fairpnp"
-        ]
+        "com.apple.developer.in-app-payments": ["merchant.com.fairpnp.fairpnp"]
       },
       "supportsTablet": true
     },
@@ -60,9 +59,7 @@
           "color": "#ffffff"
         }
       ],
-      [
-        "expo-location"
-      ],
+      ["expo-location"],
       [
         "expo-image-picker",
         {
