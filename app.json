@@ -16,7 +16,7 @@
     "ios": {
       "bundleIdentifier": "com.fairpnp.fairpnp",
       "config": {
-        "googleMapsApiKey": "AIzaSyCWpR0sAVKYhddtAXWYUA5engAPXNZW3BM"
+        "googleMapsApiKey": "AIzaSyCLyaEZP8HDbjZcqJOz9EXeiRXMJeGVDwU"
       },
       "entitlements": {
         "com.apple.developer.in-app-payments": ["merchant.com.fairpnp.fairpnp"]
