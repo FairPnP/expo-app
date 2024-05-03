@@ -1,21 +1,22 @@
-import { useAppMode, useSearchAvailabilities, useSearchState } from '@/state';
-import { IconButton, ListView, LoadingSpinner, Title } from '@/view/shared';
-import { AppTheme, useTheme } from '@/view/theme';
-import React, { useMemo } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchBar, SpaceListing } from '../components';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import {useAppMode, useSearchAvailabilities, useSearchState} from '@/state';
+import {IconButton, ListView, LoadingSpinner, Title} from '@/view/shared';
+import {AppTheme, useTheme} from '@/view/theme';
+import React, {useMemo} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SearchBar, SpaceListing} from '../components';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import {toISODateUTC} from '@/utils';
 
-export const ParkingHome = ({ }) => {
+export const ParkingHome = ({}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
-  const { setAppMode } = useAppMode();
+  const {setAppMode} = useAppMode();
 
   const sb = useSearchState();
-  const { data: searchResults, isPending } = useSearchAvailabilities({
-    start_date: sb.startDate.toISOString().slice(0, 19),
-    end_date: sb.endDate.toISOString().slice(0, 19),
+  const {data: searchResults, isPending} = useSearchAvailabilities({
+    start_date: toISODateUTC(sb.startDate),
+    end_date: toISODateUTC(sb.endDate),
     latitude: sb.location.latitude,
     longitude: sb.location.longitude,
     lat_delta: sb.location.latitudeDelta / 2,
@@ -28,38 +29,53 @@ export const ParkingHome = ({ }) => {
 
   const inset = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-  const listingViewHeight = Dimensions.get('window').height - inset.bottom - tabBarHeight - 72 - 100 - 4;
+  const listingViewHeight =
+    Dimensions.get('window').height -
+    inset.bottom -
+    tabBarHeight -
+    72 -
+    100 -
+    4;
 
   const windowWidth = Dimensions.get('window').width;
   const maxWidth = listingViewHeight * 0.7;
   const hPadding = Math.max(16, (windowWidth - maxWidth) / 2);
   const listingWidth = windowWidth - hPadding * 2;
-  const renderSpace = ({ item }: any) => {
-    return <SpaceListing style={{ marginVertical: 16 }} availability={item} width={listingWidth} />
+  const renderSpace = ({item}: any) => {
+    return (
+      <SpaceListing
+        style={{marginVertical: 16}}
+        availability={item}
+        width={listingWidth}
+      />
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topArea}>
-        <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500 }} />
+        <SearchBar style={{alignSelf: 'center', width: '90%', maxWidth: 500}} />
       </View>
-      <View style={{
-        paddingHorizontal: hPadding,
-        height: listingViewHeight
-      }}>
-        {isPending ? <LoadingSpinner /> :
+      <View
+        style={{
+          paddingHorizontal: hPadding,
+          height: listingViewHeight,
+        }}>
+        {isPending ? (
+          <LoadingSpinner />
+        ) : (
           <ListView
             key={listingWidth}
             data={searchResults.availabilities}
             keyExtractor={(item: any) => item.id.toString()}
             renderItem={renderSpace}
-            emptyMessage='No spaces found'
+            emptyMessage="No spaces found"
             scrollEnabled={true}
           />
-        }
+        )}
       </View>
       <View style={styles.bottomArea}>
-        <Title style={{ marginVertical: 4 }}>Manage your listings</Title>
+        <Title style={{marginVertical: 4}}>Manage your listings</Title>
         <IconButton
           icon="directions"
           text="Switch to Hosting Mode"

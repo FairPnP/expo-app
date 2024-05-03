@@ -1,4 +1,4 @@
-import {calendarDate} from '@/utils';
+import {toCalendarDateString} from '@/utils';
 import React, {useMemo, useCallback} from 'react';
 import {Dimensions} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';
@@ -28,7 +28,7 @@ export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
-    return calendarDate(date);
+    return toCalendarDateString(date);
   }, []);
 
   const state = useDaysViewState();
@@ -39,11 +39,11 @@ export const DaysView = ({onDateRangeSelected}: DayViewProps) => {
     }
 
     const markedDates = {};
-    const startDate = calendarDate(state.startDate);
-    const endDate = calendarDate(state.endDate);
+    const startDate = toCalendarDateString(state.startDate);
+    const endDate = toCalendarDateString(state.endDate);
     const currentDate = new Date(state.startDate);
     while (currentDate.getTime() <= state.endDate.getTime()) {
-      const dateStr = calendarDate(currentDate);
+      const dateStr = toCalendarDateString(currentDate);
       markedDates[dateStr] = {
         selected: true,
         selectedColor: '#2E66E7',

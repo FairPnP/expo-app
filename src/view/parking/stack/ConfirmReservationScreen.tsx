@@ -1,6 +1,6 @@
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
-import {friendlyDateRange, toDateTimeString} from '@/utils';
+import {friendlyDateRange, toDateTimeString, toISODateUTC} from '@/utils';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space, StripePaymentsAPI, getAvailabilityCost} from '@/api';
@@ -37,8 +37,8 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const handleReservation = useCallback(async () => {
     await createReservation({
       space_id: space.id,
-      start_date: startDate.toISOString().slice(0, 19),
-      end_date: endDate.toISOString().slice(0, 19),
+      start_date: toISODateUTC(startDate),
+      end_date: toISODateUTC(endDate),
     });
 
     Alert.alert('Success', 'Reservation created.');

@@ -58,7 +58,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
   };
 
   const onGetDirectionsPressed = () => {
-    openMap(building.name, building.latitude, building.longitude);
+    openMap(building);
   };
 
   const [dimensions, setDimensions] = useState(
@@ -125,6 +125,19 @@ export const ViewSpotScreen = ({navigation, route}) => {
     );
   };
 
+  const renderReviewArea = () => {
+    return (
+      <HorizontalGroup style={{width: 124, marginTop: 16}}>
+        <ReviewStars stars={summary?.average_stars} />
+        <Text>{' • '}</Text>
+        <ReviewsLabel
+          totalReviews={summary?.total_reviews}
+          onPress={onReviewPressed}
+        />
+      </HorizontalGroup>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView bounces={false} style={styles.container}>
@@ -140,20 +153,8 @@ export const ViewSpotScreen = ({navigation, route}) => {
         />
         <View style={styles.contentArea}>
           <Section title={space.name}>
-            <Title>{building.name}</Title>
             <Text>{space.description}</Text>
-            <HorizontalGroup
-              style={{
-                justifyContent: 'flex-start',
-                marginTop: 8,
-              }}>
-              <ReviewStars stars={summary?.average_stars} />
-              <Text>{' • '}</Text>
-              <ReviewsLabel
-                totalReviews={summary?.total_reviews}
-                onPress={onReviewPressed}
-              />
-            </HorizontalGroup>
+            {renderReviewArea()}
           </Section>
           <View style={styles.separator} />
           <UserProfileLabel
@@ -173,7 +174,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
             />
             <HorizontalGroup>
               <VerticalGroup>
-                <Text>{building.name}</Text>
+                <Text style={{fontWeight: 'bold'}}>{building.name}</Text>
                 <Text>
                   {building.city}, {building.state}, {building.country}
                 </Text>
@@ -182,22 +183,14 @@ export const ViewSpotScreen = ({navigation, route}) => {
             </HorizontalGroup>
           </Section>
           <View style={styles.separator} />
-          <Section title="Amenities">
-            <Text>TODO: List of amenities</Text>
-          </Section>
-          <View style={styles.separator} />
-          <Section title="Rules">
-            <Text>TODO: List of rules</Text>
-          </Section>
-          <View style={styles.separator} />
           <Section title="Cancellation Policy">
-            <Text>TODO: Cancellation policy</Text>
+            <Text>Free cancellation within 24 hours of reservation(?)</Text>
           </Section>
           <View style={styles.separator} />
           <Section style={{marginBottom: 16}}>
             <HorizontalGroup style={{justifyContent: 'flex-start'}}>
               <FontAwesome style={{paddingRight: 12}} name="flag" size={16} />
-              <TextLink onPress={() => {}}>Report this listing</TextLink>
+              <TextLink onPress={() => {}}>Report this listing (todo)</TextLink>
             </HorizontalGroup>
           </Section>
         </View>

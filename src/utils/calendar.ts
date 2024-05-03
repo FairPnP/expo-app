@@ -1,5 +1,33 @@
-export const calendarDate = (date: Date) => {
-  return date.toISOString().split('T')[0];
+export const toCalendarDateString = (date: Date) => {
+  const year = date.getFullYear(); // Gets the full year (e.g., 2024)
+  const month = date.getMonth() + 1; // getMonth() returns month index (0-11), so add 1
+  const day = date.getDate(); // Gets the day of the month (1-31)
+
+  // Pad the month and day with a leading zero if necessary
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDay = day < 10 ? `0${day}` : day;
+
+  // Combine the parts into a YYYY-MM-DD formatted string
+  const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+  return formattedDate;
+};
+
+export const toISODate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Ensures two digits
+  const day = date.getDate().toString().padStart(2, '0');
+
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+
+  const isoLikeDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  return isoLikeDate;
+};
+
+export const toISODateUTC = (date: Date) => {
+  return date.toISOString().substring(0, 19);
 };
 
 export const friendlyDateRange = (start: Date, end: Date) => {

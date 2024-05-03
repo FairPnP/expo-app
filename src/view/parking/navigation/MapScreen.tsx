@@ -1,22 +1,14 @@
-import React, {
-  Suspense,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-} from 'react-native';
-import { useTheme, AppTheme } from '@/view/theme';
-import { useSearchAvailabilities, useSearchState, useSpace } from '@/state';
-import { getAvailabilityCost } from '@/api';
-import { AvailabilityData, LoadingSpinner } from '@/view/shared';
-import { MapCard, MapMarker, SearchBar } from '../components';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { Region } from 'react-native-maps';
+import React, {Suspense, useCallback, useMemo, useState} from 'react';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useSearchAvailabilities, useSearchState, useSpace} from '@/state';
+import {getAvailabilityCost} from '@/api';
+import {AvailabilityData, LoadingSpinner} from '@/view/shared';
+import {MapCard, MapMarker, SearchBar} from '../components';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import {Region} from 'react-native-maps';
+import {toISODateUTC} from '@/utils';
 
 const AvailabilityMap = React.lazy(() =>
   import('@/view/shared/components/availabilities/AvailabilityMap').then(
@@ -26,7 +18,7 @@ const AvailabilityMap = React.lazy(() =>
   ),
 );
 
-export const MapScreen = ({ }) => {
+export const MapScreen = ({}) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const inset = useSafeAreaInsets();
@@ -36,15 +28,15 @@ export const MapScreen = ({ }) => {
 
   const sb = useSearchState();
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
-  const { data: searchResults } = useSearchAvailabilities({
-    start_date: sb.startDate.toISOString().slice(0, 19),
-    end_date: sb.endDate.toISOString().slice(0, 19),
+  const {data: searchResults} = useSearchAvailabilities({
+    start_date: toISODateUTC(sb.startDate),
+    end_date: toISODateUTC(sb.endDate),
     latitude: sb.location.latitude,
     longitude: sb.location.longitude,
     lat_delta: sb.location.latitudeDelta / 2,
     long_delta: sb.location.longitudeDelta / 2,
   });
-  const { data: selectedSpace } = useSpace(selectedMarker?.space.id);
+  const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
 
   const markers = useMemo(() => {
     const list: AvailabilityData[] = [];
@@ -108,7 +100,7 @@ export const MapScreen = ({ }) => {
           availability={marker.availability}
           startDate={sb.startDate}
           endDate={sb.endDate}
-          style={{ width: "100%", maxWidth: 420, alignSelf: 'center' }}
+          style={{width: '100%', maxWidth: 420, alignSelf: 'center'}}
         />
       );
     },
@@ -129,9 +121,9 @@ export const MapScreen = ({ }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <SearchBar style={{ alignSelf: 'center', width: '90%', maxWidth: 500, }} />
+        <SearchBar style={{alignSelf: 'center', width: '90%', maxWidth: 500}} />
       </View>
-      <View style={[styles.map, { height: mapHeight }]}>
+      <View style={[styles.map, {height: mapHeight}]}>
         <Suspense fallback={<LoadingSpinner />}>
           <AvailabilityMap
             location={sb.location}

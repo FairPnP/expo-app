@@ -1,17 +1,21 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {
+  Text,
   Title,
   SpaceCard,
   LoadingOverlay,
   AvailabilityCalendar,
   ListView,
   AvailabilityItem,
+  HorizontalGroup,
+  Button,
 } from '@/view/shared';
 import {Availability, Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
-import {useMyAvailabilities} from '@/state';
-import {toDateString, toFullDateString} from '@/utils';
+import {useCreateAvailability, useMyAvailabilities} from '@/state';
+import {toFullDateString, toISODateUTC} from '@/utils';
+import {AddAvailabilityModal, AddAvailabilityModalRef} from '../components';
 
 export type ManageAvailabilityScreenProps = {
   building: Building;
@@ -25,11 +29,16 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
   const [selectedAvailabilities, setSelectedAvailabilities] = useState<
     Availability[]
   >([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(undefined);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const modalRef = React.createRef<AddAvailabilityModalRef>();
+  const {mutateAsync: createAvailability, isPending: isCreating} =
+    useCreateAvailability();
 
   const {data: availabilties, isLoading} = useMyAvailabilities({
     space_id: space.id,
   });
+
+  const showOverlay = isLoading || isCreating;
 
   //const {mutateAsync: createAvailability, isPending} = useCreateAvailability();
   const onDayPress = (day: string, availabilities: Availability[]) => {
@@ -41,9 +50,28 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
     return <AvailabilityItem availability={item} />;
   };
 
+  const onAddAvailabilityPressed = () => {
+    modalRef.current?.show(selectedDate);
+  };
+
+  const onAddAvailabilityConfirm = async (
+    startDate: Date,
+    endDate: Date,
+    price: number,
+  ) => {
+    await createAvailability({
+      space_id: space.id,
+      start_date: toISODateUTC(startDate),
+      end_date: toISODateUTC(endDate),
+      hourly_rate: price,
+      // min_hours: options.minHours,
+    });
+    modalRef.current?.hide();
+  };
+
   return (
     <View style={styles.container}>
-      <LoadingOverlay visible={isLoading} />
+      <LoadingOverlay visible={showOverlay} />
       <View style={styles.imageContainer}>
         <SpaceCard building={building} space={space} style={styles.spaceCard} />
       </View>
@@ -53,8 +81,15 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
         onDayPress={onDayPress}
       />
       {selectedDate && (
-        <View>
-          <Title>{toFullDateString(selectedDate)}</Title>
+        <View style={styles.bottomArea}>
+          <HorizontalGroup>
+            <Title>{toFullDateString(selectedDate)}</Title>
+            <Button
+              text="Add Availability"
+              onPress={onAddAvailabilityPressed}
+            />
+          </HorizontalGroup>
+          <View style={{height: 16}} />
           <ListView
             data={selectedAvailabilities}
             renderItem={renderAvailability}
@@ -63,6 +98,10 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
           />
         </View>
       )}
+      <AddAvailabilityModal
+        onDatesSelected={onAddAvailabilityConfirm}
+        ref={modalRef}
+      />
     </View>
   );
 };
@@ -83,23 +122,11 @@ const getStyles = (theme: AppTheme) =>
       borderBottomWidth: 1,
       marginVertical: 8,
     },
-    card: {
-      padding: 8,
-      borderRadius: 8,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-      backgroundColor: theme.colors.card,
-      marginVertical: 8,
-    },
-    cardTextContainer: {
-      paddingHorizontal: 4,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
     bottomArea: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      paddingVertical: 4,
-      paddingHorizontal: 8,
+      padding: 16,
+      flex: 1,
+    },
+    modal: {
+      width: 300,
     },
   });

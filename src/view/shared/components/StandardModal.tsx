@@ -1,13 +1,19 @@
-import { KeyboardAvoidingView, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { AppTheme, useTheme } from '@/view/theme'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Title } from './common';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import {AppTheme, useTheme} from '@/view/theme';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {Title} from './common';
 
 export interface ModalProps {
   title?: string;
   children: React.ReactNode;
-};
+}
 
 export interface ModalRef {
   show: () => void;
@@ -19,7 +25,7 @@ export const StandardModal = forwardRef<ModalRef, ModalProps>((props, ref) => {
   const styles = getStyles(theme);
   const [isVisible, setIsVisible] = useState(false);
 
-  const { title, children, ...modalProps } = props;
+  const {title, children, ...modalProps} = props;
 
   useImperativeHandle(ref, () => ({
     show() {
@@ -30,46 +36,46 @@ export const StandardModal = forwardRef<ModalRef, ModalProps>((props, ref) => {
     },
   }));
 
-
   return (
-    <Modal
-      visible={isVisible}
-      transparent={true}
-      {...modalProps}
-    >
-      <KeyboardAvoidingView behavior="padding"
-        style={styles.background}>
+    <Modal visible={isVisible} transparent={true} {...modalProps}>
+      <KeyboardAvoidingView behavior="padding" style={styles.background}>
         <View style={styles.modal}>
           <View style={styles.header}>
             <Title>{title}</Title>
-            <TouchableOpacity activeOpacity={1} onPress={() => setIsVisible(false)}>
-              <MaterialCommunityIcons name="close" size={24} color={theme.colors.text} />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => setIsVisible(false)}>
+              <MaterialCommunityIcons
+                name="close"
+                size={24}
+                color={theme.colors.text}
+              />
             </TouchableOpacity>
           </View>
           {children}
         </View>
       </KeyboardAvoidingView>
-    </Modal >
-  )
+    </Modal>
+  );
 });
 
-const getStyles = (theme: AppTheme) => StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    backgroundColor: theme.colors.background,
-    borderRadius: 16,
-    padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    background: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modal: {
+      backgroundColor: theme.colors.background,
+      borderRadius: 16,
+      padding: 16,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+  });

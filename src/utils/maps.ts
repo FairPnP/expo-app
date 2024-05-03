@@ -1,12 +1,9 @@
-import {Linking, Platform} from 'react-native';
+import {Building} from '@/api';
+import {Linking} from 'react-native';
 
-export const openMap = (label: string, lat: number, lng: number) => {
-  const scheme = Platform.select({ios: 'maps://0,0?q=', android: 'geo:0,0?q='});
-  const latLng = `${lat},${lng}`;
-  const url = Platform.select({
-    ios: `${scheme}${label}@${latLng}`,
-    android: `${scheme}${latLng}(${label})`,
-  });
+export const openMap = (building: Building) => {
+  const query = `${building.name}, ${building.city}, ${building.state}, ${building.postal_code}`;
+  const googleMapsWebUrl = `https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${building.place_id}`;
 
-  Linking.openURL(url);
+  Linking.openURL(googleMapsWebUrl);
 };

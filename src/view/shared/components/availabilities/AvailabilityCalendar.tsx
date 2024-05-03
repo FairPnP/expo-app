@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
@@ -22,12 +22,13 @@ export const AvailabilityCalendar = ({
 
   const markedDates = useMemo(() => {
     const markers: MarkedDates = {};
+    if (!availabilities) return markers;
 
     for (const availability of availabilities) {
       const startDate = new Date(availability.start_date);
       const endDate = new Date(availability.end_date);
-      const startDay = startDate.toISOString().slice(0, 10);
-      const endDay = endDate.toISOString().slice(0, 10);
+      const startDay = toCalendarDateString(startDate);
+      const endDay = toCalendarDateString(endDate);
       if (startDay === endDay) {
         markers[startDay] = {
           periods: [
@@ -62,7 +63,7 @@ export const AvailabilityCalendar = ({
         for (let i = 1; i < daysBetween; i++) {
           const day = new Date(startDate);
           day.setDate(day.getDate() + i);
-          const dayString = day.toISOString().slice(0, 10);
+          const dayString = toCalendarDateString(day);
           markers[dayString] = {
             periods: [{color: theme.colors.primary}],
           };
@@ -82,6 +83,24 @@ export const AvailabilityCalendar = ({
     return markers;
   }, [availabilities, selectedDate]);
 
+  const onDayPressCb = ({dateString}) => {
+    setSelectedDate(dateString);
+    const date = new Date(dateString);
+    const a = availabilities?.filter(
+      availability =>
+        toCalendarDateString(availability.start_date) === dateString ||
+        toCalendarDateString(availability.end_date) === dateString ||
+        (date >= availability.start_date && date <= availability.end_date),
+    );
+    onDayPress?.(dateString, a);
+  };
+
+  useEffect(() => {
+    const date = toCalendarDateString(new Date());
+    console.log(date);
+    onDayPressCb({dateString: date});
+  }, [availabilities]);
+
   return (
     <View style={[styles.container, style]}>
       <Calendar
@@ -90,18 +109,7 @@ export const AvailabilityCalendar = ({
         markedDates={markedDates}
         allowSelectionOutOfRange={true}
         minDate={new Date().toDateString()}
-        onDayPress={({dateString}) => {
-          setSelectedDate(dateString);
-          const date = new Date(dateString);
-          const a = availabilities.filter(
-            availability =>
-              toCalendarDateString(availability.start_date) === dateString ||
-              toCalendarDateString(availability.end_date) === dateString ||
-              (date >= availability.start_date &&
-                date <= availability.end_date),
-          );
-          onDayPress?.(dateString, a);
-        }}
+        onDayPress={onDayPressCb}
       />
     </View>
   );

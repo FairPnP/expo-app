@@ -30,7 +30,7 @@ export const addSharedStackScreens = (Stack: any) => {
         name="SpaceReviews"
         component={SpaceReviewsScreen}
         options={{
-          headerTitle: 'Space Reviews',
+          headerTitle: 'Listing Reviews',
         }}
       />
       <Stack.Screen

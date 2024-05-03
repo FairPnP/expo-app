@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Card, HorizontalGroup, ImageDownload, Text, VerticalGroup } from '../common';
-import { useTheme, AppTheme } from '@/view/theme';
-import { Building, Space } from '@/api';
-import { useSpaceSummary } from '@/state';
-import { ReviewStars, ReviewsLabel } from '../reviews';
+import {View, StyleSheet} from 'react-native';
+import {
+  Card,
+  HorizontalGroup,
+  ImageDownload,
+  Text,
+  VerticalGroup,
+} from '../common';
+import {useTheme, AppTheme} from '@/view/theme';
+import {Building, Space} from '@/api';
+import {useSpaceSummary} from '@/state';
+import {ReviewStars, ReviewsLabel} from '../reviews';
 
 export type SpaceCardProps = {
   building: Building;
@@ -12,11 +18,11 @@ export type SpaceCardProps = {
   style?: any;
 };
 
-export const SpaceCard = ({ building, space, style }: SpaceCardProps) => {
+export const SpaceCard = ({building, space, style}: SpaceCardProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
 
-  const { data: summary } = useSpaceSummary(space?.id);
+  const {data: summary} = useSpaceSummary(space?.id);
 
   return (
     <View style={[styles.container, style]}>
@@ -29,7 +35,9 @@ export const SpaceCard = ({ building, space, style }: SpaceCardProps) => {
           />
           <VerticalGroup style={styles.textContainer}>
             <View>
-              <Text style={{ fontWeight: 'bold' }}>{space?.name}</Text>
+              <Text style={{fontWeight: 'bold'}} numberOfLines={1}>
+                {space?.name}
+              </Text>
               <Text>{building?.name}</Text>
             </View>
             <HorizontalGroup>

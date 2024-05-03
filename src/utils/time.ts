@@ -81,7 +81,3 @@ export const toFullDateString = (date: Date) => {
     year: 'numeric',
   });
 };
-
-export const toCalendarDateString = (date: Date) => {
-  return date.toISOString().substring(0, 10);
-};

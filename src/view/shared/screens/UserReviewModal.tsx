@@ -1,4 +1,3 @@
-import {Modal, StyleSheet, View} from 'react-native';
 import React, {forwardRef, useCallback} from 'react';
 import {
   Button,
@@ -8,7 +7,6 @@ import {
   TextInput,
   Text,
   LoadingOverlay,
-  Title,
 } from '../components';
 import {FormProvider, useForm} from 'react-hook-form';
 import {useCreateUserReview} from '@/state';

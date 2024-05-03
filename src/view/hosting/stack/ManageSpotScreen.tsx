@@ -11,7 +11,7 @@ import {
   SpaceCard,
   LoadingOverlay,
 } from '@/view/shared';
-import {toDateTimeString, toDollarString} from '@/utils';
+import {toDateTimeString, toDollarString, toISODateUTC} from '@/utils';
 import {Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useCreateAvailability} from '@/state';
@@ -67,8 +67,8 @@ export const ManageSpotScreen = ({navigation, route}) => {
   const onSubmit = useCallback(async () => {
     await createAvailability({
       space_id: space.id,
-      start_date: selectedDateRange.startDate.toISOString().slice(0, 19),
-      end_date: selectedDateRange.endDate.toISOString().slice(0, 19),
+      start_date: toISODateUTC(selectedDateRange.startDate),
+      end_date: toISODateUTC(selectedDateRange.endDate),
       hourly_rate: +options.hourlyRate,
       // min_hours: options.minHours,
     });

@@ -15,16 +15,17 @@ export const NumberInput = forwardRef<RNTextInput, NumberInputProps>(
     const {name, label, rules, ...inputProps} = props;
     const {field, fieldState} = useController({name, rules});
 
-    const [inputValue, setInputValue] = useState(field.value.toString());
+    const [inputValue, setInputValue] = useState(field.value?.toString());
     const hasError = fieldState.invalid;
 
     useEffect(() => {
-      setInputValue(field.value.toString());
+      setInputValue(field.value?.toString());
     }, [field.value]);
 
     const handleInputChange = (text: string) => {
       const numericValue = text.replace(/[^0-9.]/g, '');
       setInputValue(numericValue);
+      field.onChange(numericValue);
     };
 
     const handleBlur = () => {
@@ -61,13 +62,12 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: -1,
       justifyContent: 'center',
-      padding: 8,
-      backgroundColor: theme.colors.card,
     },
     label: {
       color: theme.colors.text,
-      margin: 20,
+      margin: 12,
       marginLeft: 0,
+      fontSize: 16,
     },
     input: {
       backgroundColor: theme.colors.background,
