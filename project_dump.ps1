@@ -1,4 +1,4 @@
-$srcDirectory = ".\src\view"
+$srcDirectory = ".\src\api"
 $outputFile = ".\project_dump.txt"
 
 # Clear the output file
