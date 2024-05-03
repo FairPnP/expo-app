@@ -65,3 +65,22 @@ export const friendlyDateRange = (start: Date, end: Date) => {
   }
   return str.join(' ');
 };
+
+export const calendarColors = [
+  '#FF5733', // Red
+  '#33FF57', // Green
+  '#3357FF', // Blue
+  '#FFFF33', // Yellow
+  '#FF33FF', // Magenta
+  '#33FFFF', // Cyan
+  '#FF5733', // Red-Orange
+  '#8B00FF', // Violet
+  '#00FFFF', // Aqua
+  '#FF007F', // Rose
+  '#00FF7F', // Spring Green
+  '#FF7F00', // Orange
+  '#7F00FF', // Purple
+  '#7FFF00', // Chartreuse
+  '#007FFF', // Azure
+  '#FF7F7F', // Pale Red
+];

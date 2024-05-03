@@ -20,7 +20,7 @@ type FormValues = {
 };
 
 export interface AddAvailabilityModalRef {
-  show: (startDate: Date) => void;
+  show: (startDate: Date, endDate?: Date, price?: number) => void;
   hide: () => void;
 }
 
@@ -30,16 +30,16 @@ export const AddAvailabilityModal = forwardRef<
 >((props, ref) => {
   const modalRef = React.createRef<ModalRef>();
   const formMethods = useForm<FormValues>({
-    defaultValues: {price: '5'},
     mode: 'onChange',
   });
 
   useImperativeHandle(ref, () => ({
-    show(startDate: Date) {
-      startDate.setHours(12, 0, 0, 0);
-      const endDate = new Date(startDate);
-      endDate.setHours(startDate.getHours() + 4);
-      formMethods.reset({startDate, endDate});
+    show(startDate: Date, endDate?: Date, price?: number) {
+      if (!endDate) {
+        endDate = new Date(startDate);
+        endDate.setHours(startDate.getHours() + 12);
+      }
+      formMethods.reset({startDate, endDate, price: price?.toString()});
       modalRef.current?.show();
     },
     hide() {

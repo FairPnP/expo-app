@@ -17,6 +17,7 @@ export const ConfirmModal = forwardRef<ModalRef, ConfirmModalProps>(
       <StandardModal title={props.title} ref={ref} {...modalProps}>
         <View>
           <Text>{props.message}</Text>
+          <View style={{height: 16}} />
           <Button text="Confirm" onPress={props.onConfirm} />
         </View>
       </StandardModal>

@@ -6,7 +6,6 @@ import {
   LoadingOverlay,
   AvailabilityCalendar,
   ListView,
-  AvailabilityItem,
   HorizontalGroup,
   Button,
 } from '@/view/shared';
@@ -14,7 +13,12 @@ import {Availability, Building, Space} from '@/api';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useCreateAvailability, useMyAvailabilities} from '@/state';
 import {parseDateAsLocal, toFullDateString, toISODateUTC} from '@/utils';
-import {AddAvailabilityModal, AddAvailabilityModalRef} from '../components';
+import {
+  AddAvailabilityModal,
+  AddAvailabilityModalRef,
+  AvailabilityItem,
+} from '../components';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export type ManageAvailabilityScreenProps = {
   building: Building;
@@ -50,7 +54,9 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
   };
 
   const onAddAvailabilityPressed = () => {
-    modalRef.current?.show(selectedDate);
+    const startDate = new Date(selectedDate);
+    startDate.setHours(8);
+    modalRef.current?.show(startDate);
   };
 
   const onAddAvailabilityConfirm = async (
@@ -75,28 +81,30 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
         <SpaceCard building={building} space={space} style={styles.spaceCard} />
       </View>
       <View style={styles.separator} />
-      <AvailabilityCalendar
-        availabilities={availabilties?.availability}
-        onDayPress={onDayPress}
-      />
-      {selectedDate && (
-        <View style={styles.bottomArea}>
-          <HorizontalGroup>
-            <Title>{toFullDateString(selectedDate)}</Title>
-            <Button
-              text="Add Availability"
-              onPress={onAddAvailabilityPressed}
+      <ScrollView>
+        <AvailabilityCalendar
+          availabilities={availabilties?.availability}
+          onDayPress={onDayPress}
+        />
+        {selectedDate && (
+          <View style={styles.bottomArea}>
+            <HorizontalGroup>
+              <Title>{toFullDateString(selectedDate)}</Title>
+              <Button
+                text="Add Availability"
+                onPress={onAddAvailabilityPressed}
+              />
+            </HorizontalGroup>
+            <View style={{height: 16}} />
+            <ListView
+              data={selectedAvailabilities}
+              renderItem={renderAvailability}
+              keyExtractor={item => item.id}
+              emptyMessage="No availability booked"
             />
-          </HorizontalGroup>
-          <View style={{height: 16}} />
-          <ListView
-            data={selectedAvailabilities}
-            renderItem={renderAvailability}
-            keyExtractor={item => item.id}
-            emptyMessage="No availability booked"
-          />
-        </View>
-      )}
+          </View>
+        )}
+      </ScrollView>
       <AddAvailabilityModal
         onDatesSelected={onAddAvailabilityConfirm}
         ref={modalRef}
@@ -119,10 +127,12 @@ const getStyles = (theme: AppTheme) =>
     separator: {
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
-      marginVertical: 8,
+      marginVertical: 2,
     },
     bottomArea: {
-      padding: 16,
+      paddingTop: 16,
+      paddingBottom: 32,
+      paddingHorizontal: 16,
       flex: 1,
     },
     modal: {

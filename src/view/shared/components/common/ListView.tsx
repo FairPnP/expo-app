@@ -1,16 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { AppTheme, useTheme } from '@/view/theme';
-import { FlashList } from '@shopify/flash-list';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {AppTheme, useTheme} from '@/view/theme';
+import {FlashList} from '@shopify/flash-list';
 
 export type ListViewProps<T> = {
   data: T[];
-  renderItem: ({ item }: { item: T }) => JSX.Element;
+  renderItem: ({item}: {item: T}) => JSX.Element;
   emptyMessage: string;
   keyExtractor?: (item: T, index: number) => string;
   style?: any;
   scrollEnabled?: boolean;
   separatorComponent?: React.ReactNode;
+  itemSize?: number;
 };
 
 export const ListView = <T extends unknown>({
@@ -21,6 +22,7 @@ export const ListView = <T extends unknown>({
   style,
   scrollEnabled,
   separatorComponent,
+  itemSize,
 }: ListViewProps<T>) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
@@ -31,7 +33,7 @@ export const ListView = <T extends unknown>({
     }
 
     return <View style={styles.separator} />;
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -46,7 +48,7 @@ export const ListView = <T extends unknown>({
           ItemSeparatorComponent={renderSeparator}
           keyExtractor={keyExtractor}
           contentContainerStyle={style}
-          estimatedItemSize={300}
+          estimatedItemSize={itemSize ?? 300}
         />
       )}
     </View>

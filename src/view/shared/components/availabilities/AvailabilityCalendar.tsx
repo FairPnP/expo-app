@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {MarkedDates} from 'react-native-calendars/src/types';
 import {useTheme} from '@/view/theme';
 import {Availability} from '@/api';
-import {parseDateAsLocal, toCalendarDateString} from '@/utils';
+import {calendarColors, parseDateAsLocal, toCalendarDateString} from '@/utils';
 
 export type AvailabilityCalendarProps = {
   style?: any;
@@ -21,67 +21,49 @@ export const AvailabilityCalendar = ({
   const [selectedDate, setSelectedDate] = useState<string>(undefined);
 
   const markedDates = useMemo(() => {
-    const markers: MarkedDates = {};
-    if (!availabilities) return markers;
+    if (!availabilities) return {};
 
+    const markers = {};
+    const dayInMillis = 1000 * 60 * 60 * 24; // number of milliseconds in a day
+
+    let idx = 0;
     for (const availability of availabilities) {
       const startDate = new Date(availability.start_date);
       const endDate = new Date(availability.end_date);
       const startDay = toCalendarDateString(startDate);
       const endDay = toCalendarDateString(endDate);
-      if (startDay === endDay) {
-        markers[startDay] = {
-          periods: [
-            {
-              color: theme.colors.primary,
-              startingDay: true,
-              endingDay: true,
-            },
-          ],
-        };
-      } else {
-        markers[startDay] = {
-          periods: [
-            {
-              color: theme.colors.primary,
-              startingDay: true,
-            },
-          ],
-        };
-        markers[endDay] = {
-          periods: [
-            {
-              color: theme.colors.primary,
-              endingDay: true,
-            },
-          ],
-        };
+      const color = calendarColors[idx++ % calendarColors.length];
 
-        const daysBetween = Math.round(
-          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
-        for (let i = 1; i < daysBetween; i++) {
-          const day = new Date(startDate);
-          day.setDate(day.getDate() + i);
-          const dayString = toCalendarDateString(day);
-          markers[dayString] = {
-            periods: [{color: theme.colors.primary}],
-          };
+      if (startDay === endDay) {
+        const period = {color, startingDay: true, endingDay: true};
+        markers[startDay] = markers[startDay] || {periods: []};
+        markers[startDay].periods.push(period);
+      } else {
+        markers[startDay] = markers[startDay] || {periods: []};
+        markers[startDay].periods.push({color, startingDay: true});
+
+        markers[endDay] = markers[endDay] || {periods: []};
+        markers[endDay].periods.push({color, endingDay: true});
+
+        let currentDate = new Date(startDate.getTime() + dayInMillis);
+        while (currentDate < endDate) {
+          const dayString = toCalendarDateString(currentDate);
+          if (dayString !== startDay && dayString !== endDay) {
+            markers[dayString] = markers[dayString] || {periods: []};
+            markers[dayString].periods.push({color});
+          }
+          currentDate = new Date(currentDate.getTime() + dayInMillis);
         }
       }
     }
 
     if (selectedDate) {
-      if (!markers[selectedDate]) {
-        markers[selectedDate] = {
-          selected: true,
-        };
-      } else {
-        markers[selectedDate].selected = true;
-      }
+      markers[selectedDate] = markers[selectedDate] || {selected: false};
+      markers[selectedDate].selected = true;
     }
+
     return markers;
-  }, [availabilities, selectedDate]);
+  }, [availabilities, selectedDate, calendarColors]);
 
   const onDayPressCb = ({dateString}) => {
     setSelectedDate(dateString);
@@ -96,13 +78,18 @@ export const AvailabilityCalendar = ({
   };
 
   useEffect(() => {
-    const date = toCalendarDateString(new Date());
-    console.log(date);
+    let date = selectedDate;
+    if (!date) {
+      date = toCalendarDateString(new Date());
+    }
     onDayPressCb({dateString: date});
-  }, [availabilities]);
+    // this also handles refresh when availabilities change
+  }, [availabilities, selectedDate]);
+
+  let width = Math.round(Dimensions.get('window').width);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, {width: width}, style]}>
       <Calendar
         horizontal={true}
         markingType="multi-period"
@@ -116,5 +103,5 @@ export const AvailabilityCalendar = ({
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {alignSelf: 'center'},
 });

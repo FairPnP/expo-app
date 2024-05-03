@@ -19,16 +19,9 @@ export const useUpdateAvailability = () => {
     },
     onSuccess: updatedAvailability => {
       // Invalidate and refetch availabilities query to update the list
-      // queryClient.invalidateQueries({queryKey: [MY_AVAILABILITIES_QUERY_KEY]});
-
-      // Update the individual availability in the cache if needed
-      queryClient.setQueryData(
-        [MY_AVAILABILITIES_QUERY_KEY, updatedAvailability.id],
-        updatedAvailability,
-      );
-
-      // Additional handling if there are other queries that depend on this availability's data
+      queryClient.invalidateQueries({
+        queryKey: [MY_AVAILABILITIES_QUERY_KEY, updatedAvailability.space_id],
+      });
     },
-    // Optional: onError, onMutate, etc.
   });
 };

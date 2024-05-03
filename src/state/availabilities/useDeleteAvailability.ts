@@ -11,7 +11,9 @@ export const useDeleteAvailability = () => {
     },
     onSuccess: () => {
       // Invalidate and refetch availabilities query to update the list
-      queryClient.invalidateQueries({queryKey: [MY_AVAILABILITIES_QUERY_KEY]});
+      queryClient.invalidateQueries({
+        queryKey: [MY_AVAILABILITIES_QUERY_KEY],
+      });
     },
   });
 };
