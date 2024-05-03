@@ -56,6 +56,9 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
   const onAddAvailabilityPressed = () => {
     const startDate = new Date(selectedDate);
     startDate.setHours(8);
+    if (startDate < new Date()) {
+      startDate.setHours(new Date().getHours() + 1);
+    }
     modalRef.current?.show(startDate);
   };
 

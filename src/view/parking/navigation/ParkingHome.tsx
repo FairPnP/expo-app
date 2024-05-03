@@ -75,7 +75,7 @@ export const ParkingHome = ({}) => {
         )}
       </View>
       <View style={styles.bottomArea}>
-        <Title style={{marginVertical: 4}}>Manage your listings</Title>
+        <Title style={{marginVertical: 4}}>Looking to host?</Title>
         <IconButton
           icon="directions"
           text="Switch to Hosting Mode"

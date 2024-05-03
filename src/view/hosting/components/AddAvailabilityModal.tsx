@@ -37,7 +37,7 @@ export const AddAvailabilityModal = forwardRef<
     show(startDate: Date, endDate?: Date, price?: number) {
       if (!endDate) {
         endDate = new Date(startDate);
-        endDate.setHours(startDate.getHours() + 12);
+        endDate.setHours(startDate.getHours() + 8);
       }
       formMethods.reset({startDate, endDate, price: price?.toString()});
       modalRef.current?.show();

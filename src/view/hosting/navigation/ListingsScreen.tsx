@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Text,
   LoadingSpinner,
@@ -7,11 +7,13 @@ import {
   InfiniteListView,
   Button,
   ViewSpotScreenProps,
+  Title,
+  IconButton,
 } from '@/view/shared';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {Building, Space} from '@/api';
-import {useBuildings, useMySpaces} from '@/state';
+import {useAppMode, useBuildings, useMySpaces} from '@/state';
 import {MySpot} from '../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -21,6 +23,7 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
   const navigation = useNavigation<any>();
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
+  const {setAppMode} = useAppMode();
 
   const {spaces, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading} =
     useMySpaces(5);
@@ -58,6 +61,10 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
     return <Button text="Add Listing" onPress={onAddListing} />;
   };
 
+  const onSwitchToParking = () => {
+    setAppMode('parking');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Section title="My Listings" titleComponent={titleComponent}>
@@ -76,6 +83,14 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
           />
         )}
       </Section>
+      <View style={styles.bottomArea}>
+        <Title style={{marginVertical: 4}}>Looking for parking?</Title>
+        <IconButton
+          icon="directions"
+          text="Switch to Parking Mode"
+          onPress={onSwitchToParking}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -87,5 +102,15 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
       paddingTop: 32,
       paddingHorizontal: 16,
+    },
+    bottomArea: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
+      height: 100,
+      paddingHorizontal: 8,
+      backgroundColor: theme.colors.background,
+      borderTopColor: theme.colors.border,
+      borderTopWidth: 1,
     },
   });
