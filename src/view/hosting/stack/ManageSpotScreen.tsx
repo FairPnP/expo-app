@@ -69,7 +69,7 @@ export const ManageSpotScreen = ({navigation, route}) => {
       space_id: space.id,
       start_date: toISODateUTC(selectedDateRange.startDate),
       end_date: toISODateUTC(selectedDateRange.endDate),
-      hourly_rate: +options.hourlyRate,
+      price: +options.hourlyRate,
       // min_hours: options.minHours,
     });
 

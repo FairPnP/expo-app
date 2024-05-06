@@ -71,7 +71,7 @@ export const ManageAvailabilityScreen = ({navigation, route}) => {
       space_id: space.id,
       start_date: toISODateUTC(startDate),
       end_date: toISODateUTC(endDate),
-      hourly_rate: price,
+      price: price,
       // min_hours: options.minHours,
     });
     modalRef.current?.hide();

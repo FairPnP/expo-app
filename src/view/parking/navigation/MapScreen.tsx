@@ -2,7 +2,6 @@ import React, {Suspense, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {useTheme, AppTheme} from '@/view/theme';
 import {useSearchAvailabilities, useSearchState, useSpace} from '@/state';
-import {getAvailabilityCost} from '@/api';
 import {AvailabilityData, LoadingSpinner} from '@/view/shared';
 import {MapCard, MapMarker, SearchBar} from '../components';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -65,10 +64,8 @@ export const MapScreen = ({}) => {
       });
     for (const id of buildingIds) {
       const filtered = list.filter(l => l.building.id === id);
-      const min = Math.min(...filtered.map(l => l.availability.hourly_rate));
-      const minAvailability = filtered.find(
-        l => l.availability.hourly_rate === min,
-      );
+      const min = Math.min(...filtered.map(l => l.availability.price));
+      const minAvailability = filtered.find(l => l.availability.price === min);
       filteredList.push(minAvailability);
     }
 
@@ -79,11 +76,7 @@ export const MapScreen = ({}) => {
     (marker: AvailabilityData, isSelected: boolean) => {
       return (
         <MapMarker
-          text={`$${getAvailabilityCost(
-            marker.availability.hourly_rate,
-            sb.startDate,
-            sb.endDate,
-          )}`}
+          text={`$${marker.availability.price}`}
           isSelected={isSelected}
         />
       );

@@ -22,7 +22,7 @@ import {
   CircleButton,
   ImageSwiper,
 } from '../components';
-import {Building, Space, getAvailabilityCost} from '@/api';
+import {Building, Space} from '@/api';
 import {useTheme, AppTheme, setStatusBar} from '@/view/theme';
 import {useAppMode, useSearchState, useSpaceSummary} from '@/state';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -86,7 +86,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
       space,
       startTimestamp: startDate.getTime(),
       endTimestamp: endDate.getTime(),
-      hourly_rate: 1,
+      price: 1,
     } as ConfirmReservationScreenProps);
   };
 
@@ -102,9 +102,7 @@ export const ViewSpotScreen = ({navigation, route}) => {
             <TextLink onPress={onDateRangeSelected}>
               {toMinimalDateRange(startDate, endDate)}
             </TextLink>
-            <Text>
-              Total: ${getAvailabilityCost(1, startDate, endDate).toFixed(2)}
-            </Text>
+            <Text>Total: $1.00</Text>
           </VerticalGroup>
           <Button text="Reserve" onPress={onReservePressed} />
         </HorizontalGroup>

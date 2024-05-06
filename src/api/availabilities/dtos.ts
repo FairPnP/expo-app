@@ -8,7 +8,7 @@ export interface Availability {
   space_id: string;
   start_date: Date;
   end_date: Date;
-  hourly_rate: number;
+  price: number;
 }
 
 // ======================================================================
@@ -18,7 +18,7 @@ export interface CreateAvailabilityRequest {
   space_id: string;
   start_date: string;
   end_date: string;
-  hourly_rate: number;
+  price: number;
 }
 
 export interface CreateAvailabilityResponse {
@@ -54,7 +54,7 @@ export interface ListAvailabilityResponse {
 export interface UpdateAvailabilityRequest {
   start_date?: string;
   end_date?: string;
-  hourly_rate?: number;
+  price?: number;
 }
 
 export interface UpdateAvailabilityResponse {

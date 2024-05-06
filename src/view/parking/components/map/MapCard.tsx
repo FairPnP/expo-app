@@ -1,16 +1,11 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import React, { useCallback } from 'react';
-import {
-  Text,
-  ImageDownload,
-  HorizontalGroup,
-  ReviewStars,
-} from '@/view/shared';
-import { useNavigation } from '@react-navigation/native';
-import { Availability, Building, Space, getAvailabilityCost } from '@/api';
-import { useTheme, AppTheme } from '@/view/theme';
-import { useSearchState, useSpaceSummary } from '@/state';
-import { toMinimalDateRange } from '@/utils';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import React, {useCallback} from 'react';
+import {Text, ImageDownload, HorizontalGroup, ReviewStars} from '@/view/shared';
+import {useNavigation} from '@react-navigation/native';
+import {Availability, Building, Space} from '@/api';
+import {useTheme, AppTheme} from '@/view/theme';
+import {useSearchState, useSpaceSummary} from '@/state';
+import {toMinimalDateRange} from '@/utils';
 
 type Props = {
   building: Building;
@@ -33,11 +28,11 @@ export const MapCard = ({
   const styles = getStyles(theme);
   const navigation = useNavigation<any>();
 
-  const { data: summary } = useSpaceSummary(space?.id);
+  const {data: summary} = useSpaceSummary(space?.id);
   const sb = useSearchState();
 
   const handleBooking = useCallback(async () => {
-    navigation.navigate('ViewSpot', { building, space });
+    navigation.navigate('ViewSpot', {building, space});
   }, [building, space, availability, startDate, endDate]);
 
   return (
@@ -51,16 +46,16 @@ export const MapCard = ({
           />
           <View style={styles.infoContainer}>
             <View>
-              <Text style={{ fontWeight: 'bold' }}>{building.name}</Text>
+              <Text style={{fontWeight: 'bold'}}>{building.name}</Text>
               <Text>{space?.name}</Text>
             </View>
             <View>
-              <Text style={{ fontWeight: 'bold' }}>{`$${getAvailabilityCost(
-                availability.hourly_rate,
-                startDate,
-                endDate,
-              ).toFixed(2)}`} </Text>
-              <Text style={{ fontSize: 14 }}>{toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+              <Text style={{fontWeight: 'bold'}}>
+                {`$${availability.price}`}{' '}
+              </Text>
+              <Text style={{fontSize: 14}}>
+                {toMinimalDateRange(sb.startDate, sb.endDate)}
+              </Text>
             </View>
           </View>
           <View style={styles.rightInfo}>
@@ -78,7 +73,7 @@ const getStyles = (theme: AppTheme) =>
       height: 120,
       borderRadius: 8,
       backgroundColor: theme.colors.background,
-      shadowColor: "#000",
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 6,

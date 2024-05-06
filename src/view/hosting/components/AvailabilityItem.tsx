@@ -49,7 +49,7 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
     editModalRef.current?.show(
       availability.start_date,
       availability.end_date,
-      availability.hourly_rate,
+      availability.price,
     );
   };
 
@@ -63,7 +63,7 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
       updateData: {
         start_date: toISODateUTC(startDate),
         end_date: toISODateUTC(endDate),
-        hourly_rate: price,
+        price: price,
       },
     });
     editModalRef.current?.hide();
@@ -73,7 +73,7 @@ export const AvailabilityItem = ({availability}: AvailabilityItemProps) => {
 
   let availText = `Start: ${availability.start_date.toDateString()} - ${availability.start_date.toTimeString().substring(0, 5)}\n`;
   availText += `End:  ${availability.end_date.toDateString()} - ${availability.end_date.toTimeString().substring(0, 5)}\n`;
-  availText += `Price: $${availability.hourly_rate.toFixed(2)}`;
+  availText += `Price: $${availability.price.toFixed(2)}`;
 
   return (
     <View style={styles.container}>

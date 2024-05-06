@@ -20,7 +20,7 @@ export const toAvailability = (availabilityResponse: any) => ({
   ...availabilityResponse,
   start_date: new Date(availabilityResponse.start_date + 'Z'),
   end_date: new Date(availabilityResponse.end_date + 'Z'),
-  hourly_rate: Number(availabilityResponse.hourly_rate),
+  price: Number(availabilityResponse.price),
 });
 
 const createAvailability = async (

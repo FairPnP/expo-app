@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from 'react';
 import {friendlyDateRange, toDateTimeString, toISODateUTC} from '@/utils';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {Building, Space, StripePaymentsAPI, getAvailabilityCost} from '@/api';
+import {Building, Space, StripePaymentsAPI} from '@/api';
 import {
   Button,
   LocationCard,
@@ -19,7 +19,7 @@ export type ConfirmReservationScreenProps = {
   space: Space;
   startTimestamp: number;
   endTimestamp: number;
-  hourly_rate: number;
+  price: number;
 };
 
 export const ConfirmReservationScreen = ({navigation, route}) => {
@@ -28,7 +28,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const {initPaymentSheet, presentPaymentSheet} = useStripe();
   const {mutateAsync: createReservation, isPending} = useCreateReservation();
 
-  const {building, space, startTimestamp, endTimestamp, hourly_rate} =
+  const {building, space, startTimestamp, endTimestamp, price} =
     route.params as ConfirmReservationScreenProps;
 
   const startDate = new Date(startTimestamp);
@@ -47,7 +47,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
 
   const fetchPaymentSheetParams = async () =>
     await StripePaymentsAPI.createPaymentIntent({
-      amount: getAvailabilityCost(hourly_rate, startDate, endDate) * 100,
+      amount: price * 100,
     });
 
   const initializePaymentSheet = async () => {
@@ -102,12 +102,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
       </View>
 
       <View style={styles.section}>
-        <Title>Cost</Title>
-        <Text>Hourly rate: ${hourly_rate.toFixed(2)}</Text>
-        <Text>
-          Total cost: $
-          {getAvailabilityCost(hourly_rate, startDate, endDate).toFixed(2)}
-        </Text>
+        <Text>Price: ${price.toFixed(2)}</Text>
       </View>
 
       <View style={styles.bottomArea}>
