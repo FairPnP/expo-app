@@ -5,7 +5,7 @@ export * from './StripeRefreshScreen';
 export * from './StripeReturnScreen';
 export * from './SpaceReviewsScreen';
 export * from './UserReviewsScreen';
-export * from './ViewSpotScreen';
+export * from './ViewListingScreen';
 export * from './ReservationDetailsScreen';
 export * from './ReservationReviewModal';
 export * from './UserProfileScreen';

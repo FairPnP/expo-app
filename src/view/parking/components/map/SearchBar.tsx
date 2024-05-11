@@ -1,20 +1,17 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import {
-  Title,
-  Text,
-} from '@/view/shared';
-import { useTheme, AppTheme } from '@/view/theme';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSearchState } from '@/state';
-import { toMinimalDateRange } from '@/utils';
-import { SearchModal } from '../../stack/SearchModal';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Title, Text} from '@/view/shared';
+import {useTheme, AppTheme} from '@/view/theme';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {useSearchState} from '@/state';
+import {toMinimalDateRange} from '@/utils';
+import {SearchModal} from '../../stack/SearchModal';
 
 export type SearchBarProps = {
   style?: any;
 };
 
-export const SearchBar = ({ style }: SearchBarProps) => {
+export const SearchBar = ({style}: SearchBarProps) => {
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const sb = useSearchState();
@@ -31,13 +28,13 @@ export const SearchBar = ({ style }: SearchBarProps) => {
     if (parts.length > 1) {
       locationName = parts[0] + ', ' + parts[1];
     }
-  } else if (sb.location && sb.location.latitude && sb.location.longitude) {
+  } else if (sb?.location && sb.location.latitude && sb.location.longitude) {
     locationName = 'Map Area';
   }
 
   return (
     <View style={[styles.card, style]}>
-      <TouchableOpacity onPress={onPress} >
+      <TouchableOpacity onPress={onPress}>
         <View style={styles.searchIcon}>
           <MaterialCommunityIcons name="magnify" size={32} color="#000" />
         </View>
@@ -45,7 +42,9 @@ export const SearchBar = ({ style }: SearchBarProps) => {
           {locationName && sb.startDate && sb.endDate ? (
             <>
               <Title style={styles.titleText}>{locationName}</Title>
-              <Text style={styles.infoText}>{toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+              <Text style={styles.infoText}>
+                {toMinimalDateRange(sb.startDate, sb.endDate)}
+              </Text>
             </>
           ) : (
             <>
@@ -77,7 +76,7 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
       padding: 4,
       borderRadius: 32,
-      shadowColor: "#000",
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 2,

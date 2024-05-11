@@ -8,7 +8,6 @@ import {
   StatusBar,
 } from 'react-native';
 import {
-  Title,
   Text,
   Button,
   Section,
@@ -21,10 +20,16 @@ import {
   TextLink,
   CircleButton,
   ImageSwiper,
+  Title,
 } from '../components';
 import {Building, Space} from '@/api';
 import {useTheme, AppTheme, setStatusBar} from '@/view/theme';
-import {useAppMode, useSearchState, useSpaceSummary} from '@/state';
+import {
+  useAppMode,
+  useAvailability,
+  useSearchState,
+  useSpaceSummary,
+} from '@/state';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {openMap} from '@/utils/maps';
 import {FontAwesome} from '@expo/vector-icons';
@@ -33,9 +38,10 @@ import {ConfirmReservationScreenProps} from '@/view/parking/stack/ConfirmReserva
 import {Ionicons} from '@expo/vector-icons';
 import {useFocusEffect} from '@react-navigation/native';
 
-export type ViewSpotScreenProps = {
+export type ViewListingScreenProps = {
   building: Building;
   space: Space;
+  availabilityId?: string;
 };
 
 const calcDimensions = (window: ScaledSize) => {
@@ -44,14 +50,15 @@ const calcDimensions = (window: ScaledSize) => {
   return {width, height};
 };
 
-export const ViewSpotScreen = ({navigation, route}) => {
-  const {building, space} = route.params as ViewSpotScreenProps;
+export const ViewListingScreen = ({navigation, route}) => {
+  const {building, space, availabilityId} =
+    route.params as ViewListingScreenProps;
+  console.log('ViewListingScreen', availabilityId);
   const theme = useTheme().theme.appTheme;
   const styles = getStyles(theme);
   const {appMode} = useAppMode();
-  const {startDate, endDate} = useSearchState();
-
   const {data: summary} = useSpaceSummary(space.id);
+  const {data: availability} = useAvailability(availabilityId);
 
   const onReviewPressed = () => {
     navigation.navigate('SpaceReviews', {space});
@@ -84,14 +91,8 @@ export const ViewSpotScreen = ({navigation, route}) => {
     navigation.navigate('ConfirmReservation', {
       building,
       space,
-      startTimestamp: startDate.getTime(),
-      endTimestamp: endDate.getTime(),
-      price: 1,
+      availabilityId,
     } as ConfirmReservationScreenProps);
-  };
-
-  const onDateRangeSelected = () => {
-    navigation.navigate('SearchParking');
   };
 
   const renderParkingBottomArea = () => {
@@ -99,10 +100,13 @@ export const ViewSpotScreen = ({navigation, route}) => {
       <View style={styles.bottomArea}>
         <HorizontalGroup>
           <VerticalGroup>
-            <TextLink onPress={onDateRangeSelected}>
-              {toMinimalDateRange(startDate, endDate)}
-            </TextLink>
-            <Text>Total: $1.00</Text>
+            <Title>${availability?.price.toFixed(2)}</Title>
+            <Text>
+              {toMinimalDateRange(
+                availability?.start_date,
+                availability?.end_date,
+              )}
+            </Text>
           </VerticalGroup>
           <Button text="Reserve" onPress={onReservePressed} />
         </HorizontalGroup>

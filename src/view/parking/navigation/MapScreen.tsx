@@ -27,14 +27,18 @@ export const MapScreen = ({}) => {
 
   const sb = useSearchState();
   const [selectedMarker, setSelectedMarker] = useState<AvailabilityData>(null);
-  const {data: searchResults} = useSearchAvailabilities({
-    start_date: toISODateUTC(sb.startDate),
-    end_date: toISODateUTC(sb.endDate),
-    latitude: sb.location.latitude,
-    longitude: sb.location.longitude,
-    lat_delta: sb.location.latitudeDelta / 2,
-    long_delta: sb.location.longitudeDelta / 2,
-  });
+  const {data: searchResults} = useSearchAvailabilities(
+    sb.location
+      ? {
+          start_date: toISODateUTC(sb.startDate),
+          end_date: toISODateUTC(sb.endDate),
+          latitude: sb.location?.latitude,
+          longitude: sb.location?.longitude,
+          lat_delta: sb.location?.latitudeDelta / 2,
+          long_delta: sb.location?.longitudeDelta / 2,
+        }
+      : undefined,
+  );
   const {data: selectedSpace} = useSpace(selectedMarker?.space.id);
 
   const markers = useMemo(() => {

@@ -37,7 +37,7 @@ export const ListView = <T extends unknown>({
 
   return (
     <View style={styles.container}>
-      {data?.length === 0 ? (
+      {!data || data.length === 0 ? (
         <Text style={styles.message}>{emptyMessage}</Text>
       ) : (
         <FlashList

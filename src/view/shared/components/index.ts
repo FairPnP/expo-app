@@ -10,3 +10,4 @@ export * from './LocationSearch';
 export * from './StaticMap';
 export * from './StandardModal';
 export * from './ConfirmModal';
+export * from './LogoWithName';

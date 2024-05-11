@@ -6,7 +6,7 @@ import {
   Section,
   InfiniteListView,
   Button,
-  ViewSpotScreenProps,
+  ViewListingScreenProps,
   Title,
   IconButton,
 } from '@/view/shared';
@@ -31,11 +31,11 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
 
   const handleSpotPress = useCallback(
     (space: Space, building: Building) => {
-      const props: ViewSpotScreenProps = {
+      const props: ViewListingScreenProps = {
         building: building,
         space: space,
       };
-      navigation.navigate('ViewSpot', props);
+      navigation.navigate('ViewListing', props);
     },
     [navigation],
   );
@@ -87,7 +87,7 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
         <Title style={{marginVertical: 4}}>Looking for parking?</Title>
         <IconButton
           icon="directions"
-          text="Switch to Parking Mode"
+          text="Switch to Parking"
           onPress={onSwitchToParking}
         />
       </View>

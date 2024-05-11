@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from 'react';
 import {friendlyDateRange, toDateTimeString, toISODateUTC} from '@/utils';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useTheme, AppTheme} from '@/view/theme';
-import {Building, Space, StripePaymentsAPI} from '@/api';
+import {Availability, Building, Space, StripePaymentsAPI} from '@/api';
 import {
   Button,
   LocationCard,
@@ -12,14 +12,12 @@ import {
   Text,
   LoadingOverlay,
 } from '@/view/shared';
-import {useCreateReservation} from '@/state';
+import {useAvailability, useCreateReservation} from '@/state';
 
 export type ConfirmReservationScreenProps = {
   building: Building;
   space: Space;
-  startTimestamp: number;
-  endTimestamp: number;
-  price: number;
+  availabilityId: string;
 };
 
 export const ConfirmReservationScreen = ({navigation, route}) => {
@@ -28,17 +26,16 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
   const {initPaymentSheet, presentPaymentSheet} = useStripe();
   const {mutateAsync: createReservation, isPending} = useCreateReservation();
 
-  const {building, space, startTimestamp, endTimestamp, price} =
+  const {building, space, availabilityId} =
     route.params as ConfirmReservationScreenProps;
+  const {data: availability} = useAvailability(availabilityId);
 
-  const startDate = new Date(startTimestamp);
-  const endDate = new Date(endTimestamp);
+  const startDate = availability.start_date;
+  const endDate = availability.end_date;
 
   const handleReservation = useCallback(async () => {
     await createReservation({
-      space_id: space.id,
-      start_date: toISODateUTC(startDate),
-      end_date: toISODateUTC(endDate),
+      availability_id: availabilityId,
     });
 
     Alert.alert('Success', 'Reservation created.');
@@ -47,7 +44,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
 
   const fetchPaymentSheetParams = async () =>
     await StripePaymentsAPI.createPaymentIntent({
-      amount: price * 100,
+      amount: availability.price * 100,
     });
 
   const initializePaymentSheet = async () => {
@@ -102,7 +99,7 @@ export const ConfirmReservationScreen = ({navigation, route}) => {
       </View>
 
       <View style={styles.section}>
-        <Text>Price: ${price.toFixed(2)}</Text>
+        <Text>Price: ${availability.price.toFixed(2)}</Text>
       </View>
 
       <View style={styles.bottomArea}>

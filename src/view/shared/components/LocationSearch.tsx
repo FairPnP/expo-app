@@ -1,4 +1,11 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {
   AutocompleteRequestType,
   GooglePlaceData,
@@ -34,6 +41,17 @@ export const LocationSearch = ({
     setSearchText('');
     if (googlePlacesRef.current) {
       googlePlacesRef.current.setAddressText('');
+    }
+  }, [googlePlacesRef]);
+
+  useEffect(() => {
+    if (googlePlacesRef.current) {
+      //unfocus
+      googlePlacesRef.current.blur();
+      setTimeout(() => {
+        //refocus
+        googlePlacesRef.current.focus();
+      }, 200);
     }
   }, [googlePlacesRef]);
 

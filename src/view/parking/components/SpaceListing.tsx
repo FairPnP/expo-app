@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {useBuilding, useSearchState, useSpace, useSpaceSummary} from '@/state';
+import {useBuilding, useSpace, useSpaceSummary} from '@/state';
 import {
   HorizontalGroup,
-  ImageSwiper,
+  ImageDownload,
   ReviewStars,
   Title,
   VerticalGroup,
@@ -14,56 +14,62 @@ import {Availability} from '@/api';
 import {toMinimalDateRange} from '@/utils';
 
 export type SpaceListingProps = {
-  width: number;
   availability: Availability;
   style?: any;
 };
 
-export const SpaceListing = ({
-  width,
-  availability,
-  style,
-}: SpaceListingProps) => {
+export const SpaceListing = ({availability, style}: SpaceListingProps) => {
   const {data: space} = useSpace(availability?.space_id);
   const {data: building} = useBuilding(space?.building_id);
   const {data: summary} = useSpaceSummary(space?.id);
-
-  const sb = useSearchState();
 
   const navigation = useNavigation<any>();
   const onSingleTap = (event: any) => {
     if (event.nativeEvent.state === State.END) {
       // Handle tap event, e.g., navigate to a detail screen
-      navigation.navigate('ViewSpot', {building, space});
+      navigation.navigate('ViewListing', {
+        building,
+        space,
+        availabilityId: availability?.id,
+      });
     }
   };
 
   return (
     <TapGestureHandler onHandlerStateChange={onSingleTap} numberOfTaps={1}>
-      <View style={[{width: width}, style]}>
-        <View style={styles.imageContainer}>
-          <ImageSwiper urls={space?.img_urls} width={width} height={width} />
-        </View>
+      <View style={style}>
         <View style={styles.infoContainer}>
           <HorizontalGroup>
-            <VerticalGroup style={{height: 90}}>
+            <View style={styles.imageContainer}>
+              <ImageDownload
+                url={space?.img_urls[0]}
+                style={{width: 100, height: 100}}
+              />
+            </View>
+            <VerticalGroup style={{height: 90, paddingLeft: 16}}>
               <View>
-                <Title style={{fontSize: 18}}>{building?.name}</Title>
+                <Title style={{fontSize: 18}}>{space?.name}</Title>
+                <Text>{building?.name}</Text>
                 <Text>
                   {building?.city}, {building?.state}
                 </Text>
-                <Text>{space?.name}</Text>
               </View>
               <View>
-                <Title style={{fontSize: 18}}>${availability?.price}</Title>
+                <ReviewStars stars={summary?.average_stars} />
               </View>
             </VerticalGroup>
-            <VerticalGroup style={{height: 90}}>
-              <ReviewStars
-                style={{alignSelf: 'flex-end'}}
-                stars={summary?.average_stars}
-              />
-              <Text> {toMinimalDateRange(sb.startDate, sb.endDate)}</Text>
+            <View style={{flex: 1}} />
+            <VerticalGroup style={{height: 90, alignItems: 'flex-end'}}>
+              <Title style={{fontSize: 18}}>
+                ${availability?.price.toFixed(2)}
+              </Title>
+              <Text>
+                {' '}
+                {toMinimalDateRange(
+                  availability.start_date,
+                  availability.end_date,
+                )}
+              </Text>
             </VerticalGroup>
           </HorizontalGroup>
         </View>

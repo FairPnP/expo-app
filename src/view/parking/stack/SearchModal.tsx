@@ -1,5 +1,11 @@
 import {Modal, StyleSheet, View, SafeAreaView, StatusBar} from 'react-native';
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {AppTheme, useTheme} from '@/view/theme';
 import {
   GooglePlaceData,
@@ -15,6 +21,7 @@ import {
   CloseButton,
   Card,
   AvailabilityDatePicker,
+  LogoWithName,
 } from '@/view/shared';
 import {toMinimalDateRange} from '@/utils';
 import {useSearchState} from '@/state';
@@ -51,6 +58,8 @@ export const SearchModal = forwardRef((_, ref) => {
       data,
       detail,
     });
+
+    setVisible(false);
   };
 
   const onSearchPressed = () => {
@@ -77,7 +86,7 @@ export const SearchModal = forwardRef((_, ref) => {
               marginBottom: 24,
             }}>
             <CloseButton onPress={onClosePressed} />
-            <Title>Find Parking</Title>
+            <LogoWithName />
             <View style={{width: 30}} />
           </HorizontalGroup>
           <Card style={{marginBottom: 16}}>
@@ -90,24 +99,6 @@ export const SearchModal = forwardRef((_, ref) => {
           {/* </Card> */}
         </View>
       </SafeAreaView>
-      <View style={styles.bottomArea}>
-        <HorizontalGroup>
-          <VerticalGroup>
-            <Title style={{fontSize: 16}}>{sb.location?.detail?.name}</Title>
-            <Text style={{fontSize: 14}}>
-              {sb.startDate &&
-                sb.endDate &&
-                toMinimalDateRange(sb.startDate, sb.endDate)}
-            </Text>
-          </VerticalGroup>
-          <Button onPress={onSearchPressed}>
-            <HorizontalGroup>
-              <MaterialCommunityIcons name="magnify" size={24} color="#000" />
-              <Text> Search</Text>
-            </HorizontalGroup>
-          </Button>
-        </HorizontalGroup>
-      </View>
     </Modal>
   );
 });
@@ -122,15 +113,5 @@ const getStyles = (theme: AppTheme) =>
       flex: 1,
       paddingVertical: 16,
       paddingHorizontal: 24,
-    },
-    bottomArea: {
-      padding: 16,
-      postion: 'absolute',
-      bottom: 0,
-      width: '100%',
-      height: 84,
-      backgroundColor: theme.colors.background,
-      borderTopColor: theme.colors.border,
-      borderTopWidth: 1,
     },
   });

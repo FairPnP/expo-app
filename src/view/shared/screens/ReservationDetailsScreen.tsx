@@ -53,7 +53,7 @@ export const ReservationDetailsScreen = ({navigation, route}) => {
   };
 
   const onViewListingPressed = () => {
-    navigation.navigate('ViewSpot', {building, space});
+    navigation.navigate('ViewListing', {building, space});
   };
 
   const onReviewPressed = () => {

@@ -15,7 +15,6 @@ export const toDollarString = (amount: number | string) => {
 export const toTimeString = (date: Date) => {
   // 2:00 p.m.
   const time = date.toLocaleString('en-US', {
-    timeZone: 'UTC',
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
@@ -25,7 +24,6 @@ export const toTimeString = (date: Date) => {
 
 export const toDateString = (date: Date) => {
   return date.toLocaleString('en-US', {
-    timeZone: 'UTC',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -48,7 +46,6 @@ export const toMinimalTimeString = (date: Date) => {
   }
 
   return date.toLocaleString('en-US', {
-    timeZone: 'UTC',
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
@@ -60,6 +57,10 @@ export const toMinimalDateString = (date: Date) => {
 };
 
 export const toMinimalDateRange = (start: Date, end: Date) => {
+  if (!start || !end) {
+    return '';
+  }
+
   const isSameDay = start.toDateString() === end.toDateString();
 
   // Jan 5, 2 PM - 4 PM
@@ -74,7 +75,6 @@ export const toMinimalDateRange = (start: Date, end: Date) => {
 export const toFullDateString = (date: Date) => {
   // Sun, Jan 5, 2020
   return date.toLocaleString('en-US', {
-    timeZone: 'UTC',
     weekday: 'short',
     month: 'short',
     day: 'numeric',

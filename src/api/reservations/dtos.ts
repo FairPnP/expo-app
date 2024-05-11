@@ -4,6 +4,8 @@
 export interface Reservation {
   id: string;
   space_id: string;
+  availability_id: string;
+  status: string;
   start_date: Date;
   end_date: Date;
 }
@@ -12,9 +14,7 @@ export interface Reservation {
 // Create DTOs
 
 export interface CreateReservationRequest {
-  space_id: string;
-  start_date: string;
-  end_date: string;
+  availability_id: string;
 }
 
 export interface CreateReservationResponse {
@@ -53,8 +53,7 @@ export interface ListReservationsResponse {
 // Update DTOs
 
 export interface UpdateReservationRequest {
-  start_date?: string;
-  end_date?: string;
+  cancel?: boolean;
 }
 
 export interface UpdateReservationResponse {

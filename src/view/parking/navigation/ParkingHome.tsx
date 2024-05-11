@@ -1,8 +1,15 @@
 import {useAppMode, useSearchAvailabilities, useSearchState} from '@/state';
-import {IconButton, ListView, LoadingSpinner, Title} from '@/view/shared';
+import {
+  HorizontalGroup,
+  IconButton,
+  ListView,
+  LoadingSpinner,
+  LogoWithName,
+  Title,
+} from '@/view/shared';
 import {AppTheme, useTheme} from '@/view/theme';
 import React, {useMemo} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Image, Dimensions, StyleSheet, View} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SearchBar, SpaceListing} from '../components';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
@@ -14,14 +21,18 @@ export const ParkingHome = ({}) => {
   const {setAppMode} = useAppMode();
 
   const sb = useSearchState();
-  const {data: searchResults, isPending} = useSearchAvailabilities({
-    start_date: toISODateUTC(sb.startDate),
-    end_date: toISODateUTC(sb.endDate),
-    latitude: sb.location.latitude,
-    longitude: sb.location.longitude,
-    lat_delta: sb.location.latitudeDelta / 2,
-    long_delta: sb.location.longitudeDelta / 2,
-  });
+  const {data: searchResults, isPending} = useSearchAvailabilities(
+    sb.location
+      ? {
+          start_date: toISODateUTC(sb.startDate),
+          end_date: toISODateUTC(sb.endDate),
+          latitude: sb.location.latitude,
+          longitude: sb.location.longitude,
+          lat_delta: sb.location.latitudeDelta / 2,
+          long_delta: sb.location.longitudeDelta / 2,
+        }
+      : undefined,
+  );
 
   const onSwitchToHosting = () => {
     setAppMode('hosting');
@@ -29,56 +40,64 @@ export const ParkingHome = ({}) => {
 
   const inset = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-  const listingViewHeight =
-    Dimensions.get('window').height -
-    inset.bottom -
-    tabBarHeight -
-    72 -
-    100 -
-    4;
+  const usableHeight =
+    Dimensions.get('window').height - inset.bottom - tabBarHeight - 100;
+  const listingViewHeight = usableHeight - 84;
 
   const windowWidth = Dimensions.get('window').width;
-  const maxWidth = listingViewHeight * 0.7;
-  const hPadding = Math.max(16, (windowWidth - maxWidth) / 2);
-  const listingWidth = windowWidth - hPadding * 2;
   const renderSpace = ({item}: any) => {
-    return (
-      <SpaceListing
-        style={{marginVertical: 16}}
-        availability={item}
-        width={listingWidth}
-      />
-    );
+    return <SpaceListing style={{marginVertical: 16}} availability={item} />;
   };
+
+  const logoSize = Math.min(Math.round(windowWidth / 4), 140);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topArea}>
-        <SearchBar style={{alignSelf: 'center', width: '90%', maxWidth: 500}} />
-      </View>
-      <View
-        style={{
-          paddingHorizontal: hPadding,
-          height: listingViewHeight,
-        }}>
-        {isPending ? (
-          <LoadingSpinner />
+      <View style={{height: usableHeight}}>
+        {!sb.location ? (
+          <View style={styles.noResults}>
+            <LogoWithName size={logoSize} />
+            <SearchBar
+              style={{
+                marginVertical: 32,
+                alignSelf: 'center',
+                width: '90%',
+                maxWidth: 500,
+              }}
+            />
+          </View>
         ) : (
-          <ListView
-            key={listingWidth}
-            data={searchResults?.availabilities}
-            keyExtractor={(item: any) => item.id.toString()}
-            renderItem={renderSpace}
-            emptyMessage="No spaces found"
-            scrollEnabled={true}
-          />
+          <>
+            <View style={styles.topArea}>
+              <SearchBar
+                style={{alignSelf: 'center', width: '90%', maxWidth: 500}}
+              />
+            </View>
+            <View
+              style={{
+                height: listingViewHeight,
+                paddingHorizontal: 16,
+              }}>
+              {isPending ? (
+                <LoadingSpinner />
+              ) : (
+                <ListView
+                  data={searchResults?.availabilities}
+                  keyExtractor={(item: any) => item.id.toString()}
+                  renderItem={renderSpace}
+                  emptyMessage="No spaces found"
+                  scrollEnabled={true}
+                />
+              )}
+            </View>
+          </>
         )}
       </View>
       <View style={styles.bottomArea}>
-        <Title style={{marginVertical: 4}}>Looking to host?</Title>
+        <Title style={{marginTop: 4}}>Looking to host?</Title>
         <IconButton
           icon="directions"
-          text="Switch to Hosting Mode"
+          text="Switch to Hosting"
           onPress={onSwitchToHosting}
         />
       </View>
@@ -94,8 +113,8 @@ const getStyles = (theme: AppTheme) =>
     },
     topArea: {
       zIndex: 1,
-      height: 72,
-      paddingVertical: 4,
+      height: 84,
+      paddingVertical: 16,
       backgroundColor: theme.colors.background,
       borderBottomColor: theme.colors.border,
       borderBottomWidth: 1,
@@ -109,5 +128,10 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
+    },
+    noResults: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });

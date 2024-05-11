@@ -32,7 +32,11 @@ export const MapCard = ({
   const sb = useSearchState();
 
   const handleBooking = useCallback(async () => {
-    navigation.navigate('ViewSpot', {building, space});
+    navigation.navigate('ViewListing', {
+      building,
+      space,
+      availabilityId: availability?.id,
+    });
   }, [building, space, availability, startDate, endDate]);
 
   return (

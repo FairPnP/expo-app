@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTheme, AppTheme } from '@/view/theme';
-import { StripeAccountsAPI } from '@/api';
-import { useAppMode, useAuth, useMerchantAccount, useUserSummary } from '@/state';
+import React, {useRef} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {useTheme, AppTheme} from '@/view/theme';
+import {StripeAccountsAPI} from '@/api';
+import {useAppMode, useAuth, useMerchantAccount, useUserSummary} from '@/state';
 import {
   IconButton,
   Section,
@@ -14,28 +14,28 @@ import {
   EditUserProfileBottomSheet,
   TextLink,
 } from '../components';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useUpdates } from '@/view/useUpdates';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {useUpdates} from '@/view/useUpdates';
 
-export const ProfileScreen = ({ navigation }) => {
-  const { tokens, signOut } = useAuth();
+export const ProfileScreen = ({navigation}) => {
+  const {tokens, signOut} = useAuth();
   const email = tokens?.idToken?.payload.email?.toString();
   const userId = tokens?.idToken?.payload.sub;
-  const { data: summary } = useUserSummary(userId);
+  const {data: summary} = useUserSummary(userId);
 
-  const { theme, toggleTheme } = useTheme();
+  const {theme, toggleTheme} = useTheme();
   const styles = getStyles(theme.appTheme);
-  const { appMode, setAppMode } = useAppMode();
-  const { data: stripeAccount } = useMerchantAccount();
-  const { checkAndApplyUpdates } = useUpdates();
+  const {appMode, setAppMode} = useAppMode();
+  const {data: stripeAccount} = useMerchantAccount();
+  const {checkAndApplyUpdates} = useUpdates();
 
   const stripeAccountPressed = async () => {
     await StripeAccountsAPI.showDashboard();
   };
 
   const onReviewsPressed = () => {
-    navigation.navigate('UserReviews', { userId });
+    navigation.navigate('UserReviews', {userId});
   };
 
   const editProfilePressed = () => {
@@ -80,10 +80,10 @@ export const ProfileScreen = ({ navigation }) => {
           </View>
         )}
       </Section>
-      <View style={[styles.separator, { marginBottom: 12 }]} />
+      <View style={[styles.separator, {marginBottom: 12}]} />
 
       <IconButton icon="tv" text="Toggle Theme" onPress={toggleTheme} />
-      <IconButton icon="cog" text="Settings" onPress={() => { }} />
+      <IconButton icon="cog" text="Settings" onPress={() => {}} />
       {appMode === 'hosting' && (
         <>
           <IconButton
@@ -93,7 +93,7 @@ export const ProfileScreen = ({ navigation }) => {
           />
           <IconButton
             icon="directions"
-            text="Switch to Parking Mode"
+            text="Switch to Parking"
             onPress={() => setAppMode('parking')}
           />
         </>
@@ -101,12 +101,16 @@ export const ProfileScreen = ({ navigation }) => {
       {appMode === 'parking' && (
         <IconButton
           icon="directions"
-          text="Switch to Hosting Mode"
+          text="Switch to Hosting"
           onPress={() => setAppMode('hosting')}
         />
       )}
 
-      <IconButton icon="sync" text="Check for Updates" onPress={() => checkAndApplyUpdates(true)} />
+      <IconButton
+        icon="sync"
+        text="Check for Updates"
+        onPress={() => checkAndApplyUpdates(true)}
+      />
       <IconButton icon="sign-out-alt" text="Sign Out" onPress={signOut} />
       <EditUserProfileBottomSheet ref={editModalRef} />
     </SafeAreaView>

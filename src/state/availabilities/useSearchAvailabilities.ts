@@ -6,12 +6,12 @@ export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
   return useQuery({
     queryKey: [
       AVAILABILITY_QUERY_KEY,
-      params.start_date,
-      params.end_date,
-      params.latitude,
-      params.longitude,
-      params.lat_delta,
-      params.long_delta,
+      params?.start_date,
+      params?.end_date,
+      params?.latitude,
+      params?.longitude,
+      params?.lat_delta,
+      params?.long_delta,
     ],
     queryFn: async () => {
       const response = await AvailabilityAPI.search(params);
@@ -20,5 +20,6 @@ export const useSearchAvailabilities = (params: SearchAvailabilityRequest) => {
     placeholderData: keepPreviousData,
     staleTime: 60 * 1000,
     gcTime: 60 * 1000,
+    enabled: !!params,
   });
 };

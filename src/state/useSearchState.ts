@@ -2,7 +2,7 @@ import {
   GooglePlaceData,
   GooglePlaceDetail,
 } from 'react-native-google-places-autocomplete';
-import { create } from 'zustand';
+import {create} from 'zustand';
 
 const today = new Date();
 today.setHours(today.getHours() + 1, 0, 0, 0);
@@ -46,14 +46,10 @@ export type SearchState = {
 export const useSearchState = create<SearchState>(set => ({
   startDate: today,
   endDate: later,
-  location: {
-    ...initialRegion,
-    data: null,
-    detail: null,
-  },
+  location: undefined,
   isCollapsed: true,
-  setStartDate: (date: Date) => set({ startDate: date }),
-  setEndDate: (date: Date) => set({ endDate: date }),
+  setStartDate: (date: Date) => set({startDate: date}),
+  setEndDate: (date: Date) => set({endDate: date}),
   setLocation: (location: {
     latitude: number;
     longitude: number;
@@ -61,7 +57,7 @@ export const useSearchState = create<SearchState>(set => ({
     longitudeDelta: number;
     data: GooglePlaceData;
     detail: GooglePlaceDetail;
-  }) => set({ location }),
-  setCollapse: (isCollapsed: boolean) => set({ isCollapsed }),
-  setSpaceId: (spaceId: string) => set({ spaceId }),
+  }) => set({location}),
+  setCollapse: (isCollapsed: boolean) => set({isCollapsed}),
+  setSpaceId: (spaceId: string) => set({spaceId}),
 }));

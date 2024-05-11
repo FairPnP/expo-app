@@ -5,7 +5,7 @@ import {
   StripeReturnScreen,
   UserReviewsScreen,
   ReservationDetailsScreen,
-  ViewSpotScreen,
+  ViewListingScreen,
   UserProfileScreen,
 } from './screens';
 
@@ -13,8 +13,8 @@ export const addSharedStackScreens = (Stack: any) => {
   return (
     <>
       <Stack.Screen
-        name="ViewSpot"
-        component={ViewSpotScreen}
+        name="ViewListing"
+        component={ViewListingScreen}
         options={{
           headerShown: false,
         }}
