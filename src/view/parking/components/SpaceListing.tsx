@@ -46,31 +46,28 @@ export const SpaceListing = ({availability, style}: SpaceListingProps) => {
                 style={{width: 100, height: 100}}
               />
             </View>
-            <VerticalGroup style={{height: 90, paddingLeft: 16}}>
-              <View>
+            <View style={{flex: 1, paddingLeft: 16}}>
+              <HorizontalGroup>
                 <Title style={{fontSize: 18}}>{space?.name}</Title>
-                <Text>{building?.name}</Text>
-                <Text>
-                  {building?.city}, {building?.state}
-                </Text>
-              </View>
-              <View>
-                <ReviewStars stars={summary?.average_stars} />
-              </View>
-            </VerticalGroup>
-            <View style={{flex: 1}} />
-            <VerticalGroup style={{height: 90, alignItems: 'flex-end'}}>
-              <Title style={{fontSize: 18}}>
-                ${availability?.price.toFixed(2)}
-              </Title>
+                <Title style={{fontSize: 18}}>
+                  ${availability?.price.toFixed(2)}
+                </Title>
+              </HorizontalGroup>
+              <Text>{building?.name}</Text>
               <Text>
-                {' '}
-                {toMinimalDateRange(
-                  availability.start_date,
-                  availability.end_date,
-                )}
+                {building?.city}, {building?.state}
               </Text>
-            </VerticalGroup>
+              <HorizontalGroup style={{marginTop: 12}}>
+                <ReviewStars stars={summary?.average_stars} />
+                <Text>
+                  {' '}
+                  {toMinimalDateRange(
+                    availability.start_date,
+                    availability.end_date,
+                  )}
+                </Text>
+              </HorizontalGroup>
+            </View>
           </HorizontalGroup>
         </View>
       </View>

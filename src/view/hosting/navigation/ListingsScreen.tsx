@@ -84,7 +84,7 @@ export const ListingsScreen = ({}: ListingsScreenProps) => {
         )}
       </Section>
       <View style={styles.bottomArea}>
-        <Title style={{marginVertical: 4}}>Looking for parking?</Title>
+        <Title style={{marginTop: 4}}>Looking for parking?</Title>
         <IconButton
           icon="directions"
           text="Switch to Parking"
