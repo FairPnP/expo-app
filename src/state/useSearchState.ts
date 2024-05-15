@@ -44,8 +44,8 @@ export type SearchState = {
 };
 
 export const useSearchState = create<SearchState>(set => ({
-  startDate: today,
-  endDate: later,
+  startDate: undefined,
+  endDate: undefined,
   location: undefined,
   isCollapsed: true,
   setStartDate: (date: Date) => set({startDate: date}),

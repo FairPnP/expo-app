@@ -24,8 +24,8 @@ export const ParkingHome = ({}) => {
   const {data: searchResults, isPending} = useSearchAvailabilities(
     sb.location
       ? {
-          start_date: toISODateUTC(sb.startDate),
-          end_date: toISODateUTC(sb.endDate),
+          start_date: sb.startDate ? toISODateUTC(sb.startDate) : undefined,
+          end_date: sb.endDate ? toISODateUTC(sb.endDate) : undefined,
           latitude: sb.location.latitude,
           longitude: sb.location.longitude,
           lat_delta: sb.location.latitudeDelta / 2,

@@ -30,6 +30,19 @@ export const SearchBar = ({style}: SearchBarProps) => {
     }
   } else if (sb?.location && sb.location.latitude && sb.location.longitude) {
     locationName = 'Map Area';
+  } else {
+    locationName = 'Where to?';
+  }
+
+  let timeStr = null;
+  if (sb.location) {
+    if (sb.startDate && sb.endDate) {
+      timeStr = toMinimalDateRange(sb.startDate, sb.endDate);
+    } else {
+      timeStr = 'Anytime';
+    }
+  } else {
+    timeStr = 'Find Parking';
   }
 
   return (
@@ -39,19 +52,8 @@ export const SearchBar = ({style}: SearchBarProps) => {
           <MaterialCommunityIcons name="magnify" size={32} color="#000" />
         </View>
         <View style={styles.infoArea}>
-          {locationName && sb.startDate && sb.endDate ? (
-            <>
-              <Title style={styles.titleText}>{locationName}</Title>
-              <Text style={styles.infoText}>
-                {toMinimalDateRange(sb.startDate, sb.endDate)}
-              </Text>
-            </>
-          ) : (
-            <>
-              <Title style={styles.titleText}>Where to?</Title>
-              <Text style={styles.infoText}>Find Parking</Text>
-            </>
-          )}
+          <Title style={styles.titleText}>{locationName}</Title>
+          <Text style={styles.infoText}>{timeStr}</Text>
         </View>
       </TouchableOpacity>
       <SearchModal ref={modalRef} />
